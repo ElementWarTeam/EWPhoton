@@ -11,7 +11,7 @@ public class MyFireElement: Photon.MonoBehaviour
 	public float scale;
 	private Rigidbody2D rb2d;
 
-
+	#region MONOBEHAVIOUR MESSAGES
 	void Start ()
 	{
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -26,11 +26,9 @@ public class MyFireElement: Photon.MonoBehaviour
 		Vector2 moveVec = new Vector2 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical")) * speed; 
 		rb2d.position += moveVec.normalized * speed * scale;
 	}
+	#endregion
 				
 
-	void FixedUpdate ()
-	{
-		
-	}
+
 
 }

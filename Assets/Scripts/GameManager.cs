@@ -10,6 +10,7 @@ namespace Com.EW.MyGame
 {
 	public class GameManager : Photon.PunBehaviour {
 		#region Public Variables
+		static public GameManager Instance;
 
 		[Tooltip("The prefab to use for representing the player")]
 		public GameObject playerPrefab;
@@ -22,11 +23,10 @@ namespace Com.EW.MyGame
 		/// <summary>
 		/// Called when the local player left the room. We need to load the launcher scene.
 		/// </summary>
-		public override void OnLeftRoom()
+		public void OnLeftRoom()
 		{
 			SceneManager.LoadScene(0);
 		}
-			
 
 		public override void OnPhotonPlayerConnected( PhotonPlayer other  )
 		{
@@ -37,7 +37,7 @@ namespace Com.EW.MyGame
 			{
 				Debug.Log( "OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient ); // called before OnPhotonPlayerDisconnected
 
-
+				// When player number changes, we load different Arena
 				LoadArena();
 			}
 		}
@@ -52,7 +52,7 @@ namespace Com.EW.MyGame
 			{
 				Debug.Log( "OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient ); // called before OnPhotonPlayerDisconnected
 
-
+				// When player number changes, we load different Arena
 				LoadArena();
 			}
 		}
@@ -62,23 +62,32 @@ namespace Com.EW.MyGame
 
 
 
+
+
+
+
+
 		#region Public Methods
-
-
 		public void Start() {
-			
-			if (PlayerManager.LocalPlayerInstance==null)
-			{
+			Instance = this;
+
+			if (playerPrefab == null) {
+				Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'",this);
+			} else {
 				Debug.Log("We are Instantiating LocalPlayer from "+Application.loadedLevelName);
 				// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
-				PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
-			}else{
-				Debug.Log("Ignoring scene load for "+Application.loadedLevelName);
+				if (PlayerManager.LocalPlayerInstance==null)
+				{
+					Debug.Log("We are Instantiating LocalPlayer from "+Application.loadedLevelName);
+					// we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
+					PhotonNetwork.Instantiate(this.playerPrefab.name, new Vector3(0f,5f,0f), Quaternion.identity, 0);
+				}else{
+					Debug.Log("Ignoring scene load for "+Application.loadedLevelName);
+				}
 			}
 
+
 		}
-
-
 
 
 		public void LeaveRoom()
@@ -87,7 +96,13 @@ namespace Com.EW.MyGame
 		}
 
 
-		#endregion  
+		#endregion
+
+
+
+
+
+
 
 		#region Private Methods
 

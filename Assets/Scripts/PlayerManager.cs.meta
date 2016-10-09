@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 20b223bd91e8b4769a7e281ea3ccf105
-timeCreated: 1475522978
+timeCreated: 1475864114
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Beams: {instanceID: 0}
+  - PlayerUiPrefab: {fileID: 1000010830984188, guid: fa5bce1e3284645fab55a028d636eb02,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
