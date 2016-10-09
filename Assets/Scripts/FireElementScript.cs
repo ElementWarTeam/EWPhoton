@@ -17,6 +17,8 @@ public class FireElementScript : NetworkBehaviour
 	private Rigidbody2D rb2d;
 	private Transform fireBallInstance;
 
+	#region MONOBEHAVIOUR MESSAGES
+
 	void Start ()
 	{
 		rb2d = GetComponent<Rigidbody2D> ();
@@ -35,23 +37,12 @@ public class FireElementScript : NetworkBehaviour
 		}
 	}
 
-	void OnNetworkInstantiate (NetworkMessageInfo info)
-	{
-		Debug.Log ("New object instantiated by " + info.sender);
-	}
-
-	[Command]
 	void CmdShoot (Vector2 shootVec, Vector3 position)
 	{
 		GameObject copy = (GameObject)Instantiate (fireBallPrefab, position, Quaternion.identity);
 		NetworkServer.Spawn (copy);
 		Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
 		body.AddForce (shootVec.normalized * bulletSpeed);
-	}
-
-	void OnBecomeInvisible ()
-	{
-		Destroy (gameObject);
 	}
 
 	void FixedUpdate ()
@@ -67,5 +58,7 @@ public class FireElementScript : NetworkBehaviour
 		}
 
 	}
+
+	#endregion
 
 }

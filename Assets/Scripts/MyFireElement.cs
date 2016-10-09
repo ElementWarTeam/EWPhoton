@@ -8,8 +8,14 @@ public class MyFireElement: Photon.MonoBehaviour
 {
 
 	public float speed;
-	public float scale;
+	public float bulletSpeed = 70f;
+	public float scale = 0.01f;
+	public GameObject fireBallPrefab;
+	public float timeBetweenShots = 1f;
+
+	private float nextShotTime = 0.0f;
 	private Rigidbody2D rb2d;
+	private Transform fireBallInstance;
 
 	#region MONOBEHAVIOUR MESSAGES
 
@@ -22,6 +28,13 @@ public class MyFireElement: Photon.MonoBehaviour
 	{
 		if (photonView.isMine == false && PhotonNetwork.connected == true) {
 			return;
+		}
+		Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+		if (shootVec != Vector2.zero) {
+			if (nextShotTime <= Time.time) {
+				CmdShoot (shootVec, rb2d.position);
+				nextShotTime = Time.time + timeBetweenShots;
+			}
 		}
 	
 	}
@@ -40,6 +53,14 @@ public class MyFireElement: Photon.MonoBehaviour
 			rb2d.rotation = angle;
 		}
 
+	}
+
+	void CmdShoot (Vector2 shootVec, Vector3 position)
+	{
+		GameObject copy = (GameObject)Instantiate (fireBallPrefab, position, Quaternion.identity);
+		NetworkServer.Spawn (copy);
+		Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
+		body.AddForce (shootVec.normalized * bulletSpeed);
 	}
 
 	#endregion
