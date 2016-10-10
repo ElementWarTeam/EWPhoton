@@ -47,7 +47,11 @@ namespace Com.EW.MyGame
 
 		private float nextShotTime = 0.0f;
 
+		private static string localWeaponPrefabName;
+
 		private static string fireBallPrefabName = "FireBall";
+		private static string electricArcPrefabName = "ElectricArc";
+		private static string rancherSwordPrefabName = "RancherSword";
 
 		#endregion
 
@@ -61,8 +65,22 @@ namespace Com.EW.MyGame
 			// #Important
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
 			if (photonView.isMine) {
+				Debug.Log ("PlayerManager Awake");
 				PlayerManager.LocalPlayerInstance = this.gameObject;
-				PlayerManager.LocalPlayerType = photonView.owner.name;
+				switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
+				case "FireElement":
+					localWeaponPrefabName = fireBallPrefabName;
+					break;
+				case "ElectricElement":
+					localWeaponPrefabName = electricArcPrefabName;
+					break;
+				case "RancherElement":
+					localWeaponPrefabName = rancherSwordPrefabName;
+					break;
+				default:
+					localWeaponPrefabName = fireBallPrefabName;
+					break;
+				}
 			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -174,10 +192,13 @@ namespace Com.EW.MyGame
 		{
 			Debug.Log ("CmdShoot is called");
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
+
 			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
 			Vector3 position = rb2d.position;
-			GameObject copy = PhotonNetwork.Instantiate (fireBallPrefabName, position, Quaternion.identity, 0);
+			GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
 			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
+			body.rotation = angle;
 			body.AddForce (shootVec.normalized * BulletSpeed);
 		}
 

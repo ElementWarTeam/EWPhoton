@@ -55,13 +55,5 @@ public class MyFireElement: Photon.MonoBehaviour
 
 	}
 
-	void CmdShoot (Vector2 shootVec, Vector3 position)
-	{
-		GameObject copy = (GameObject)Instantiate (fireBallPrefab, position, Quaternion.identity);
-		NetworkServer.Spawn (copy);
-		Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
-		body.AddForce (shootVec.normalized * bulletSpeed);
-	}
-
 	#endregion
 }

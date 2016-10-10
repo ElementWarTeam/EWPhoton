@@ -65,19 +65,21 @@ namespace Com.EW.MyGame
 
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevelName);
-				string localName = PlayerManager.LocalPlayerType;
-				switch (localName) {
-				case "F": 
-					PhotonNetwork.Instantiate ("FireElement", new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
+				switch (PhotonNetwork.playerName) {
+				case "F":
+					PlayerManager.LocalPlayerType = "FireElement";
 					break;
 				case "E":
-					PhotonNetwork.Instantiate ("Electric", new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
+					PlayerManager.LocalPlayerType = "ElectricElement";
+					break;
+				case "R":
+					PlayerManager.LocalPlayerType = "RancherElement";
 					break;
 				default:
-					PhotonNetwork.Instantiate ("FireElement", new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
+					PlayerManager.LocalPlayerType = "FireElement";
 					break;
 				}
-//				PhotonNetwork.Instantiate ("FireElement", new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
+				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
 			} else {
 				Debug.Log ("Ignoring scene load for " + Application.loadedLevelName);
 			}
