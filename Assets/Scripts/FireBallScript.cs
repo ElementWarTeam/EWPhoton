@@ -4,7 +4,6 @@ using System.Collections;
 public class FireBallScript : MonoBehaviour
 {
 
-	public float speed = 6;
 	public AudioClip shootAudio;
 	public AudioClip hitAudio;
 

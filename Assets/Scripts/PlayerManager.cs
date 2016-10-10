@@ -4,6 +4,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// left joysticker
+using UnityStandardAssets.CrossPlatformInput;
+
+// right joysticker
+using CnControls;
+
+
+
 using System.Collections;
 
 namespace Com.EW.MyGame
@@ -12,25 +20,32 @@ namespace Com.EW.MyGame
 	/// Player manager. 
 	/// Handles fire Input and Beams.
 	/// </summary>
-	public class PlayerManager : Photon.PunBehaviour {
+	public class PlayerManager : Photon.PunBehaviour, IPunObservable
+	{
 
 		#region Public Variables
-		[Tooltip("The current Health of our player")]
+
+		[Tooltip ("The current Health of our player")]
 		public float Health = 1000f;
 
-		[Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
+		[Tooltip ("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
 
-		[Tooltip("The Player's UI GameObject Prefab")]
+		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
 
+		[Tooltip ("The Bullet GameObject to control")]
+		public GameObject Bullet;
+
+		public bool IsFiring;
 
 		#endregion
 
 		#region Private Variables
 
-		//True, when the user is firing
-		bool IsFiring;
+		public float timeBetweenShots = 1f;
+
+		private float nextShotTime = 0.0f;
 
 		#endregion
 
@@ -39,54 +54,49 @@ namespace Com.EW.MyGame
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity during early initialization phase.
 		/// </summary>
-		void Awake()
+		void Awake ()
 		{
 			// #Important
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
-			if ( photonView.isMine)
-			{
+			if (photonView.isMine) {
 				PlayerManager.LocalPlayerInstance = this.gameObject;
 			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
-			DontDestroyOnLoad(this.gameObject);
+			DontDestroyOnLoad (this.gameObject);
 
 		}
 
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity during initialization phase.
 		/// </summary>
-		void Start()
+		void Start ()
 		{	// camera work
-			CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
+			CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork> ();
 
 
-			if (_cameraWork!=null )
-			{
-				if ( photonView.isMine)
-				{
-					_cameraWork.OnStartFollowing();
+			if (_cameraWork != null) {
+				if (photonView.isMine) {
+					_cameraWork.OnStartFollowing ();
 				}
-			}else{
-				Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.",this);
+			} else {
+				Debug.LogError ("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
 			}
 
 
 			// player UI
-			if (PlayerUiPrefab!=null)
-			{
-				GameObject _uiGo =  Instantiate(PlayerUiPrefab) as GameObject;
+			if (PlayerUiPrefab != null) {
+				GameObject _uiGo = Instantiate (PlayerUiPrefab) as GameObject;
 				_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
 			} else {
-				Debug.LogWarning("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.",this);
+				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
 			}
 
 			// 
 			#if UNITY_MIN_5_4
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
-			{
-				this.CalledOnLevelWasLoaded(scene.buildIndex);
+			UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) => {
+				this.CalledOnLevelWasLoaded (scene.buildIndex);
 			};
 			#endif
 		}
@@ -94,12 +104,24 @@ namespace Com.EW.MyGame
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity on every frame.
 		/// </summary>
-		void Update()
+		void Update ()
 		{	
 			// if health less than 0, leave game
-			if ( Health <= 0f)
-			{
-				GameManager.Instance.LeaveRoom();
+			if (Health <= 0f) {
+				GameManager.Instance.LeaveRoom ();
+			}
+
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				ProcessInputs ();
+				if (IsFiring) {
+					Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
+					if (nextShotTime <= Time.time) {
+						Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+						CmdShoot (shootVec, rb2d.position);
+						nextShotTime = Time.time + timeBetweenShots;
+					}
+				}
+				return;
 			}
 		}
 
@@ -113,16 +135,15 @@ namespace Com.EW.MyGame
 		#endif
 
 
-		void CalledOnLevelWasLoaded(int level)
+		void CalledOnLevelWasLoaded (int level)
 		{
 			// check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
-			if (!Physics.Raycast(transform.position, -Vector3.up, 5f))
-			{
-				transform.position = new Vector3(0f, 5f, 0f);
+			if (!Physics.Raycast (transform.position, -Vector3.up, 5f)) {
+				transform.position = new Vector3 (0f, 5f, 0f);
 			}
 
-			GameObject _uiGo = Instantiate(this.PlayerUiPrefab) as GameObject;
-			_uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
+			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
 		}
 
 
@@ -135,12 +156,40 @@ namespace Com.EW.MyGame
 		/// <summary>
 		/// Processes the inputs. Maintain a flag representing when the user is pressing Fire.
 		/// </summary>
-		void ProcessInputs()
+		void ProcessInputs ()
 		{
-			// when we press the "Fire!" key
-
+			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+			if (shootVec.magnitude > 0) {
+				IsFiring = true;
+			} else {
+				IsFiring = false;
+			}
 		}
+
+		void CmdShoot (Vector2 shootVec, Vector3 position)
+		{
+//			GameObject copy = (GameObject)Instantiate (fireBallPrefab, position, Quaternion.identity);
+//			NetworkServer.Spawn (copy);
+//			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
+//			body.AddForce (shootVec.normalized * bulletSpeed);
+			Debug.Log ("CmdShoot is called");
+		}
+
 		#endregion
 
+		#region IPunObservable implementation
+
+		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+		{
+			if (stream.isWriting) {
+				// We own this player: send the others our data
+				stream.SendNext (IsFiring);
+			} else {
+				// Network player, receive data
+				this.IsFiring = (bool)stream.ReceiveNext ();
+			}
+		}
+
+		#endregion
 	}
 }
