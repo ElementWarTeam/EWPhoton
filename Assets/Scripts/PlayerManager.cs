@@ -53,6 +53,8 @@ namespace Com.EW.MyGame
 		private static string electricArcPrefabName = "ElectricArc";
 		private static string rancherSwordPrefabName = "RancherSword";
 
+		private string myBulletKeyName = "MyBullet";
+
 		#endregion
 
 		#region MonoBehaviour CallBacks
@@ -67,6 +69,7 @@ namespace Com.EW.MyGame
 			if (photonView.isMine) {
 				Debug.Log ("PlayerManager Awake");
 				PlayerManager.LocalPlayerInstance = this.gameObject;
+				myBulletKeyName = PhotonNetwork.playerName + "_Bullet";
 				switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
 				case "FireElement":
 					localWeaponPrefabName = fireBallPrefabName;
@@ -168,7 +171,21 @@ namespace Com.EW.MyGame
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
 		}
 
+		void OnTriggerEnter2D (Collider2D obj)
+		{
+			Debug.Log ("PlayerManager: OnTriggerEnter2D");
+			if (!photonView.isMine) {
+				return;
+			}
 
+			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
+				Debug.Log ("Player is hitted by bullet");
+				Destroy (obj);
+//				audioSource.PlayOneShot (hitAudio);
+				Health -= 0.1f;
+			}
+
+		}
 
 
 		#endregion
@@ -197,9 +214,13 @@ namespace Com.EW.MyGame
 			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
 			Vector3 position = rb2d.position;
 			GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
+
 			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
 			body.rotation = angle;
 			body.AddForce (shootVec.normalized * BulletSpeed);
+
+			Collider2D collider = copy.GetComponent <Collider2D> ();
+			collider.name = myBulletKeyName;
 		}
 
 		#endregion

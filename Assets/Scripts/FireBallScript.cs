@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireBallScript : MonoBehaviour
+public class FireBallScript : Photon.PunBehaviour
 {
 
 	public AudioClip shootAudio;
@@ -34,9 +34,10 @@ public class FireBallScript : MonoBehaviour
 	// Function called when the enemy collides with another object
 	void OnTriggerEnter2D (Collider2D obj)
 	{
+		Debug.Log ("OnTriggerEnter2D");
 		if (shouldBeDestroied)
 			return;
-		if (obj.CompareTag ("Element") && !obj.name.Equals ("FireElement")) {
+		if (obj.CompareTag ("Bullet")) {
 			audioSource.PlayOneShot (hitAudio);
 			GetComponent <Renderer> ().enabled = false;
 			shouldBeDestroied = true;
