@@ -1,12 +1,13 @@
 fileFormatVersion: 2
 guid: 20b223bd91e8b4769a7e281ea3ccf105
-timeCreated: 1476069438
+timeCreated: 1476073762
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - PlayerUiPrefab: {instanceID: 0}
-  - Bullet: {fileID: 1000011807229744, guid: 0e9689db34c14483eb3cd3c38612c6a9, type: 2}
+  - FireBallPrefab: {fileID: 1000011807229744, guid: 0e9689db34c14483eb3cd3c38612c6a9,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

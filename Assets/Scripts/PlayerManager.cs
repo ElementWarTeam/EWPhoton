@@ -22,7 +22,7 @@ namespace Com.EW.MyGame
 	/// </summary>
 	public class PlayerManager : Photon.PunBehaviour, IPunObservable
 	{
-
+		
 		#region Public Variables
 
 		[Tooltip ("The current Health of our player")]
@@ -34,8 +34,7 @@ namespace Com.EW.MyGame
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
 
-		[Tooltip ("The Bullet GameObject to control")]
-		public GameObject Bullet;
+		public float BulletSpeed = 70f;
 
 		public bool IsFiring;
 
@@ -46,6 +45,8 @@ namespace Com.EW.MyGame
 		public float timeBetweenShots = 1f;
 
 		private float nextShotTime = 0.0f;
+
+		private static string fireBallPrefabName = "FireBall";
 
 		#endregion
 
@@ -106,23 +107,24 @@ namespace Com.EW.MyGame
 		/// </summary>
 		void Update ()
 		{	
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
 			// if health less than 0, leave game
 			if (Health <= 0f) {
 				GameManager.Instance.LeaveRoom ();
 			}
 
-			if (photonView.isMine == false && PhotonNetwork.connected == true) {
-				ProcessInputs ();
-				if (IsFiring) {
-					Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
-					if (nextShotTime <= Time.time) {
-						Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
-						CmdShoot (shootVec, rb2d.position);
-						nextShotTime = Time.time + timeBetweenShots;
-					}
+
+			ProcessInputs ();
+			if (IsFiring) {
+				if (nextShotTime <= Time.time) {
+					CmdShoot ();
+					nextShotTime = Time.time + timeBetweenShots;
 				}
-				return;
 			}
+			return;
+
 		}
 
 
@@ -166,13 +168,15 @@ namespace Com.EW.MyGame
 			}
 		}
 
-		void CmdShoot (Vector2 shootVec, Vector3 position)
+		void CmdShoot ()
 		{
-//			GameObject copy = (GameObject)Instantiate (fireBallPrefab, position, Quaternion.identity);
-//			NetworkServer.Spawn (copy);
-//			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
-//			body.AddForce (shootVec.normalized * bulletSpeed);
 			Debug.Log ("CmdShoot is called");
+			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
+			Vector3 position = rb2d.position;
+			GameObject copy = PhotonNetwork.Instantiate (fireBallPrefabName, position, Quaternion.identity, 0);
+			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
+			body.AddForce (shootVec.normalized * BulletSpeed);
 		}
 
 		#endregion

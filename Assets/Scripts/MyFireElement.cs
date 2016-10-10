@@ -29,13 +29,13 @@ public class MyFireElement: Photon.MonoBehaviour
 		if (photonView.isMine == false && PhotonNetwork.connected == true) {
 			return;
 		}
-		Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
-		if (shootVec != Vector2.zero) {
-			if (nextShotTime <= Time.time) {
-				CmdShoot (shootVec, rb2d.position);
-				nextShotTime = Time.time + timeBetweenShots;
-			}
-		}
+//		Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+//		if (shootVec != Vector2.zero) {
+//			if (nextShotTime <= Time.time) {
+//				CmdShoot (shootVec, rb2d.position);
+//				nextShotTime = Time.time + timeBetweenShots;
+//			}
+//		}
 	
 	}
 
