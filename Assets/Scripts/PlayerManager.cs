@@ -26,7 +26,7 @@ namespace Com.EW.MyGame
 		#region Public Variables
 
 		[Tooltip ("The current Health of our player")]
-		public float Health = 1000f;
+		public float Health = 1f;
 
 		[Tooltip ("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
@@ -178,6 +178,9 @@ namespace Com.EW.MyGame
 				return;
 			}
 
+			Health -= 0.1f;
+			Debug.LogWarning ("Cur Health: " + Health);
+
 			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
 				Debug.Log ("Player is hitted by bullet");
 				Destroy (obj);
@@ -212,7 +215,12 @@ namespace Com.EW.MyGame
 			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
 
 			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
-			Vector3 position = rb2d.position;
+			float tmp = Mathf.Sqrt(shootVec.x * shootVec.x + shootVec.y * shootVec.y) * 1.5f;
+
+			Vector3 offset = new Vector3 (shootVec.x / tmp, shootVec.y / tmp, 0);
+			Vector3 position = rb2d.position; // make sure bullet is in front of current element
+			position = position + offset;
+
 			GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
 
 			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
@@ -229,12 +237,15 @@ namespace Com.EW.MyGame
 
 		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
 		{
-			if (stream.isWriting) {
+			if (stream.isWriting)
+			{
 				// We own this player: send the others our data
-				stream.SendNext (IsFiring);
-			} else {
+				stream.SendNext(IsFiring);
+				stream.SendNext(Health);
+			}else{
 				// Network player, receive data
-				this.IsFiring = (bool)stream.ReceiveNext ();
+				this.IsFiring = (bool)stream.ReceiveNext();
+				this.Health = (float)stream.ReceiveNext();
 			}
 		}
 
