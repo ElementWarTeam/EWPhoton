@@ -30,6 +30,7 @@ namespace Com.EW.MyGame
 
 		[Tooltip ("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
+		public static string LocalPlayerType;
 
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
@@ -61,6 +62,7 @@ namespace Com.EW.MyGame
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
 			if (photonView.isMine) {
 				PlayerManager.LocalPlayerInstance = this.gameObject;
+				PlayerManager.LocalPlayerType = photonView.owner.name;
 			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -140,9 +142,9 @@ namespace Com.EW.MyGame
 		void CalledOnLevelWasLoaded (int level)
 		{
 			// check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
-			if (!Physics.Raycast (transform.position, -Vector3.up, 5f)) {
-				transform.position = new Vector3 (0f, 5f, 0f);
-			}
+//			if (!Physics.Raycast (transform.position, -Vector3.up, 5f)) {
+//				transform.position = new Vector3 (0f, 5f, 0f);
+//			}
 
 			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
