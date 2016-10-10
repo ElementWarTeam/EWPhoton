@@ -178,7 +178,7 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-//			Health -= 0.1f;
+			Health -= 0.1f;
 			Debug.LogWarning ("Cur Health: " + Health);
 
 			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
