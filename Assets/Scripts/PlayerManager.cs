@@ -35,7 +35,7 @@ namespace Com.EW.MyGame
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
 
-		public float BulletSpeed = 70f;
+		public float BulletSpeed = 150f;
 
 		public bool IsFiring;
 
@@ -178,7 +178,7 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-			Health -= 0.1f;
+//			Health -= 0.1f;
 			Debug.LogWarning ("Cur Health: " + Health);
 
 			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
@@ -215,7 +215,7 @@ namespace Com.EW.MyGame
 			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
 
 			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
-			float tmp = Mathf.Sqrt(shootVec.x * shootVec.x + shootVec.y * shootVec.y) * 1.5f;
+			float tmp = Mathf.Sqrt (shootVec.x * shootVec.x + shootVec.y * shootVec.y) * 1.5f;
 
 			Vector3 offset = new Vector3 (shootVec.x / tmp, shootVec.y / tmp, 0);
 			Vector3 position = rb2d.position; // make sure bullet is in front of current element
@@ -237,15 +237,14 @@ namespace Com.EW.MyGame
 
 		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
 		{
-			if (stream.isWriting)
-			{
+			if (stream.isWriting) {
 				// We own this player: send the others our data
-				stream.SendNext(IsFiring);
-				stream.SendNext(Health);
-			}else{
+				stream.SendNext (IsFiring);
+				stream.SendNext (Health);
+			} else {
 				// Network player, receive data
-				this.IsFiring = (bool)stream.ReceiveNext();
-				this.Health = (float)stream.ReceiveNext();
+				this.IsFiring = (bool)stream.ReceiveNext ();
+				this.Health = (float)stream.ReceiveNext ();
 			}
 		}
 
