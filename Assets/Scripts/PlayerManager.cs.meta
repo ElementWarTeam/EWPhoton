@@ -1,13 +1,13 @@
 fileFormatVersion: 2
 guid: 20b223bd91e8b4769a7e281ea3ccf105
-timeCreated: 1476073762
+timeCreated: 1476657018
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - PlayerUiPrefab: {instanceID: 0}
-  - FireBallPrefab: {fileID: 1000011807229744, guid: 0e9689db34c14483eb3cd3c38612c6a9,
-      type: 2}
+  - PlayerScorePrefab: {instanceID: 0}
+  - CollisionAudio: {fileID: 8300000, guid: 7269ffca523784f1bba948906684f9cf, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

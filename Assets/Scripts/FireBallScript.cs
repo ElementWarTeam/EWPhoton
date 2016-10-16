@@ -8,6 +8,7 @@ public class FireBallScript : Photon.PunBehaviour
 	public AudioClip hitAudio;
 
 	private Rigidbody2D rb2d;
+	private Collider2D cl2d;
 	private bool shouldBeDestroied = false;
 	private AudioSource audioSource;
 
@@ -18,6 +19,7 @@ public class FireBallScript : Photon.PunBehaviour
 	{
 		rb2d = GetComponent<Rigidbody2D> ();
 		rb2d.velocity = new Vector2 (0, 0);
+		cl2d = GetComponent<Collider2D> ();
 		audioSource = GetComponent<AudioSource> ();
 		audioSource.PlayOneShot (shootAudio);
 		initiateTime = Time.time;
@@ -27,6 +29,7 @@ public class FireBallScript : Photon.PunBehaviour
 	void Update ()
 	{
 		if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + 5f <= Time.time)) {
+			PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 			Destroy (gameObject);
 		}
 	}
@@ -35,15 +38,18 @@ public class FireBallScript : Photon.PunBehaviour
 	void OnTriggerEnter2D (Collider2D obj)
 	{
 		Debug.Log ("OnTriggerEnter2D");
+		Debug.Log ("shouldBeDestroied = " + shouldBeDestroied);
 		if (shouldBeDestroied)
 			return;
-		if (obj.CompareTag ("Bullet")) {
+		if (obj.CompareTag ("Bullet") && !obj.name.Equals (cl2d.name)) {
+			Debug.Log ("Bullet hit Bullet: shouldBeDestroied");
 			audioSource.PlayOneShot (hitAudio);
 			GetComponent <Renderer> ().enabled = false;
 			shouldBeDestroied = true;
 		}
 
 		if (obj.CompareTag ("Obstacle")) {
+			Debug.Log ("Bullet hit Obstacle: shouldBeDestroied");
 			audioSource.PlayOneShot (hitAudio);
 			GetComponent <Renderer> ().enabled = false;
 			shouldBeDestroied = true;

@@ -40,11 +40,14 @@ namespace Com.EW.MyGame
 		[Tooltip ("The Player's Score GameObject Prefab")]
 		public GameObject PlayerScorePrefab;
 
-
+		// Audio
+		public AudioClip CollisionAudio;
+		private AudioSource audioSource;
 
 		public float BulletSpeed = 150f;
 
 		public bool IsFiring;
+		public bool UsingUltra;
 
 		#endregion
 
@@ -112,7 +115,7 @@ namespace Com.EW.MyGame
 		void Start ()
 		{	// camera work
 			CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork> ();
-
+			audioSource = GetComponent<AudioSource> ();
 
 			if (_cameraWork != null) {
 				if (photonView.isMine) {
@@ -175,6 +178,11 @@ namespace Com.EW.MyGame
 					nextShotTime = Time.time + timeBetweenShots;
 				}
 			}
+			if (UsingUltra) {
+				// if energe is enough
+				// decrease energe bar
+				UseUltra ();
+			}
 			return;
 
 		}
@@ -214,14 +222,22 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-			Health -= 0.1f;
+//			Health -= 0.1f;
 			Debug.LogWarning ("Cur Health: " + Health);
+
+			Debug.Log (obj);
 
 			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
 				Debug.Log ("Player is hitted by bullet");
+				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
 				Destroy (obj);
-//				audioSource.PlayOneShot (hitAudio);
 				Health -= 0.1f;
+			}
+
+			if (obj.CompareTag ("Obstacle")) {
+				Debug.Log ("Player is hitted by Obstacle");
+				audioSource.PlayOneShot (CollisionAudio);
+				Health -= 0.05f;
 			}
 
 		}
@@ -242,6 +258,13 @@ namespace Com.EW.MyGame
 			} else {
 				IsFiring = false;
 			}
+
+			if (CrossPlatformInputManager.GetButtonUp ("Ultra")) {
+				UsingUltra = true;
+			} else {
+				UsingUltra = false;
+			}
+
 		}
 
 		void CmdShoot ()
@@ -267,6 +290,47 @@ namespace Com.EW.MyGame
 			collider.name = myBulletKeyName;
 		}
 
+		void UseUltra ()
+		{
+			Debug.Log ("UsingUltra is called");
+			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
+
+			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
+			Vector3 position = rb2d.position;
+
+			switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
+			case "FireElement":
+				
+				for (float rotation = 0; rotation < 360; rotation += 30) {
+					GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
+					Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
+					Collider2D collider = copy.GetComponent <Collider2D> ();
+					collider.name = myBulletKeyName;
+					float radians = rotation * Mathf.Deg2Rad;
+					Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
+					body.rotation = rotation;
+					body.AddForce (direction * BulletSpeed);
+				}
+				break;
+			case "ElectricElement":
+				// TODO
+				break;
+			case "RancherElement":
+				// TODO
+				break;
+			case "IceElement":
+				// TODO
+				break;
+			case "StoneElement":
+				// TODO
+				break;
+			default:
+				// TODO
+				break;
+			}
+		}
+
 		#endregion
 
 		#region IPunObservable implementation
@@ -277,10 +341,12 @@ namespace Com.EW.MyGame
 				// We own this player: send the others our data
 				stream.SendNext (IsFiring);
 				stream.SendNext (Health);
+				stream.SendNext (UsingUltra);
 			} else {
 				// Network player, receive data
 				this.IsFiring = (bool)stream.ReceiveNext ();
 				this.Health = (float)stream.ReceiveNext ();
+				this.UsingUltra = (bool)stream.ReceiveNext ();
 			}
 		}
 

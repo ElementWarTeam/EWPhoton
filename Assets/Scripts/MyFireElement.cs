@@ -8,12 +8,8 @@ public class MyFireElement: Photon.MonoBehaviour
 {
 
 	public float speed;
-	public float bulletSpeed = 70f;
 	public float scale = 0.01f;
-	public GameObject fireBallPrefab;
-	public float timeBetweenShots = 1f;
 
-	private float nextShotTime = 0.0f;
 	private Rigidbody2D rb2d;
 	private Transform fireBallInstance;
 
@@ -29,14 +25,6 @@ public class MyFireElement: Photon.MonoBehaviour
 		if (photonView.isMine == false && PhotonNetwork.connected == true) {
 			return;
 		}
-//		Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
-//		if (shootVec != Vector2.zero) {
-//			if (nextShotTime <= Time.time) {
-//				CmdShoot (shootVec, rb2d.position);
-//				nextShotTime = Time.time + timeBetweenShots;
-//			}
-//		}
-	
 	}
 
 	void FixedUpdate ()
