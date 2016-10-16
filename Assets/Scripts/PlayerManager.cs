@@ -3,6 +3,7 @@
 #endif
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 // left joysticker
 using UnityStandardAssets.CrossPlatformInput;
@@ -24,6 +25,7 @@ namespace Com.EW.MyGame
 	{
 		
 		#region Public Variables
+	
 
 		[Tooltip ("The current Health of our player")]
 		public float Health = 1f;
@@ -34,6 +36,11 @@ namespace Com.EW.MyGame
 
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
+
+		[Tooltip ("The Player's Score GameObject Prefab")]
+		public GameObject PlayerScorePrefab;
+
+
 
 		public float BulletSpeed = 150f;
 
@@ -116,6 +123,17 @@ namespace Com.EW.MyGame
 				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
 			}
 
+
+			// player Score
+			if (PlayerScorePrefab != null) {
+				GameObject _uiGo = Instantiate (PlayerScorePrefab) as GameObject;
+				_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+			} else {
+				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> PlayerScorePrefab reference on player Prefab.", this);
+			}
+
+
+
 			// 
 			#if UNITY_MIN_5_4
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
@@ -133,6 +151,9 @@ namespace Com.EW.MyGame
 			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
+
+
+
 			// if health less than 0, leave game
 			if (Health <= 0f) {
 				GameManager.Instance.LeaveRoom ();
@@ -169,6 +190,13 @@ namespace Com.EW.MyGame
 
 			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+
+			// player Score
+			GameObject _uiGo1 = Instantiate (this.PlayerScorePrefab) as GameObject;
+			_uiGo1.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+		
+
+
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)

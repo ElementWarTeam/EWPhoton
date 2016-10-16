@@ -7,30 +7,24 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class MyPlayerUI : MonoBehaviour {
+	public class MyScoreUI : MonoBehaviour {
 
 
 		#region Public Properties
 
-		[Tooltip("UI Text to display Player's Name")]
-		public Text PlayerNameText;
-
-		[Tooltip("UI Slider to display Player's Health")]
-		public Slider PlayerHealthSlider;
-
 		[Tooltip("UI Slider to display Player's Score")]
 		public Slider PlayerScoreSlider;
 
-		[Tooltip("Pixel offset from the player target")]
-		public Vector3 ScreenOffset = new Vector3(0f,30f,0f);
+	
+		[Tooltip("UI Slider to display Player's Energy")]
+		public Slider PlayerEnergySlider;
 
 		#endregion
 
 
 		#region Private Properties
 		PlayerManager _target;
-		Transform _targetTransform;
-		Vector3 _targetPosition;
+
 
 		#endregion
 
@@ -44,14 +38,20 @@ namespace Com.EW.MyGame
 
 		void Update()
 		{
+			// 这里，根据——target的情况来update我们bar的值
 			// Reflect the Player Health
-			if (PlayerHealthSlider != null) {
-				PlayerHealthSlider.value = _target.Health;
-			}
+//			if (PlayerHealthSlider != null) {
+//				PlayerHealthSlider.value = _target.Health;
+//			}
 
 			// Update Score Earned
 			if (PlayerScoreSlider != null) {
-				PlayerScoreSlider.value = 50;
+				PlayerScoreSlider.value += 0.0001f;
+			}
+
+			// update Ult Energy
+			if (PlayerEnergySlider != null) {
+				PlayerEnergySlider.value += 0.0002f;
 			}
 
 			// Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
@@ -75,25 +75,15 @@ namespace Com.EW.MyGame
 			}
 			// Cache references for efficiency
 			_target = target;
-			_targetTransform = _target.transform;
 
 			Debug.Log ("At this time, _target has been set");
-
-			if (PlayerNameText != null) {
-				PlayerNameText.text = _target.photonView.owner.name;
-			}
-
 		}
 
 		void LateUpdate () {
 
 			// #Critical
 			// Follow the Target GameObject on screen.
-			if (_targetTransform!=null)
-			{
-				_targetPosition = _targetTransform.position;
-				this.transform.position = Camera.main.WorldToScreenPoint (_targetPosition) + ScreenOffset;
-			}
+			// The energy bar is still, so we do not need to add code here
 		}
 
 		#endregion
