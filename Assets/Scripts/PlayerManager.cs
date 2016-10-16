@@ -64,6 +64,7 @@ namespace Com.EW.MyGame
 		private static string iceCrystalPrefabName = "IceCrystal";
 		private static string stoneChargePrefabName = "StoneCharge";
 		private static string rancherSwordPrefabName = "RancherSword";
+		private static string electricFieldPrefabName = "ElectricField";
 
 		private string myBulletKeyName = "MyBullet";
 
@@ -236,7 +237,15 @@ namespace Com.EW.MyGame
 
 			if (obj.CompareTag ("Obstacle")) {
 				Debug.Log ("Player is hitted by Obstacle");
+				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
+					return; // electric field
+				}
 				audioSource.PlayOneShot (CollisionAudio);
+				Health -= 0.05f;
+			}
+
+			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
+				Debug.Log ("Player is hitted by others ElectricField");
 				Health -= 0.05f;
 			}
 
@@ -301,7 +310,6 @@ namespace Com.EW.MyGame
 
 			switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
 			case "FireElement":
-				
 				for (float rotation = 0; rotation < 360; rotation += 30) {
 					GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
 					Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
@@ -314,7 +322,10 @@ namespace Com.EW.MyGame
 				}
 				break;
 			case "ElectricElement":
-				// TODO
+				GameObject field = PhotonNetwork.Instantiate (electricFieldPrefabName, position, Quaternion.identity, 0);
+				field.transform.parent = LocalPlayerInstance.transform;
+				Collider2D fieldCollider = field.GetComponent <Collider2D> ();
+				fieldCollider.name = myBulletKeyName;
 				break;
 			case "RancherElement":
 				// TODO

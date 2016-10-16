@@ -12,7 +12,7 @@ public class FireBallScript : Photon.PunBehaviour
 	private bool shouldBeDestroied = false;
 	private AudioSource audioSource;
 
-	public float initiateTime = 0f;
+	private float initiateTime = 0f;
 
 	// Use this for initialization
 	void Start ()
