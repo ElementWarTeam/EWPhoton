@@ -25,7 +25,7 @@ namespace Com.EW.MyGame
 	{
 		
 		#region Public Variables
-	
+
 
 		[Tooltip ("The current Health of our player")]
 		public float Health = 1f;
@@ -58,6 +58,8 @@ namespace Com.EW.MyGame
 
 		private static string fireBallPrefabName = "FireBall";
 		private static string electricArcPrefabName = "ElectricArc";
+		private static string iceCrystalPrefabName = "IceCrystal";
+		private static string stoneChargePrefabName = "StoneCharge";
 		private static string rancherSwordPrefabName = "RancherSword";
 
 		private string myBulletKeyName = "MyBullet";
@@ -86,6 +88,12 @@ namespace Com.EW.MyGame
 					break;
 				case "RancherElement":
 					localWeaponPrefabName = rancherSwordPrefabName;
+					break;
+				case "IceElement":
+					localWeaponPrefabName = iceCrystalPrefabName;
+					break;
+				case "StoneElement":
+					localWeaponPrefabName = stoneChargePrefabName;
 					break;
 				default:
 					localWeaponPrefabName = fireBallPrefabName;

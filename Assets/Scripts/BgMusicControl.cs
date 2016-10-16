@@ -1,21 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BgMusicControl : MonoBehaviour {
+public class BgMusicControl : MonoBehaviour
+{
 
 	private AudioSource audioSource;
 
 	// Use this for initialization
-	void Start () {
-		audioSource = GetComponent<AudioSource>();
+	void Start ()
+	{
+		audioSource = GetComponent<AudioSource> ();
+		audioSource.Play ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 	
 	}
 
-	public void switchMusic() {
+	public void switchMusic ()
+	{
 		if (audioSource.isPlaying) {
 			audioSource.Stop ();
 		} else {

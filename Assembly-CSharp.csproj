@@ -183,6 +183,7 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
+     <Compile Include="Assets\Scripts\BgMusicControl.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CameraWork.cs" />
      <Compile Include="Assets\Scripts\DebugController.cs" />
@@ -193,10 +194,12 @@
      <Compile Include="Assets\Scripts\Launcher.cs" />
      <Compile Include="Assets\Scripts\MyFireElement.cs" />
      <Compile Include="Assets\Scripts\MyPlayerUI.cs" />
+     <Compile Include="Assets\Scripts\MyScoreUI.cs" />
      <Compile Include="Assets\Scripts\ObstacleScript.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\PlayerNameInputField.cs" />
      <Compile Include="Assets\Scripts\PlayerUI.cs" />
+     <Compile Include="Assets\Scripts\ScollUV.cs" />
      <None Include="Assets\Photon Unity Networking\Demos\MarcoPolo-Tutorial\marcopolo-readme.txt" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />

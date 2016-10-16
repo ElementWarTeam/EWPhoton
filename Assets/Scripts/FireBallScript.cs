@@ -42,5 +42,11 @@ public class FireBallScript : Photon.PunBehaviour
 			GetComponent <Renderer> ().enabled = false;
 			shouldBeDestroied = true;
 		}
+
+		if (obj.CompareTag ("Obstacle")) {
+			audioSource.PlayOneShot (hitAudio);
+			GetComponent <Renderer> ().enabled = false;
+			shouldBeDestroied = true;
+		}
 	}
 }

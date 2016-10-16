@@ -78,6 +78,9 @@ namespace Com.EW.MyGame
 				case "I":
 					PlayerManager.LocalPlayerType = "IceElement";
 					break;
+				case "S":
+					PlayerManager.LocalPlayerType = "StoneElement";
+					break;
 				default:
 					PlayerManager.LocalPlayerType = "FireElement";
 					break;
