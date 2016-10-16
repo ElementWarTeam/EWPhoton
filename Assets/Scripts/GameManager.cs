@@ -75,6 +75,9 @@ namespace Com.EW.MyGame
 				case "R":
 					PlayerManager.LocalPlayerType = "RancherElement";
 					break;
+				case "I":
+					PlayerManager.LocalPlayerType = "IceElement";
+					break;
 				default:
 					PlayerManager.LocalPlayerType = "FireElement";
 					break;
