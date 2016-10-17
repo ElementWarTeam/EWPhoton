@@ -236,12 +236,28 @@ namespace Com.EW.MyGame
 			}
 
 			if (obj.CompareTag ("Obstacle")) {
-				Debug.Log ("Player is hitted by Obstacle");
+				Debug.Log ("-------Player is hitted by Obstacle");
 				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
 					return; // electric field
 				}
 				audioSource.PlayOneShot (CollisionAudio);
 				Health -= 0.05f;
+			}
+			if (obj.CompareTag ("HealthPack")) {
+				Debug.Log ("######Player is hitted by HealthPack");
+				/*
+				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
+					return; // electric field
+				}*/
+				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
+				Destroy (obj);
+				audioSource.PlayOneShot (CollisionAudio);//find heal
+				Health += 0.5f;
+				Debug.Log ("+++ HealthPack");
+				if (Health > 1f) {
+					Health = 1f;
+					Debug.Log ("1+++ HealthPack");
+				}
 			}
 
 			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
