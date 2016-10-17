@@ -102,32 +102,36 @@ namespace Com.EW.MyGame
 			InvokeRepeating("LaunchProjectileH", 1.0f, 5.0f);
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevelName);
-				switch (PhotonNetwork.playerName) {
-				case "F":
-					PlayerManager.LocalPlayerType = "FireElement";
-					break;
-				case "E":
-					PlayerManager.LocalPlayerType = "ElectricElement";
-					break;
-				case "R":
-					PlayerManager.LocalPlayerType = "RancherElement";
-					break;
-				case "I":
-					PlayerManager.LocalPlayerType = "IceElement";
-					break;
-				case "S":
-					PlayerManager.LocalPlayerType = "StoneElement";
-					break;
-				default:
-					PlayerManager.LocalPlayerType = "FireElement";
-					break;
-				}
+
+				// set LocalPlayerType by initial selection
+//				switch (PhotonNetwork.playerName) {
+//				case "F":
+//					PlayerManager.LocalPlayerType = "FireElement";
+//					break;
+//				case "E":
+//					PlayerManager.LocalPlayerType = "ElectricElement";
+//					break;
+//				case "R":
+//					PlayerManager.LocalPlayerType = "RancherElement";
+//					break;
+//				case "I":
+//					PlayerManager.LocalPlayerType = "IceElement";
+//					break;
+//				case "S":
+//					PlayerManager.LocalPlayerType = "StoneElement";
+//					break;
+//				default:
+//					PlayerManager.LocalPlayerType = "FireElement";
+//					break;
+//				}
 				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
 			} else {
 				Debug.Log ("Ignoring scene load for " + Application.loadedLevelName);
 			}
 
 		}
+			
+
 
 		public void LeaveRoom ()
 		{

@@ -34,11 +34,20 @@ namespace Com.EW.MyGame
 		public static GameObject LocalPlayerInstance;
 		public static string LocalPlayerType;
 
+
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
 
 		[Tooltip ("The Player's Score GameObject Prefab")]
 		public GameObject PlayerScorePrefab;
+
+		[Tooltip ("Total Damage the player dealt to others")]
+		public float DamageDealt;
+
+		[Tooltip ("Total Damage taken from other players")]
+		public float DamageTaken;
+
+
 
 		// Audio
 		public AudioClip CollisionAudio;
@@ -216,6 +225,10 @@ namespace Com.EW.MyGame
 
 		}
 
+	
+
+
+		// The player take damage here
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			Debug.Log ("PlayerManager: OnTriggerEnter2D");
@@ -223,18 +236,21 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-//			Health -= 0.1f;
-			Debug.LogWarning ("Cur Health: " + Health);
-
 			Debug.Log (obj);
 
+			// if player hit by bullet
 			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
 				Debug.Log ("Player is hitted by bullet");
 				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
 				Destroy (obj);
+
 				Health -= 0.1f;
+				// update damage taken
+				DamageTaken += 0.1f;
 			}
 
+
+			// if player collide with obstacle
 			if (obj.CompareTag ("Obstacle")) {
 				Debug.Log ("-------Player is hitted by Obstacle");
 				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
@@ -242,6 +258,8 @@ namespace Com.EW.MyGame
 				}
 				audioSource.PlayOneShot (CollisionAudio);
 				Health -= 0.05f;
+				// update damage taken
+				DamageTaken += 0.05f;
 			}
 			if (obj.CompareTag ("HealthPack")) {
 				Debug.Log ("######Player is hitted by HealthPack");
@@ -259,6 +277,12 @@ namespace Com.EW.MyGame
 					Debug.Log ("1+++ HealthPack");
 				}
 			}
+
+			// Deal with damage dealt
+
+
+
+
 
 			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
 				Debug.Log ("Player is hitted by others ElectricField");
@@ -356,6 +380,10 @@ namespace Com.EW.MyGame
 				// TODO
 				break;
 			}
+		}
+
+		public void showPlayerStatus() {
+			
 		}
 
 		#endregion

@@ -6,6 +6,7 @@ public class FireBallScript : Photon.PunBehaviour
 
 	public AudioClip shootAudio;
 	public AudioClip hitAudio;
+	public GameObject shootFrom;
 
 	private Rigidbody2D rb2d;
 	private Collider2D cl2d;
@@ -13,6 +14,8 @@ public class FireBallScript : Photon.PunBehaviour
 	private AudioSource audioSource;
 
 	private float initiateTime = 0f;
+
+
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +42,9 @@ public class FireBallScript : Photon.PunBehaviour
 	{
 		Debug.Log ("OnTriggerEnter2D");
 		Debug.Log ("shouldBeDestroied = " + shouldBeDestroied);
+
+
+		Debug.Log ("Shoot from:" + shootFrom.name);
 		if (shouldBeDestroied)
 			return;
 		if (obj.CompareTag ("Bullet") && !obj.name.Equals (cl2d.name)) {
