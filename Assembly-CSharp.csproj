@@ -183,10 +183,12 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
+     <Compile Include="Assets\Scripts\AssignPlayerType.cs" />
      <Compile Include="Assets\Scripts\BgMusicControl.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CameraWork.cs" />
      <Compile Include="Assets\Scripts\DebugController.cs" />
+     <Compile Include="Assets\Scripts\ElectricFieldScript.cs" />
      <Compile Include="Assets\Scripts\ElementNetworkManager.cs" />
      <Compile Include="Assets\Scripts\FireBallScript.cs" />
      <Compile Include="Assets\Scripts\FireElementScript.cs" />
@@ -210,17 +212,17 @@
      <None Include="Assets\Photon Unity Networking\readme.txt" />
      <None Include="Assets\Photon Unity Networking\Demos\DemoRockPaperScissors\Assets\OpenSans\Apache License.txt" />
      <None Include="Assets\Photon Unity Networking\changelog.txt" />
- <Reference Include="UnityEngine.Networking">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEngine.Networking">
+ <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ </Reference>
  <Reference Include="Photon3Unity3D">
- <HintPath>/Users/apple/Documents/UnityWorkSpace/EWPhoton/Assets/Plugins/Photon3Unity3D.dll</HintPath>
+ <HintPath>/Users/RuiGan/EWPhoton/Assets/Plugins/Photon3Unity3D.dll</HintPath>
  </Reference>
  <Reference Include="websocket-sharp">
- <HintPath>/Users/apple/Documents/UnityWorkSpace/EWPhoton/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
+ <HintPath>/Users/RuiGan/EWPhoton/Assets/Plugins/WebSocket/websocket-sharp.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>

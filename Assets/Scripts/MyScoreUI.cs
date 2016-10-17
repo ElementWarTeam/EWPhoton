@@ -38,7 +38,7 @@ namespace Com.EW.MyGame
 
 		void Update()
 		{
-			// 这里，根据——target的情况来update我们bar的值
+
 			// Reflect the Player Health
 //			if (PlayerHealthSlider != null) {
 //				PlayerHealthSlider.value = _target.Health;
@@ -46,7 +46,13 @@ namespace Com.EW.MyGame
 
 			// Update Score Earned
 			if (PlayerScoreSlider != null) {
-				PlayerScoreSlider.value += 0.0001f;
+				float damageDealt = 0f;
+
+				// first, based on survive time, increase 0.0002f each update
+				PlayerScoreSlider.value += 0.0002f;
+
+				// second, based on damage the player dealt to others
+				PlayerScoreSlider.value += (damageDealt / 10);
 			}
 
 			// update Ult Energy
