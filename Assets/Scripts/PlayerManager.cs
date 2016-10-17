@@ -56,6 +56,7 @@ namespace Com.EW.MyGame
 		public float timeBetweenShots = 1f;
 
 		private float nextShotTime = 0.0f;
+		private float nextContinuesDamageTime = 0.0f;
 
 		private static string localWeaponPrefabName;
 
@@ -251,6 +252,20 @@ namespace Com.EW.MyGame
 
 		}
 
+		void OnTriggerStay2D (Collider2D obj)
+		{
+			if (Time.time > nextContinuesDamageTime) {
+				Debug.Log ("OnTriggerStay2D: " + obj.name);
+				nextContinuesDamageTime = Time.time + timeBetweenShots;
+				if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
+					Debug.Log ("Player is hitted by others ElectricField");
+					Health -= 0.01f;
+				}
+			}
+
+		}
+
+
 
 		#endregion
 
@@ -323,9 +338,12 @@ namespace Com.EW.MyGame
 				break;
 			case "ElectricElement":
 				GameObject field = PhotonNetwork.Instantiate (electricFieldPrefabName, position, Quaternion.identity, 0);
-				field.transform.parent = LocalPlayerInstance.transform;
-				Collider2D fieldCollider = field.GetComponent <Collider2D> ();
-				fieldCollider.name = myBulletKeyName;
+//				field.transform.parent = transform;
+				gameObject.GetComponent<PhotonView> ().RPC ("SetElectricFieldParent", PhotonTargets.AllBuffered, field);
+//				photonView.RPC ("SetElectricFieldParent", PhotonTargets.All, field);
+//				field.transform.parent = LocalPlayerInstance.transform;
+//				Collider2D fieldCollider = field.GetComponent <Collider2D> ();
+//				fieldCollider.name = myBulletKeyName;
 				break;
 			case "RancherElement":
 				// TODO
@@ -341,6 +359,16 @@ namespace Com.EW.MyGame
 				break;
 			}
 		}
+
+		[PunRPC]
+		void SetElectricFieldParent (GameObject field)
+		{
+//			Collider2D fieldCollider = field.GetComponent <Collider2D> ();
+//			fieldCollider.name = myBulletKeyName;
+			Debug.Log ("RPC: SetElectricFieldParent");
+			field.transform.SetParent (transform);
+		}
+
 
 		#endregion
 

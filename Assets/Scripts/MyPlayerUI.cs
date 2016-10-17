@@ -7,27 +7,29 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class MyPlayerUI : MonoBehaviour {
+	public class MyPlayerUI : MonoBehaviour
+	{
 
 
 		#region Public Properties
 
-		[Tooltip("UI Text to display Player's Name")]
+		[Tooltip ("UI Text to display Player's Name")]
 		public Text PlayerNameText;
 
-		[Tooltip("UI Slider to display Player's Health")]
+		[Tooltip ("UI Slider to display Player's Health")]
 		public Slider PlayerHealthSlider;
 
-		[Tooltip("UI Slider to display Player's Score")]
+		[Tooltip ("UI Slider to display Player's Score")]
 		public Slider PlayerScoreSlider;
 
-		[Tooltip("Pixel offset from the player target")]
-		public Vector3 ScreenOffset = new Vector3(0f,30f,0f);
+		[Tooltip ("Pixel offset from the player target")]
+		public Vector3 ScreenOffset = new Vector3 (0f, 30f, 0f);
 
 		#endregion
 
 
 		#region Private Properties
+
 		PlayerManager _target;
 		Transform _targetTransform;
 		Vector3 _targetPosition;
@@ -36,16 +38,18 @@ namespace Com.EW.MyGame
 
 
 		#region MonoBehaviour Messages
-		void Awake(){
+
+		void Awake ()
+		{
 			// A player UI must be represented in a Canvas
-			this.GetComponent<Transform>().SetParent (GameObject.Find("Canvas").GetComponent<Transform>());
+			this.GetComponent<Transform> ().SetParent (GameObject.Find ("Canvas").GetComponent<Transform> ());
 
 		}
 
-		void Update()
+		void Update ()
 		{
 			// Reflect the Player Health
-			if (PlayerHealthSlider != null) {
+			if (PlayerHealthSlider != null && _target != null) {
 				PlayerHealthSlider.value = _target.Health;
 			}
 
@@ -56,7 +60,7 @@ namespace Com.EW.MyGame
 
 			// Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
 			if (_target == null) {
-				Destroy(this.gameObject);
+				Destroy (this.gameObject);
 				return;
 			}
 		}
@@ -65,12 +69,15 @@ namespace Com.EW.MyGame
 
 
 		// first called
+
 		#region Public Methods
-		public void SetTarget(PlayerManager target){
-			Debug.LogWarning("<Color=Red><a>Testing</a></Color>SetTarget Method is called!!!!!!!");
+
+		public void SetTarget (PlayerManager target)
+		{
+			Debug.LogWarning ("<Color=Red><a>Testing</a></Color>SetTarget Method is called!!!!!!!");
 
 			if (target == null) {
-				Debug.LogError("<Color=Red><a>Missing</a></Color> PlayMakerManager target for PlayerUI.SetTarget. At this time, target is null!!",this);
+				Debug.LogError ("<Color=Red><a>Missing</a></Color> PlayMakerManager target for PlayerUI.SetTarget. At this time, target is null!!", this);
 				return;
 			}
 			// Cache references for efficiency
@@ -85,12 +92,12 @@ namespace Com.EW.MyGame
 
 		}
 
-		void LateUpdate () {
+		void LateUpdate ()
+		{
 
 			// #Critical
 			// Follow the Target GameObject on screen.
-			if (_targetTransform!=null)
-			{
+			if (_targetTransform != null) {
 				_targetPosition = _targetTransform.position;
 				this.transform.position = Camera.main.WorldToScreenPoint (_targetPosition) + ScreenOffset;
 			}
