@@ -34,11 +34,20 @@ namespace Com.EW.MyGame
 		public static GameObject LocalPlayerInstance;
 		public static string LocalPlayerType;
 
+
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
 
 		[Tooltip ("The Player's Score GameObject Prefab")]
 		public GameObject PlayerScorePrefab;
+
+		[Tooltip ("Total Damage the player dealt to others")]
+		public float DamageDealt;
+
+		[Tooltip ("Total Damage taken from other players")]
+		public float DamageTaken;
+
+
 
 		// Audio
 		public AudioClip CollisionAudio;
@@ -81,29 +90,35 @@ namespace Com.EW.MyGame
 			// #Important
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
 			if (photonView.isMine) {
-				Debug.Log ("PlayerManager Awake");
-				PlayerManager.LocalPlayerInstance = this.gameObject;
-				myBulletKeyName = PhotonNetwork.playerName + "_Bullet";
-				switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
-				case "FireElement":
-					localWeaponPrefabName = fireBallPrefabName;
-					break;
-				case "ElectricElement":
-					localWeaponPrefabName = electricArcPrefabName;
-					break;
-				case "RancherElement":
-					localWeaponPrefabName = rancherSwordPrefabName;
-					break;
-				case "IceElement":
-					localWeaponPrefabName = iceCrystalPrefabName;
-					break;
-				case "StoneElement":
-					localWeaponPrefabName = stoneChargePrefabName;
-					break;
-				default:
-					localWeaponPrefabName = fireBallPrefabName;
-					break;
-				}
+				// SETUP PLAYER INFO
+				PlayerInfo playerInfo = this.GetComponent <PlayerInfo> ();
+				playerInfo.playerId = "player name";
+				playerInfo.type = PlayerManager.LocalPlayerType;
+				playerInfo.setup (0.05f, 100f, 100f, 0.1f, 1f, 100f, 0.05f);
+//
+//				Debug.Log ("PlayerManager Awake");
+//				PlayerManager.LocalPlayerInstance = this.gameObject;
+//				myBulletKeyName = PhotonNetwork.playerName + "_Bullet";
+//				switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
+//				case "FireElement":
+//					localWeaponPrefabName = fireBallPrefabName;
+//					break;
+//				case "ElectricElement":
+//					localWeaponPrefabName = electricArcPrefabName;
+//					break;
+//				case "RancherElement":
+//					localWeaponPrefabName = rancherSwordPrefabName;
+//					break;
+//				case "IceElement":
+//					localWeaponPrefabName = iceCrystalPrefabName;
+//					break;
+//				case "StoneElement":
+//					localWeaponPrefabName = stoneChargePrefabName;
+//					break;
+//				default:
+//					localWeaponPrefabName = fireBallPrefabName;
+//					break;
+//				}
 			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -165,7 +180,7 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-
+//			Debug.Log ("Current Health: " + this.GetComponent <Health> ().healthPoint);
 
 			// if health less than 0, leave game
 			if (Health <= 0f) {
@@ -217,6 +232,10 @@ namespace Com.EW.MyGame
 
 		}
 
+	
+
+
+		// The player take damage here
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			Debug.Log ("PlayerManager: OnTriggerEnter2D");
@@ -224,41 +243,49 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-//			Health -= 0.1f;
-			Debug.LogWarning ("Cur Health: " + Health);
-
 			Debug.Log (obj);
 
-			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
-				Debug.Log ("Player is hitted by bullet");
-				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
-				Destroy (obj);
-				Health -= 0.1f;
-			}
+			// if player hit by bullet
+//			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
+//				Debug.Log ("Player is hitted by bullet");
+//				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
+//				Destroy (obj);
+//
+//				Health -= 0.1f;
+//				// update damage taken
+//				DamageTaken += 0.1f;
+//			}
 
-			if (obj.CompareTag ("Obstacle")) {
-				Debug.Log ("Player is hitted by Obstacle");
-				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
-					return; // electric field
-				}
-				audioSource.PlayOneShot (CollisionAudio);
-				Health -= 0.05f;
-			}
 
-			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
-				Debug.Log ("Player is hitted by others ElectricField");
-				Health -= 0.05f;
-			}
+//			// if player collide with obstacle
+//			if (obj.CompareTag ("Obstacle")) {
+//				Debug.Log ("Player is hitted by Obstacle");
+//				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
+//					return; // electric field
+//				}
+//
+//				audioSource.PlayOneShot (CollisionAudio);
+//				Health -= 0.05f;
+//				// update damage taken
+//				DamageTaken += 0.05f;
+//			}
+
+			// Deal with damage dealt
+
+//			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
+//				Debug.Log ("Player is hitted by others ElectricField");
+//				Health -= 0.05f;
+//			}
 
 		}
 
 		void OnTriggerStay2D (Collider2D obj)
 		{
 			if (Time.time > nextContinuesDamageTime) {
-				Debug.Log ("OnTriggerStay2D: " + obj.name);
+//				Debug.Log ("OnTriggerStay2D: " + obj.name);
 				nextContinuesDamageTime = Time.time + timeBetweenShots;
 				if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
-					Debug.Log ("Player is hitted by others ElectricField");
+//					Debug.Log ("Player is hitted by others ElectricField");
 					Health -= 0.01f;
 				}
 			}
@@ -296,22 +323,11 @@ namespace Com.EW.MyGame
 			Debug.Log ("CmdShoot is called");
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
 			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
+			if (LocalPlayerType == "FireElement") {
+				this.GetComponent <FireElement> ().fire (this.transform.position, angle, shootVec.normalized);
+			}
+//			else if other elements
 
-			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
-			float tmp = Mathf.Sqrt (shootVec.x * shootVec.x + shootVec.y * shootVec.y) * 1.5f;
-
-			Vector3 offset = new Vector3 (shootVec.x / tmp, shootVec.y / tmp, 0);
-			Vector3 position = rb2d.position; // make sure bullet is in front of current element
-			position = position + offset;
-
-			GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
-
-			Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
-			body.rotation = angle;
-			body.AddForce (shootVec.normalized * BulletSpeed);
-
-			Collider2D collider = copy.GetComponent <Collider2D> ();
-			collider.name = myBulletKeyName;
 		}
 
 		void UseUltra ()
@@ -369,6 +385,11 @@ namespace Com.EW.MyGame
 			field.transform.SetParent (transform);
 		}
 
+
+		public void showPlayerStatus ()
+		{
+			
+		}
 
 		#endregion
 

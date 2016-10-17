@@ -1,23 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObstacleScript : MonoBehaviour
+namespace Com.EW.MyGame
 {
-
-	public float speed = 0;
-
-	private Rigidbody2D rb2d;
-
-	// Use this for initialization
-	void Start ()
+	public class ObstacleScript : MonoBehaviour
 	{
-		rb2d = GetComponent<Rigidbody2D> ();
-		rb2d.velocity = new Vector2 (0, speed);
-	}
+
+
+		public float ObstacleCollisionDamage = 0.1f;
+
+		private Rigidbody2D rb2d;
+
+		// Use this for initialization
+		void Start ()
+		{
+			rb2d = GetComponent<Rigidbody2D> ();
+		}
 	
-	// Update is called once per frame
-	void Update ()
-	{
-	
+		// Update is called once per frame
+		void Update ()
+		{
+		
+		}
+
+		void OnTriggerEnter2D (Collider2D obj)
+		{
+			// if player collide with obstacle
+			if (obj.CompareTag ("Element")) {
+				Debug.Log ("Obstacle: an element hits me");
+				obj.GetComponent<Health> ().healthPoint -= ObstacleCollisionDamage;
+			}
+		}
 	}
+
 }

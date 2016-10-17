@@ -1,14 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonNetwork.cs">
     <Files>
-      <File FileName="Assets/Scripts/Launcher.cs" Line="164" Column="4" />
-      <File FileName="Assets/Scripts/GameManager.cs" Line="67" Column="8" />
-      <File FileName="Assets/Scripts/PlayerManager.cs" Line="174" Column="36" />
-      <File FileName="Assets/Scripts/MyFireElement.cs" Line="49" Column="46" />
-      <File FileName="Assets/Scripts/FireBallScript.cs" Line="30" Column="11" />
-      <File FileName="Assets/Scripts/MyPlayerUI.cs" Line="46" Column="1" />
-      <File FileName="Assets/Scripts/PlayerNameInputField.cs" Line="60" Column="28" />
+      <File FileName="Assets/Scripts/Launcher.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PlayerManager.cs" Line="402" Column="1" />
+      <File FileName="Assets/Scripts/MyFireElement.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/FireBallScript.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/MyPlayerUI.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/PlayerNameInputField.cs" Line="1" Column="1" />
+      <File FileName="Assets/Photon Unity Networking/Plugins/PhotonNetwork/PhotonNetwork.cs" Line="2448" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
