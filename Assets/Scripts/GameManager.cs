@@ -62,16 +62,16 @@ namespace Com.EW.MyGame
 		void GenerateRandomObstacle ()
 		{
 			Vector2 point = new Vector2 (0.0f, 0.0f);
-			point [0] = UnityEngine.Random.Range (-10.0f, 10.0f);
-			point [1] = UnityEngine.Random.Range (-5.0f, 5.0f);
+			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
+			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
 			PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
 		}
 
 		void GenerateRandomBloodPack ()
 		{
 			Vector2 point = new Vector2 (0.0f, 0.0f);
-			point [0] = UnityEngine.Random.Range (-Constant.boundary_x, Constant.boundary_x);
-			point [1] = UnityEngine.Random.Range (-Constant.boundary_y, Constant.boundary_y);
+			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
+			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
 			PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
 		}
 
@@ -79,8 +79,8 @@ namespace Com.EW.MyGame
 		{
 			Instance = this;
 			if (PhotonNetwork.isMasterClient) {
-				InvokeRepeating ("GenerateRandomObstacle", 1.0f, 2.0f);
-				InvokeRepeating ("GenerateRandomBloodPack", 1.0f, 5.0f);
+				InvokeRepeating ("GenerateRandomObstacle", Constant.PickUpInitTime, Constant.ObstacleGenerateInterval);
+				InvokeRepeating ("GenerateRandomBloodPack", Constant.PickUpInitTime, Constant.HealthPackGenerateInterval);
 			}
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevel);
