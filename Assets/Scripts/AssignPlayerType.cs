@@ -43,6 +43,10 @@ namespace Com.EW.MyGame
 
 			// set color
 			setColor (btnText);
+
+			// button press sound
+			AudioSource btnPressSound = btn.GetComponent<AudioSource>();
+			btnPressSound.Play ();
 		}
 
 
