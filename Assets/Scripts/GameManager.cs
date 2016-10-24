@@ -72,7 +72,8 @@ namespace Com.EW.MyGame
 			Vector2 point = new Vector2 (0.0f, 0.0f);
 			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
 			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
-			PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
+			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
+			DontDestroyOnLoad (obj);
 		}
 
 		public void Start ()
@@ -101,6 +102,7 @@ namespace Com.EW.MyGame
 
 		void LoadArena ()
 		{
+			
 			if (!PhotonNetwork.isMasterClient) {
 				Debug.LogError ("PhotonNetwork : Trying to Load a level but we are not the master Client");
 			}
