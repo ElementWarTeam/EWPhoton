@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class ElectricElement : MonoBehaviour
+	public class ElectricElement : Photon.PunBehaviour, IPunObservable
 	{
 
 		private PlayerInfo playerInfo;
@@ -57,5 +57,18 @@ namespace Com.EW.MyGame
 		{
 			generateElectricField (position);
 		}
+
+		#region IPunObservable implementation
+
+		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+		{
+			if (stream.isWriting) {
+				// Nothing to write
+			} else {
+				// Nothing to receive
+			}
+		}
+
+		#endregion
 	}
 }

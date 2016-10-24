@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class ElectricField : Photon.PunBehaviour
+	public class ElectricField : Photon.PunBehaviour, IPunObservable
 	{
 
 		public AudioClip electricFieldOnAudio;
@@ -76,5 +76,22 @@ namespace Com.EW.MyGame
 		{
 			this.parent = parent; 
 		}
+
+		#region IPunObservable implementation
+
+		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+		{
+			if (stream.isWriting) {
+				// We own this player: send the others our data
+				stream.SendNext (continousDamage);
+				stream.SendNext (initiateTime);
+			} else {
+				// Network player, receive data
+				this.continousDamage = (float)stream.ReceiveNext ();
+				this.initiateTime = (float)stream.ReceiveNext ();
+			}
+		}
+
+		#endregion
 	}
 }
