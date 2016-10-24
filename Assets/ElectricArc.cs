@@ -10,7 +10,6 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
-		public float continousDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
@@ -55,10 +54,6 @@ namespace Com.EW.MyGame
 
 		void Update ()
 		{
-			if (playerBeHitted != null) {
-				playerBeHitted.health -= continousDamage;
-			}
-
 			if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + Constant.LiveTime <= Time.time)) {
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);

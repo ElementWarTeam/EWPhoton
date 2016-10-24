@@ -55,10 +55,7 @@ namespace Com.EW.MyGame
 
 		void Update ()
 		{
-			if (playerBeHitted != null) {
-				playerBeHitted.health -= continousDamage;
-			}
-
+			
 			if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + Constant.LiveTime <= Time.time)) {
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);

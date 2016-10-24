@@ -36,6 +36,7 @@ namespace Com.EW.MyGame
 		public const float ElectricElementInitialFireRate = 1f;
 		public const float ElectricElementInitialEnergy = 100f;
 		public const float ElectricElementInitialEnergyRecoverRatePercentage = 0.05f;
+		public const float ElectricFieldContinousDamage = 10f;
 
 		// Ice element player information
 		public const float IceElementInitialHealth = 80f;
@@ -49,8 +50,8 @@ namespace Com.EW.MyGame
 		// Bullet
 		public const float FireBallSpeed = 150f;
 		public const float IceCystalSpeed = 150f;
-
 		public const float LiveTime = 5;
+		public const float ElectricFieldLiveTime = 10;
 
 		// Obstacle information
 		public const float ObstacleCollisionDamage = 10f;

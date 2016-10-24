@@ -196,7 +196,7 @@
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CameraWork.cs" />
      <Compile Include="Assets\Scripts\DebugController.cs" />
-     <Compile Include="Assets\Scripts\ElectricFieldScript.cs" />
+     <Compile Include="Assets\Scripts\ElectricField.cs" />
      <Compile Include="Assets\Scripts\ElementNetworkManager.cs" />
      <Compile Include="Assets\Scripts\FireBallScript.cs" />
      <Compile Include="Assets\Scripts\FireElementScript.cs" />

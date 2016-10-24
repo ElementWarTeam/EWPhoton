@@ -167,39 +167,6 @@ namespace Com.EW.MyGame
 			}
 
 			Debug.Log (obj);
-
-			// if player hit by bullet
-//			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
-//				Debug.Log ("Player is hitted by bullet");
-//				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
-//				Destroy (obj);
-//
-//				Health -= 0.1f;
-//				// update damage taken
-//				DamageTaken += 0.1f;
-//			}
-
-
-//			// if player collide with obstacle
-//			if (obj.CompareTag ("Obstacle")) {
-//				Debug.Log ("Player is hitted by Obstacle");
-//				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
-//					return; // electric field
-//				}
-//
-//				audioSource.PlayOneShot (CollisionAudio);
-//				Health -= 0.05f;
-//				// update damage taken
-//				DamageTaken += 0.05f;
-//			}
-
-			// Deal with damage dealt
-
-//			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
-//				Debug.Log ("Player is hitted by others ElectricField");
-//				Health -= 0.05f;
-//			}
-
 		}
 
 		public float getHealthPercentage ()
@@ -262,11 +229,11 @@ namespace Com.EW.MyGame
 			case Constant.ElectricElementType:
 				this.GetComponent <ElectricElement> ().useUltra (this.transform.position);
 				break;
-			case "RancherElement":
-				// TODO
-				break;
 			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().useUltra (this.transform.position);
+				break;
+			case "RancherElement":
+				// TODO
 				break;
 			case "StoneElement":
 				// TODO
@@ -275,21 +242,6 @@ namespace Com.EW.MyGame
 				// TODO
 				break;
 			}
-		}
-
-		[PunRPC]
-		void SetElectricFieldParent (GameObject field)
-		{
-//			Collider2D fieldCollider = field.GetComponent <Collider2D> ();
-//			fieldCollider.name = myBulletKeyName;
-			Debug.Log ("RPC: SetElectricFieldParent");
-			field.transform.SetParent (transform);
-		}
-
-
-		public void showPlayerStatus ()
-		{
-			
 		}
 
 		#endregion

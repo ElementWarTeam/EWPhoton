@@ -26,17 +26,26 @@ namespace Com.EW.MyGame
 		private GameObject generateBullet (Vector2 position)
 		{
 			GameObject bulletObj = PhotonNetwork.Instantiate (bulletPrefabName, position, Quaternion.identity, 0);
+			// Setup ice crystal damange/owner
+			ElectricArc arc = bulletObj.GetComponent <ElectricArc> ();
+			arc.damage = playerInfo.bulletDamage;
+			arc.setOwner (this.playerInfo);
 			return bulletObj;
+		}
+
+		private GameObject generateElectricField (Vector2 position)
+		{
+			GameObject fieldObj = PhotonNetwork.Instantiate (Constant.ElectricFieldPrefabName, position, Quaternion.identity, 0);
+			ElectricField field = fieldObj.GetComponent <ElectricField> ();
+			field.continousDamage = Constant.ElectricFieldContinousDamage;
+			field.setOwner (this.playerInfo);
+			field.setParent (this.gameObject);
+			return fieldObj;
 		}
 
 		public void fire (Vector2 position, float angle, Vector2 direction)
 		{
 			GameObject bulletObj = generateBullet (position);
-
-			// Setup ice crystal damange/owner
-			ElectricArc arc = bulletObj.GetComponent <ElectricArc> ();
-			arc.damage = playerInfo.bulletDamage;
-			arc.setOwner (this.playerInfo);
 
 			// Setup physic body
 			Rigidbody2D body = bulletObj.GetComponent <Rigidbody2D> (); // physical body
@@ -46,11 +55,7 @@ namespace Com.EW.MyGame
 
 		public void useUltra (Vector2 position)
 		{
-			for (float angle = 0; angle < 360; angle += 30) {
-				float radians = angle * Mathf.Deg2Rad;
-				Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
-				fire (position, angle, direction);
-			}
+			generateElectricField (position);
 		}
 	}
 }
