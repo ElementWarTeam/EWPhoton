@@ -45,13 +45,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Constant.cs" />
-     <Compile Include="Assets\ElectricArc.cs" />
-     <Compile Include="Assets\ElectricElement.cs" />
-     <Compile Include="Assets\FireBall.cs" />
-     <Compile Include="Assets\FireElement.cs" />
-     <Compile Include="Assets\IceCrystal.cs" />
-     <Compile Include="Assets\IceElement.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\Demo2DJumpAndRun.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\Demo2DJumpAndRunWithPhysics\Scripts\JumpAndRunMovement.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
@@ -190,22 +183,29 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
-     <Compile Include="Assets\PlayerInfo.cs" />
      <Compile Include="Assets\Scripts\AssignPlayerType.cs" />
      <Compile Include="Assets\Scripts\BgMusicControl.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CameraWork.cs" />
+     <Compile Include="Assets\Scripts\Constant.cs" />
      <Compile Include="Assets\Scripts\DebugController.cs" />
+     <Compile Include="Assets\Scripts\ElectricArc.cs" />
+     <Compile Include="Assets\Scripts\ElectricElement.cs" />
      <Compile Include="Assets\Scripts\ElectricField.cs" />
      <Compile Include="Assets\Scripts\ElementNetworkManager.cs" />
+     <Compile Include="Assets\Scripts\FireBall.cs" />
      <Compile Include="Assets\Scripts\FireBallScript.cs" />
+     <Compile Include="Assets\Scripts\FireElement.cs" />
      <Compile Include="Assets\Scripts\FireElementScript.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
+     <Compile Include="Assets\Scripts\IceCrystal.cs" />
+     <Compile Include="Assets\Scripts\IceElement.cs" />
      <Compile Include="Assets\Scripts\Launcher.cs" />
      <Compile Include="Assets\Scripts\MyFireElement.cs" />
      <Compile Include="Assets\Scripts\MyPlayerUI.cs" />
      <Compile Include="Assets\Scripts\MyScoreUI.cs" />
      <Compile Include="Assets\Scripts\ObstacleScript.cs" />
+     <Compile Include="Assets\Scripts\PlayerInfo.cs" />
      <Compile Include="Assets\Scripts\PlayerManager.cs" />
      <Compile Include="Assets\Scripts\PlayerNameInputField.cs" />
      <Compile Include="Assets\Scripts\PlayerUI.cs" />

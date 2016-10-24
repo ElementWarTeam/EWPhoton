@@ -1,11 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj" RefactoringSettings.EnableRefactorings="True">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FireBall.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/PlayerManager.cs">
     <Files>
-      <File FileName="Assets/PlayerInfo.cs" Line="30" Column="4" />
-      <File FileName="Assets/Scripts/PlayerManager.cs" Line="194" Column="17" />
-      <File FileName="Assets/FireElement.cs" Line="23" Column="23" />
-      <File FileName="Assets/FireBall.cs" Line="14" Column="24" />
+      <File FileName="Assets/Constant.cs" Line="39" Column="50" />
+      <File FileName="Assets/Scripts/PlayerManager.cs" Line="234" Column="11" />
+      <File FileName="Assets/ElectricElement.cs" Line="58" Column="4" />
+      <File FileName="Assets/Scripts/ElectricField.cs" Line="58" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
