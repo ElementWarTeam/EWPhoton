@@ -11,7 +11,9 @@ namespace Com.EW.MyGame {
 	public class AssignPlayerType : MonoBehaviour {
 
 		public Button btn;
-		private string[] types = {"Fire", "Ice", "Electirc", "Rancher"};
+		public bool isSelectedNow;
+		private string[] types = {"Fire", "Ice", "Electric", "Rancher"};
+
 
 
 		// Use this for initialization
@@ -22,12 +24,10 @@ namespace Com.EW.MyGame {
 	
 		public void setLocalPlayerType () {
 
-//			GameObject go = GameObject.Find ("Select Fire");
-//			string str = go.GetComponentInChildren<Text> ().text;
-//			Debug.Log ("here it is!:::" + str);
-
 			// current player type
 			string btnText = btn.GetComponentInChildren<Text>().text;
+
+			isSelectedNow = true;
 
 			Debug.Log ("text in button:" + btnText);
 
@@ -39,6 +39,10 @@ namespace Com.EW.MyGame {
 
 			// set color
 			setColor(btnText);
+
+			// press sound
+			AudioSource pressBtnSound = btn.GetComponent<AudioSource>();
+			pressBtnSound.Play ();
 		}
 
 
@@ -46,12 +50,15 @@ namespace Com.EW.MyGame {
 			int idx = Array.IndexOf (types, myType);
 			if (idx == -1)
 				return;
+			
 			// set current white
 			btn.GetComponentInChildren<Text> ().color = Color.white;
+
 			// set others black
 			for (int i = 0; i < types.Length; i++) {
 				if (i != idx) {
 					GameObject obj = GameObject.Find ("Select " + types [i]);
+					obj.GetComponent<AssignPlayerType> ().isSelectedNow = false;
 					obj.GetComponentInChildren<Text> ().color = Color.black;
 				}
 			}
