@@ -70,16 +70,18 @@ namespace Com.EW.MyGame
 		void GenerateRandomBloodPack ()
 		{
 			Vector2 point = new Vector2 (0.0f, 0.0f);
-			point [0] = UnityEngine.Random.Range (-10.0f, 10.0f);
-			point [1] = UnityEngine.Random.Range (-5.0f, 5.0f);
+			point [0] = UnityEngine.Random.Range (-Constant.boundary_x, Constant.boundary_x);
+			point [1] = UnityEngine.Random.Range (-Constant.boundary_y, Constant.boundary_y);
 			PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
 		}
 
 		public void Start ()
 		{
 			Instance = this;
-			InvokeRepeating ("GenerateRandomObstacle", 1.0f, 2.0f);
-			InvokeRepeating ("GenerateRandomBloodPack", 1.0f, 5.0f);
+			if (!PhotonNetwork.isMasterClient) {
+				InvokeRepeating ("GenerateRandomObstacle", 1.0f, 2.0f);
+				InvokeRepeating ("GenerateRandomBloodPack", 1.0f, 5.0f);
+			}
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevel);
 				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);

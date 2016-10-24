@@ -58,5 +58,7 @@ namespace Com.EW.MyGame
 
 		// PICKUPS
 		public const float HealthPackRecover = 20f;
+		public const float boundary_x = 10.0f;
+		public const float boundary_y = 5.0f;
 	}
 }
