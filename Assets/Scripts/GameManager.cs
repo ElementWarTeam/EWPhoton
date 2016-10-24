@@ -78,7 +78,7 @@ namespace Com.EW.MyGame
 		public void Start ()
 		{
 			Instance = this;
-			if (!PhotonNetwork.isMasterClient) {
+			if (PhotonNetwork.isMasterClient) {
 				InvokeRepeating ("GenerateRandomObstacle", 1.0f, 2.0f);
 				InvokeRepeating ("GenerateRandomBloodPack", 1.0f, 5.0f);
 			}
