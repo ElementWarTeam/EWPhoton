@@ -73,7 +73,7 @@ namespace Com.EW.MyGame
 		// first called
 		#region Public Methods
 		public void SetTarget(PlayerManager target){
-			Debug.LogWarning("<Color=Red><a>Testing</a></Color>SetTarget Method is called!!!!!!!");
+			Debug.LogWarning("<Color=Red><a>Testing</a></Color>SetTarget Method is called###");
 
 			if (target == null) {
 				Debug.LogError("<Color=Red><a>Missing</a></Color> PlayMakerManager target for PlayerUI.SetTarget. At this time, target is null!!",this);
