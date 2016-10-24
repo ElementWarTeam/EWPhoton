@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class ElectricArc : Photon.PunBehaviour
+	public class ElectricArc : Photon.PunBehaviour, IPunObservable
 	{
 
 		public AudioClip shootAudio;
@@ -71,5 +71,24 @@ namespace Com.EW.MyGame
 		{
 			this.owner = owner;
 		}
+
+		#region IPunObservable implementation
+
+		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+		{
+			if (stream.isWriting) {
+				// We own this player: send the others our data
+				stream.SendNext (damage);
+				stream.SendNext (initiateTime);
+				stream.SendNext (shouldBeDestroied);
+			} else {
+				// Network player, receive data
+				this.damage = (float)stream.ReceiveNext ();
+				this.initiateTime = (float)stream.ReceiveNext ();
+				this.shouldBeDestroied = (bool)stream.ReceiveNext ();
+			}
+		}
+
+		#endregion
 	}
 }
