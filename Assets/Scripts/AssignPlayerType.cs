@@ -13,7 +13,7 @@ namespace Com.EW.MyGame
 	{
 
 		public Button btn;
-		private string[] types = { "Fire", "Ice", "Electric", "Rancher", "Stone" };
+		private string[] types = { "Fire", "Ice", "Electric", "Dark", "Stone" };
 
 
 		// Use this for initialization
@@ -45,7 +45,7 @@ namespace Com.EW.MyGame
 			setColor (btnText);
 
 			// button press sound
-			AudioSource btnPressSound = btn.GetComponent<AudioSource>();
+			AudioSource btnPressSound = btn.GetComponent<AudioSource> ();
 			btnPressSound.Play ();
 		}
 
