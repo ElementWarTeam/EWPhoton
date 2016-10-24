@@ -6,21 +6,29 @@ namespace Com.EW.MyGame
 	public class ObstacleScript : MonoBehaviour
 	{
 
+		public static float LiveTime = 20f;
 
-		public float ObstacleCollisionDamage = 0.1f;
+		public int ResistanceCount = 2;
 
-		private Rigidbody2D rb2d;
+		private float initiateTime = 0f;
 
 		// Use this for initialization
 		void Start ()
 		{
-			rb2d = GetComponent<Rigidbody2D> ();
+			initiateTime = Time.time;
 		}
 	
 		// Update is called once per frame
 		void Update ()
 		{
-		
+			if (ResistanceCount == 0) {
+				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+				Destroy (gameObject);
+			}
+			if (initiateTime + LiveTime <= Time.time) {
+				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+				Destroy (gameObject);
+			}
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)
@@ -28,9 +36,21 @@ namespace Com.EW.MyGame
 			// if player collide with obstacle
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("Obstacle: an element hits me");
-				obj.GetComponent<Health> ().healthPoint -= ObstacleCollisionDamage;
+				obj.GetComponent<PlayerInfo> ().health -= Constant.ObstacleCollisionDamage;
+				beHitted ();
 			}
+
+			if (obj.CompareTag ("Bullet")) {
+				beHitted ();
+			}
+
 		}
+
+		void beHitted ()
+		{
+			ResistanceCount -= 1;
+		}
+
 	}
 
 }

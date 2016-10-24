@@ -5,44 +5,49 @@ using UnityEngine.UI;
 
 
 
-namespace Com.EW.MyGame {
+namespace Com.EW.MyGame
+{
 
 
-	public class AssignPlayerType : MonoBehaviour {
+	public class AssignPlayerType : MonoBehaviour
+	{
 
 		public Button btn;
-		private string[] types = {"Fire", "Ice", "Electirc", "Rancher"};
+		private string[] types = { "Fire", "Ice", "Electirc", "Rancher" };
 
 
 		// Use this for initialization
-		void Start () {
+		void Start ()
+		{
 			btn = this.GetComponent<Button> ();
 		}
-		
+
 	
-		public void setLocalPlayerType () {
+		public void setLocalPlayerType ()
+		{
 
 //			GameObject go = GameObject.Find ("Select Fire");
 //			string str = go.GetComponentInChildren<Text> ().text;
 //			Debug.Log ("here it is!:::" + str);
 
 			// current player type
-			string btnText = btn.GetComponentInChildren<Text>().text;
+			string btnText = btn.GetComponentInChildren<Text> ().text;
 
 			Debug.Log ("text in button:" + btnText);
 
 			// assign player type
-			string playerType = btnText + "Element";
+			string playerType = btnText + "Element"; // TODO change this to Constant
 			PlayerManager.LocalPlayerType = playerType;
 
 			Debug.Log ("Player Type now: " + playerType);
 
 			// set color
-			setColor(btnText);
+			setColor (btnText);
 		}
 
 
-		public void setColor(string myType) {
+		public void setColor (string myType)
+		{
 			int idx = Array.IndexOf (types, myType);
 			if (idx == -1)
 				return;
@@ -62,4 +67,5 @@ namespace Com.EW.MyGame {
 	}
 
 
-}// end of namespace
+}
+// end of namespace

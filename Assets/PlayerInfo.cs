@@ -17,12 +17,14 @@ namespace Com.EW.MyGame
 		public float fireRate;
 		public float energy;
 		public float energyRecoverRate;
+		public float initialHealth;
 
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
 			this.bulletDamage = bulletDamage;
 			this.speed = speed;
 			this.health = initialHealth;
+			this.initialHealth = initialHealth;
 			this.defense = defense;
 			this.fireRate = fireRate;
 			this.energy = initialEnergy;

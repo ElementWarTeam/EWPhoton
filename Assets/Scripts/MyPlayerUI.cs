@@ -50,7 +50,7 @@ namespace Com.EW.MyGame
 		{
 			// Reflect the Player Health
 			if (PlayerHealthSlider != null && _target != null) {
-				PlayerHealthSlider.value = _target.Health;
+				PlayerHealthSlider.value = _target.getHealthPercentage ();
 			}
 
 			// Update Score Earned

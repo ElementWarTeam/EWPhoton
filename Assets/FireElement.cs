@@ -9,7 +9,7 @@ namespace Com.EW.MyGame
 
 		private PlayerInfo playerInfo;
 
-		private static string fireBallPrefabName = "FireBall";
+		private static string fireBallPrefabName = Constant.FireBallPrefabName;
 
 		void Start ()
 		{
@@ -30,14 +30,21 @@ namespace Com.EW.MyGame
 			// Setup fire ball damange/owner
 			FireBall fireball = fireBallObj.GetComponent <FireBall> ();
 			fireball.damage = playerInfo.bulletDamage;
-			fireball.owner = this.gameObject;
+			fireball.setOwner (this.playerInfo);
 
 			// Setup physic body
 			Rigidbody2D body = fireBallObj.GetComponent <Rigidbody2D> (); // physical body
 			body.rotation = angle;
-			Debug.Log ("Add force direction: " + direction);
-			Debug.Log ("Add force speed: " + fireball.getFireBallSpeed ());
-			body.AddForce (direction * fireball.getFireBallSpeed ());
+			body.AddForce (direction * Constant.FireBallSpeed);
+		}
+
+		public void useUltra (Vector2 position)
+		{
+			for (float angle = 0; angle < 360; angle += 30) {
+				float radians = angle * Mathf.Deg2Rad;
+				Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
+				fire (position, angle, direction);
+			}
 		}
 	}
 }

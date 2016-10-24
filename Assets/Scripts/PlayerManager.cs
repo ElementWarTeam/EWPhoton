@@ -26,14 +26,9 @@ namespace Com.EW.MyGame
 		
 		#region Public Variables
 
-
-		[Tooltip ("The current Health of our player")]
-		public float Health = 1f;
-
 		[Tooltip ("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
 		public static string LocalPlayerType;
-
 
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
@@ -47,7 +42,8 @@ namespace Com.EW.MyGame
 		[Tooltip ("Total Damage taken from other players")]
 		public float DamageTaken;
 
-
+		// OOP
+		PlayerInfo playerInfo;
 
 		// Audio
 		public AudioClip CollisionAudio;
@@ -67,15 +63,6 @@ namespace Com.EW.MyGame
 		private float nextShotTime = 0.0f;
 		private float nextContinuesDamageTime = 0.0f;
 
-		private static string localWeaponPrefabName;
-
-		private static string fireBallPrefabName = "FireBall";
-		private static string electricArcPrefabName = "ElectricArc";
-		private static string iceCrystalPrefabName = "IceCrystal";
-		private static string stoneChargePrefabName = "StoneCharge";
-		private static string rancherSwordPrefabName = "RancherSword";
-		private static string electricFieldPrefabName = "ElectricField";
-
 		private string myBulletKeyName = "MyBullet";
 
 		#endregion
@@ -91,34 +78,33 @@ namespace Com.EW.MyGame
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
 			if (photonView.isMine) {
 				// SETUP PLAYER INFO
-				PlayerInfo playerInfo = this.GetComponent <PlayerInfo> ();
+				playerInfo = this.GetComponent <PlayerInfo> ();
 				playerInfo.playerId = "player name";
 				playerInfo.type = PlayerManager.LocalPlayerType;
-				playerInfo.setup (0.05f, 100f, 100f, 0.1f, 1f, 100f, 0.05f);
-//
-//				Debug.Log ("PlayerManager Awake");
-//				PlayerManager.LocalPlayerInstance = this.gameObject;
-//				myBulletKeyName = PhotonNetwork.playerName + "_Bullet";
-//				switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
-//				case "FireElement":
-//					localWeaponPrefabName = fireBallPrefabName;
-//					break;
-//				case "ElectricElement":
-//					localWeaponPrefabName = electricArcPrefabName;
-//					break;
-//				case "RancherElement":
-//					localWeaponPrefabName = rancherSwordPrefabName;
-//					break;
-//				case "IceElement":
-//					localWeaponPrefabName = iceCrystalPrefabName;
-//					break;
-//				case "StoneElement":
-//					localWeaponPrefabName = stoneChargePrefabName;
-//					break;
-//				default:
-//					localWeaponPrefabName = fireBallPrefabName;
-//					break;
-//				}
+				switch (playerInfo.type) {
+				case Constant.FireElementType:
+					playerInfo.setup (
+						Constant.FireElememtInitialFireballDamage,
+						Constant.FireElementInitialSpeed, 
+						Constant.FireElememtInitialHealth, 
+						Constant.FireElementInitialDefensePercentage, 
+						Constant.FireElementInitialFireRate, 
+						Constant.FireElementInitialEnergy, 
+						Constant.FireElementInitialEnergyRecoverRatePercentage);
+					break;
+				// TODO: add more elements
+				default:
+					playerInfo.setup (
+						Constant.FireElememtInitialFireballDamage,
+						Constant.FireElementInitialSpeed, 
+						Constant.FireElememtInitialHealth, 
+						Constant.FireElementInitialDefensePercentage, 
+						Constant.FireElementInitialFireRate, 
+						Constant.FireElementInitialEnergy, 
+						Constant.FireElementInitialEnergyRecoverRatePercentage);
+					break;
+				}
+
 			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -180,10 +166,8 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-//			Debug.Log ("Current Health: " + this.GetComponent <Health> ().healthPoint);
-
 			// if health less than 0, leave game
-			if (Health <= 0f) {
+			if (playerInfo.health <= 0f) {
 				GameManager.Instance.LeaveRoom ();
 			}
 
@@ -216,24 +200,13 @@ namespace Com.EW.MyGame
 
 		void CalledOnLevelWasLoaded (int level)
 		{
-			// check if we are outside the Arena and if it's the case, spawn around the center of the arena in a safe zone
-//			if (!Physics.Raycast (transform.position, -Vector3.up, 5f)) {
-//				transform.position = new Vector3 (0f, 5f, 0f);
-//			}
-
 			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
 
 			// player Score
 			GameObject _uiGo1 = Instantiate (this.PlayerScorePrefab) as GameObject;
 			_uiGo1.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
-		
-
-
 		}
-
-	
-
 
 		// The player take damage here
 		void OnTriggerEnter2D (Collider2D obj)
@@ -279,17 +252,9 @@ namespace Com.EW.MyGame
 
 		}
 
-		void OnTriggerStay2D (Collider2D obj)
+		public float getHealthPercentage ()
 		{
-			if (Time.time > nextContinuesDamageTime) {
-//				Debug.Log ("OnTriggerStay2D: " + obj.name);
-				nextContinuesDamageTime = Time.time + timeBetweenShots;
-				if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
-//					Debug.Log ("Player is hitted by others ElectricField");
-					Health -= 0.01f;
-				}
-			}
-
+			return playerInfo.health / playerInfo.initialHealth;
 		}
 
 
@@ -323,39 +288,30 @@ namespace Com.EW.MyGame
 			Debug.Log ("CmdShoot is called");
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
 			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
-			if (LocalPlayerType == "FireElement") {
+			if (LocalPlayerType == Constant.FireElementType) {
 				this.GetComponent <FireElement> ().fire (this.transform.position, angle, shootVec.normalized);
 			}
-//			else if other elements
+			// else if other elements
 
 		}
 
 		void UseUltra ()
 		{
 			Debug.Log ("UsingUltra is called");
-			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
-			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
-
-			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
-			Vector3 position = rb2d.position;
+//			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+//			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
+//
+//			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
+//			Vector3 position = rb2d.position;
 
 			switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
-			case "FireElement":
-				for (float rotation = 0; rotation < 360; rotation += 30) {
-					GameObject copy = PhotonNetwork.Instantiate (localWeaponPrefabName, position, Quaternion.identity, 0);
-					Rigidbody2D body = copy.GetComponent <Rigidbody2D> ();
-					Collider2D collider = copy.GetComponent <Collider2D> ();
-					collider.name = myBulletKeyName;
-					float radians = rotation * Mathf.Deg2Rad;
-					Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
-					body.rotation = rotation;
-					body.AddForce (direction * BulletSpeed);
-				}
+			case Constant.FireElementType:
+				this.GetComponent <FireElement> ().useUltra (this.transform.position);
 				break;
 			case "ElectricElement":
-				GameObject field = PhotonNetwork.Instantiate (electricFieldPrefabName, position, Quaternion.identity, 0);
+//				GameObject field = PhotonNetwork.Instantiate (electricFieldPrefabName, position, Quaternion.identity, 0);
 //				field.transform.parent = transform;
-				gameObject.GetComponent<PhotonView> ().RPC ("SetElectricFieldParent", PhotonTargets.AllBuffered, field);
+//				gameObject.GetComponent<PhotonView> ().RPC ("SetElectricFieldParent", PhotonTargets.AllBuffered, field);
 //				photonView.RPC ("SetElectricFieldParent", PhotonTargets.All, field);
 //				field.transform.parent = LocalPlayerInstance.transform;
 //				Collider2D fieldCollider = field.GetComponent <Collider2D> ();
@@ -400,12 +356,12 @@ namespace Com.EW.MyGame
 			if (stream.isWriting) {
 				// We own this player: send the others our data
 				stream.SendNext (IsFiring);
-				stream.SendNext (Health);
+				stream.SendNext (playerInfo);
 				stream.SendNext (UsingUltra);
 			} else {
 				// Network player, receive data
 				this.IsFiring = (bool)stream.ReceiveNext ();
-				this.Health = (float)stream.ReceiveNext ();
+				this.playerInfo = (PlayerInfo)stream.ReceiveNext ();
 				this.UsingUltra = (bool)stream.ReceiveNext ();
 			}
 		}
