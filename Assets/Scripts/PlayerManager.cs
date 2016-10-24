@@ -34,11 +34,20 @@ namespace Com.EW.MyGame
 		public static GameObject LocalPlayerInstance;
 		public static string LocalPlayerType;
 
+
 		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
 
 		[Tooltip ("The Player's Score GameObject Prefab")]
 		public GameObject PlayerScorePrefab;
+
+		[Tooltip ("Total Damage the player dealt to others")]
+		public float DamageDealt;
+
+		[Tooltip ("Total Damage taken from other players")]
+		public float DamageTaken;
+
+
 
 		// Audio
 		public AudioClip CollisionAudio;
@@ -217,6 +226,10 @@ namespace Com.EW.MyGame
 
 		}
 
+	
+
+
+		// The player take damage here
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			Debug.Log ("PlayerManager: OnTriggerEnter2D");
@@ -224,26 +237,53 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-//			Health -= 0.1f;
-			Debug.LogWarning ("Cur Health: " + Health);
-
 			Debug.Log (obj);
 
+			// if player hit by bullet
 			if (obj.CompareTag ("Bullet") && !obj.name.Contains (myBulletKeyName)) {
 				Debug.Log ("Player is hitted by bullet");
 				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
 				Destroy (obj);
+
 				Health -= 0.1f;
+				// update damage taken
+				DamageTaken += 0.1f;
 			}
 
+
+			// if player collide with obstacle
 			if (obj.CompareTag ("Obstacle")) {
-				Debug.Log ("Player is hitted by Obstacle");
+				Debug.Log ("-------Player is hitted by Obstacle");
 				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
 					return; // electric field
 				}
 				audioSource.PlayOneShot (CollisionAudio);
 				Health -= 0.05f;
+				// update damage taken
+				DamageTaken += 0.05f;
 			}
+			if (obj.CompareTag ("HealthPack")) {
+				Debug.Log ("######Player is hitted by HealthPack");
+				/*
+				if (UsingUltra && PlayerManager.LocalPlayerType.Equals ("ElectricElement")) {
+					return; // electric field
+				}*/
+				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
+				Destroy (obj);
+				audioSource.PlayOneShot (CollisionAudio);//find heal
+				Health += 0.5f;
+				Debug.Log ("+++ HealthPack");
+				if (Health > 1f) {
+					Health = 1f;
+					Debug.Log ("1+++ HealthPack");
+				}
+			}
+
+			// Deal with damage dealt
+
+
+
+
 
 			if (obj.CompareTag ("ElectricField") && !obj.name.Contains (myBulletKeyName)) {
 				Debug.Log ("Player is hitted by others ElectricField");
@@ -369,6 +409,10 @@ namespace Com.EW.MyGame
 			field.transform.SetParent (transform);
 		}
 
+
+		public void showPlayerStatus() {
+			
+		}
 
 		#endregion
 
