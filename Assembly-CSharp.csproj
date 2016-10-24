@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Constant.cs" />
+     <Compile Include="Assets\ElectricArc.cs" />
+     <Compile Include="Assets\ElectricElement.cs" />
      <Compile Include="Assets\FireBall.cs" />
      <Compile Include="Assets\FireElement.cs" />
      <Compile Include="Assets\IceCrystal.cs" />

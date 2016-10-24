@@ -243,6 +243,9 @@ namespace Com.EW.MyGame
 			case Constant.FireElementType:
 				this.GetComponent <FireElement> ().fire (this.transform.position, angle, shootVec.normalized);
 				break;
+			case Constant.ElectricElementType:
+				this.GetComponent <ElectricElement> ().fire (this.transform.position, angle, shootVec.normalized);
+				break;
 			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().fire (this.transform.position, angle, shootVec.normalized);
 				break;
@@ -252,29 +255,17 @@ namespace Com.EW.MyGame
 		void UseUltra ()
 		{
 			Debug.Log ("UsingUltra is called");
-//			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
-//			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
-//
-//			Rigidbody2D rb2d = LocalPlayerInstance.GetComponent <Rigidbody2D> ();
-//			Vector3 position = rb2d.position;
-
 			switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
 			case Constant.FireElementType:
 				this.GetComponent <FireElement> ().useUltra (this.transform.position);
 				break;
-			case "ElectricElement":
-//				GameObject field = PhotonNetwork.Instantiate (electricFieldPrefabName, position, Quaternion.identity, 0);
-//				field.transform.parent = transform;
-//				gameObject.GetComponent<PhotonView> ().RPC ("SetElectricFieldParent", PhotonTargets.AllBuffered, field);
-//				photonView.RPC ("SetElectricFieldParent", PhotonTargets.All, field);
-//				field.transform.parent = LocalPlayerInstance.transform;
-//				Collider2D fieldCollider = field.GetComponent <Collider2D> ();
-//				fieldCollider.name = myBulletKeyName;
+			case Constant.ElectricElementType:
+				this.GetComponent <ElectricElement> ().useUltra (this.transform.position);
 				break;
 			case "RancherElement":
 				// TODO
 				break;
-			case "IceElement":
+			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().useUltra (this.transform.position);
 				break;
 			case "StoneElement":

@@ -13,7 +13,7 @@ namespace Com.EW.MyGame
 	{
 
 		public Button btn;
-		private string[] types = { "Fire", "Ice", "Electirc", "Rancher" };
+		private string[] types = { "Fire", "Ice", "Electric", "Rancher" };
 
 
 		// Use this for initialization
