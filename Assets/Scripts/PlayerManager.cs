@@ -236,6 +236,9 @@ namespace Com.EW.MyGame
 			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().fire (this.transform.position, angle, shootVec.normalized);
 				break;
+			case Constant.DarkElementType:
+				this.GetComponent <DarkElement> ().fire (this.transform.position, angle, shootVec.normalized);
+				break;
 			}
 		}
 
@@ -252,8 +255,9 @@ namespace Com.EW.MyGame
 			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().useUltra (this.transform.position);
 				break;
-			case "RancherElement":
-				// TODO
+			case Constant.DarkElementType:
+				this.GetComponent <DarkElement> ().useUltra (this.transform.position);
+				break;
 				break;
 			case "StoneElement":
 				// TODO

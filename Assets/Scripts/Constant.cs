@@ -9,14 +9,14 @@ namespace Com.EW.MyGame
 		public const string FireElementType = "FireElement";
 		public const string IceElementType = "IceElement";
 		public const string ElectricElementType = "ElectricElement";
-		public const string RancherElementType = "RancherElement";
+		public const string DarkElementType = "DarkElement";
 
 		// Prefab names
 		public const string FireBallPrefabName = "FireBall";
 		public const string ElectricArcPrefabName = "ElectricArc";
 		public const string IceCrystalPrefabName = "IceCrystal";
 		public const string StoneChargePrefabName = "StoneCharge";
-		public const string RancherSwordPrefabName = "RancherSword";
+		public const string DarkNeedlePrefabName = "DarkNeedle";
 		public const string ElectricFieldPrefabName = "ElectricField";
 
 		// Fire element player information
@@ -46,6 +46,15 @@ namespace Com.EW.MyGame
 		public const float IceElementInitialFireRate = 1f;
 		public const float IceElementInitialEnergy = 100f;
 		public const float IceElementInitialEnergyRecoverRatePercentage = 0.05f;
+
+		// Dark element player information
+		public const float DarkElementInitialHealth = 80f;
+		public const float DarkElementInitialNeedleDamage = 5f;
+		public const float DarkElementInitialSpeed = 120f;
+		public const float DarkElementInitialDefensePercentage = 0.1f;
+		public const float DarkElementInitialFireRate = 1f;
+		public const float DarkElementInitialEnergy = 100f;
+		public const float DarkElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Bullet
 		public const float FireBallSpeed = 150f;
