@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class ObstacleScript : Photon.PunBehaviour
+	public class ObstacleScript : Photon.PunBehaviour, IPunObservable
 	{
 
 		public static float LiveTime = 20f;
@@ -37,7 +37,7 @@ namespace Com.EW.MyGame
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("Obstacle: an element hits me");
 				obj.GetComponent<PlayerInfo> ().health -= Constant.ObstacleCollisionDamage;
-				beHitted ();
+				ResistanceCount = 0;
 			}
 
 			if (obj.CompareTag ("Bullet")) {
@@ -50,6 +50,23 @@ namespace Com.EW.MyGame
 		{
 			ResistanceCount -= 1;
 		}
+
+		#region IPunObservable implementation
+
+		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
+		{
+			if (stream.isWriting) {
+				// We own this player: send the others our data
+				stream.SendNext (initiateTime);
+				stream.SendNext (ResistanceCount);
+			} else {
+				// Network player, receive data
+				this.initiateTime = (float)stream.ReceiveNext ();
+				this.ResistanceCount = (int)stream.ReceiveNext ();
+			}
+		}
+
+		#endregion
 
 	}
 

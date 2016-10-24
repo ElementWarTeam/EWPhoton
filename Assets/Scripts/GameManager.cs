@@ -12,8 +12,6 @@ namespace Com.EW.MyGame
 	{
 		#region Public Variables
 
-		public GameObject obstaclePrefabs;
-		public GameObject HealthPackPrefabs;
 		static public GameManager Instance;
 
 		// [Tooltip ("The prefab to use for representing the player")]
@@ -61,47 +59,27 @@ namespace Com.EW.MyGame
 
 		#region Public Methods
 
-		public Vector2 point = new Vector2 (0.0f, 0.0f);
-
-		void LaunchProjectile ()
+		void GenerateRandomObstacle ()
 		{
-
+			Vector2 point = new Vector2 (0.0f, 0.0f);
 			point [0] = UnityEngine.Random.Range (-10.0f, 10.0f);
 			point [1] = UnityEngine.Random.Range (-5.0f, 5.0f);
-//			Debug.Log ("[@GameManager]Package Location:[0]= " + point [0] + "[1]=" + point [1]);
-
 			PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
-			/*
-			CharacterControl controller = monster.GetComponent<CharacterControl>();
-			controller.enabled = true;
-			CharacterCamera camera = monster.GetComponent<CharacterCamera>();
-			camera.enabled = true;*/
 		}
 
-		void LaunchProjectileH ()
+		void GenerateRandomBloodPack ()
 		{
-			Debug.Log ("[@H");
-			//Vector2 point=new Vector2(0.0f,0.0f);
-
+			Vector2 point = new Vector2 (0.0f, 0.0f);
 			point [0] = UnityEngine.Random.Range (-10.0f, 10.0f);
 			point [1] = UnityEngine.Random.Range (-5.0f, 5.0f);
-			//Debug.Log("[@GameManager]H:[0]= "+point[0]+"[1]="+point[1]);
-
-
-			//			PhotonNetwork.Instantiate (obstaclePrefabs, point, Quaternion.identity,0);
-			GameObject monster = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
-			/*
- 			CharacterControl controller = monster.GetComponent<CharacterControl>();
- 			controller.enabled = true;
- 			CharacterCamera camera = monster.GetComponent<CharacterCamera>();
- 			camera.enabled = true;*/
+			PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
 		}
 
 		public void Start ()
 		{
 			Instance = this;
-			InvokeRepeating ("LaunchProjectile", 1.0f, 2.0f);
-			InvokeRepeating ("LaunchProjectileH", 1.0f, 5.0f);
+			InvokeRepeating ("GenerateRandomObstacle", 1.0f, 2.0f);
+			InvokeRepeating ("GenerateRandomBloodPack", 1.0f, 5.0f);
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevel);
 				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);

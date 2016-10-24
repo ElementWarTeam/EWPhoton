@@ -77,6 +77,8 @@ namespace Com.EW.MyGame
 		// first called
 
 		#region Public Methods
+
+		public void SetTarget (PlayerManager target)
 		{
 //			Debug.LogWarning("<Color=Red><a>Testing</a></Color>SetTarget Method is called!!!!!!!");
 
