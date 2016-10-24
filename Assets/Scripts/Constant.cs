@@ -55,5 +55,8 @@ namespace Com.EW.MyGame
 
 		// Obstacle information
 		public const float ObstacleCollisionDamage = 10f;
+
+		// PICKUPS
+		public const float HealthPackRecover = 20f;
 	}
 }

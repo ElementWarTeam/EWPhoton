@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class ObstacleScript : MonoBehaviour
+	public class ObstacleScript : Photon.PunBehaviour
 	{
 
 		public static float LiveTime = 20f;
