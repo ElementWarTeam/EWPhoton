@@ -40,25 +40,27 @@ public class FireBallScript : Photon.PunBehaviour
 	// Function called when the enemy collides with another object
 	void OnTriggerEnter2D (Collider2D obj)
 	{
-		Debug.Log ("OnTriggerEnter2D");
-		Debug.Log ("shouldBeDestroied = " + shouldBeDestroied);
+		// ALL THESE SHOULD BE HANDLED IN SPECIFIC SCRIPT
 
-
-		Debug.Log ("Shoot from:" + shootFrom.name);
-		if (shouldBeDestroied)
-			return;
-		if (obj.CompareTag ("Bullet") && !obj.name.Equals (cl2d.name)) {
-			Debug.Log ("Bullet hit Bullet: shouldBeDestroied");
-			audioSource.PlayOneShot (hitAudio);
-			GetComponent <Renderer> ().enabled = false;
-			shouldBeDestroied = true;
-		}
-
-		if (obj.CompareTag ("Obstacle")) {
-			Debug.Log ("Bullet hit Obstacle: shouldBeDestroied");
-			audioSource.PlayOneShot (hitAudio);
-			GetComponent <Renderer> ().enabled = false;
-			shouldBeDestroied = true;
-		}
+//		Debug.Log ("OnTriggerEnter2D");
+//		Debug.Log ("shouldBeDestroied = " + shouldBeDestroied);
+//
+//
+//		Debug.Log ("Shoot from:" + shootFrom.name);
+//		if (shouldBeDestroied)
+//			return;
+//		if (obj.CompareTag ("Bullet") && !obj.name.Equals (cl2d.name)) {
+//			Debug.Log ("Bullet hit Bullet: shouldBeDestroied");
+//			audioSource.PlayOneShot (hitAudio);
+//			GetComponent <Renderer> ().enabled = false;
+//			shouldBeDestroied = true;
+//		}
+//
+//		if (obj.CompareTag ("Obstacle")) {
+//			Debug.Log ("Bullet hit Obstacle: shouldBeDestroied");
+//			audioSource.PlayOneShot (hitAudio);
+//			GetComponent <Renderer> ().enabled = false;
+//			shouldBeDestroied = true;
+//		}
 	}
 }

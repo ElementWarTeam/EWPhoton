@@ -1,23 +1,56 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObstacleScript : MonoBehaviour
+namespace Com.EW.MyGame
 {
-
-	public float speed = 0;
-
-	private Rigidbody2D rb2d;
-
-	// Use this for initialization
-	void Start ()
+	public class ObstacleScript : MonoBehaviour
 	{
-		rb2d = GetComponent<Rigidbody2D> ();
-		rb2d.velocity = new Vector2 (0, speed);
-	}
+
+		public static float LiveTime = 20f;
+
+		public int ResistanceCount = 2;
+
+		private float initiateTime = 0f;
+
+		// Use this for initialization
+		void Start ()
+		{
+			initiateTime = Time.time;
+		}
 	
-	// Update is called once per frame
-	void Update ()
-	{
-	
+		// Update is called once per frame
+		void Update ()
+		{
+			if (ResistanceCount == 0) {
+				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+				Destroy (gameObject);
+			}
+			if (initiateTime + LiveTime <= Time.time) {
+				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+				Destroy (gameObject);
+			}
+		}
+
+		void OnTriggerEnter2D (Collider2D obj)
+		{
+			// if player collide with obstacle
+			if (obj.CompareTag ("Element")) {
+				Debug.Log ("Obstacle: an element hits me");
+				obj.GetComponent<PlayerInfo> ().health -= Constant.ObstacleCollisionDamage;
+				beHitted ();
+			}
+
+			if (obj.CompareTag ("Bullet")) {
+				beHitted ();
+			}
+
+		}
+
+		void beHitted ()
+		{
+			ResistanceCount -= 1;
+		}
+
 	}
+
 }

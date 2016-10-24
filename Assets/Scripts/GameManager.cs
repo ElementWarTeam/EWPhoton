@@ -11,6 +11,7 @@ namespace Com.EW.MyGame
 	public class GameManager : Photon.PunBehaviour
 	{
 		#region Public Variables
+
 		public GameObject obstaclePrefabs;
 		public GameObject HealthPackPrefabs;
 		static public GameManager Instance;
@@ -59,78 +60,44 @@ namespace Com.EW.MyGame
 		#endregion
 
 		#region Public Methods
-		public Vector2 point=new Vector2(0.0f,0.0f);
 
-		void LaunchProjectile () {
-			Debug.Log("[@GameManager]LaunchProjectile");
+		public Vector2 point = new Vector2 (0.0f, 0.0f);
+
+		void LaunchProjectile ()
+		{
+//			Debug.Log ("[@GameManager]LaunchProjectile");
 			//Vector2 point=new Vector2(0.0f,0.0f);
 
-			point[0]=UnityEngine.Random.Range(-10.0f, 10.0f);
-			point[1]=UnityEngine.Random.Range(-5.0f, 5.0f);
-			//Debug.Log("[@GameManager]Package Location:[0]= "+point[0]+"[1]="+point[1]);
+			point [0] = UnityEngine.Random.Range (-4.0f, 4.0f);
+			point [1] = UnityEngine.Random.Range (-2.0f, 2.0f);
+//			Debug.Log ("[@GameManager]Package Location:[0]= " + point [0] + "[1]=" + point [1]);
 
 
 			//			PhotonNetwork.Instantiate (obstaclePrefabs, point, Quaternion.identity,0);
-			GameObject monster = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity,0);
+			GameObject monster = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
 			/*
 			CharacterControl controller = monster.GetComponent<CharacterControl>();
 			controller.enabled = true;
 			CharacterCamera camera = monster.GetComponent<CharacterCamera>();
 			camera.enabled = true;*/
 		}
-		void LaunchProjectileH () {
-			Debug.Log("[@H");
-			//Vector2 point=new Vector2(0.0f,0.0f);
 
-			point[0]=UnityEngine.Random.Range(-10.0f, 10.0f);
-			point[1]=UnityEngine.Random.Range(-5.0f, 5.0f);
-			//Debug.Log("[@GameManager]H:[0]= "+point[0]+"[1]="+point[1]);
-
-
-			//			PhotonNetwork.Instantiate (obstaclePrefabs, point, Quaternion.identity,0);
-			GameObject monster = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity,0);
-			/*
-			CharacterControl controller = monster.GetComponent<CharacterControl>();
-			controller.enabled = true;
-			CharacterCamera camera = monster.GetComponent<CharacterCamera>();
-			camera.enabled = true;*/
-		}
 		public void Start ()
 		{
 			Instance = this;
-			InvokeRepeating("LaunchProjectile", 1.0f, 2.0f);
-			InvokeRepeating("LaunchProjectileH", 1.0f, 5.0f);
+			InvokeRepeating ("LaunchProjectile", 1.0f, 2.0f);
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevelName);
-
-				// set LocalPlayerType by initial selection
-//				switch (PhotonNetwork.playerName) {
-//				case "F":
-//					PlayerManager.LocalPlayerType = "FireElement";
-//					break;
-//				case "E":
-//					PlayerManager.LocalPlayerType = "ElectricElement";
-//					break;
-//				case "R":
-//					PlayerManager.LocalPlayerType = "RancherElement";
-//					break;
-//				case "I":
-//					PlayerManager.LocalPlayerType = "IceElement";
-//					break;
-//				case "S":
-//					PlayerManager.LocalPlayerType = "StoneElement";
-//					break;
-//				default:
-//					PlayerManager.LocalPlayerType = "FireElement";
-//					break;
-//				}
 				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
 			} else {
 				Debug.Log ("Ignoring scene load for " + Application.loadedLevelName);
 			}
 
+
 		}
 			
+
+
 
 
 		public void LeaveRoom ()
