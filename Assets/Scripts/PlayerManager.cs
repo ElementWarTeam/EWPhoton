@@ -43,6 +43,8 @@ namespace Com.EW.MyGame
 
 		public float timeBetweenShots = 1f;
 		private float nextShootTime = 0.0f;
+		private float startChargeTime = -1f;
+		private Vector2 chargeDirection = new Vector2 (0f, 0f);
 
 		#endregion
 
@@ -127,9 +129,18 @@ namespace Com.EW.MyGame
 
 			ProcessInputs ();
 			if (IsFiring) {
+				if (startChargeTime == -1)
+					startChargeTime = Time.time;
 				if (nextShootTime <= Time.time) {
 					CmdShoot ();
 					nextShootTime = Time.time + playerInfo.fireRate;
+				}
+			} else { 
+				if (startChargeTime != -1) {
+					if (startChargeTime + playerInfo.fireRate <= Time.time) {
+						CmdStopFire ();
+					}
+					startChargeTime = -1f;
 				}
 			}
 			if (UsingUltra) {
@@ -144,15 +155,19 @@ namespace Com.EW.MyGame
 			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
-
-			Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("LeftHorizontal"), CrossPlatformInputManager.GetAxis ("LeftVertical")); 
 			Rigidbody2D rb2d = GetComponent<Rigidbody2D> ();
-			rb2d.position += moveVec.normalized * 0.05f;
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+			// Rotate
 			if (shootVec.magnitude > 0) {
 				float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
 				rb2d.rotation = angle;
 			}
+			if (IsFiring && LocalPlayerInstance.Equals (Constant.StoneElementType)) {
+				return; // Stone in charging state will not move
+			}
+			// Moving
+			Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("LeftHorizontal"), CrossPlatformInputManager.GetAxis ("LeftVertical")); 
+			rb2d.position += moveVec.normalized * 0.05f;
 
 		}
 
@@ -206,7 +221,10 @@ namespace Com.EW.MyGame
 		void ProcessInputs ()
 		{
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
+
 			if (shootVec.magnitude > 0) {
+				chargeDirection [0] = shootVec [0];
+				chargeDirection [1] = shootVec [1];
 				IsFiring = true;
 			} else {
 				IsFiring = false;
@@ -222,7 +240,6 @@ namespace Com.EW.MyGame
 
 		void CmdShoot ()
 		{
-			Debug.Log ("CmdShoot is called");
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
 			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
 
@@ -240,7 +257,16 @@ namespace Com.EW.MyGame
 				this.GetComponent <DarkElement> ().fire (this.transform.position, angle, shootVec.normalized);
 				break;
 			case Constant.StoneElementType:
-				this.GetComponent <StoneElement> ().charge (this.transform.position, angle, shootVec.normalized);
+				this.GetComponent <StoneElement> ().showShadow (this.transform.position, angle, shootVec.normalized);
+				break;
+			}
+		}
+
+		void CmdStopFire ()
+		{
+			switch (LocalPlayerType) {
+			case Constant.StoneElementType:
+				this.GetComponent <StoneElement> ().charge (this.transform.position, chargeDirection.normalized);
 				break;
 			}
 		}

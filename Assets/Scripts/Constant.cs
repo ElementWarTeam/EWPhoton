@@ -62,7 +62,7 @@ namespace Com.EW.MyGame
 		public const float StoneElementInitialNeedleDamage = 5f;
 		public const float StoneElementInitialSpeed = 120f;
 		public const float StoneElementInitialDefensePercentage = 0.1f;
-		public const float StoneElementInitialFireRate = 1f;
+		public const float StoneElementInitialFireRate = 0.5f;
 		public const float StoneElementInitialEnergy = 100f;
 		public const float StoneElementInitialEnergyRecoverRatePercentage = 0.05f;
 

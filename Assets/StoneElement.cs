@@ -10,6 +10,9 @@ namespace Com.EW.MyGame
 
 		private static string chargePrefabName = Constant.StoneChargePrefabName;
 
+		private float nextDecreaseVelocityTime = 0.0f;
+		private float stopTime = 0.0f;
+
 		void Start ()
 		{
 			playerInfo = this.GetComponent<PlayerInfo> ();
@@ -23,25 +26,34 @@ namespace Com.EW.MyGame
 				Constant.DarkElementInitialEnergyRecoverRatePercentage);
 		}
 
+		void Update ()
+		{
+			Rigidbody2D rb2d = GetComponent<Rigidbody2D> ();
+			if (stopTime < Time.time) {
+				rb2d.velocity = Vector2.zero;
+			}
+		}
+
 		private GameObject generateBullet (Vector2 position)
 		{
 			GameObject bulletObj = PhotonNetwork.Instantiate (chargePrefabName, position, Quaternion.identity, 0);
 			return bulletObj;
 		}
 
-		public void charge (Vector2 position, float angle, Vector2 direction)
+		public void showShadow (Vector2 position, float angle, Vector2 direction)
 		{
-			GameObject bulletObj = generateBullet (position);
+//			GameObject chargeShadow = generateBullet (position);
+//			chargeShadow.GetComponent<Rigidbody2D> ().rotation = angle;
+		}
 
-			// Setup fire ball damange/owner
-			StoneCharge charge = bulletObj.GetComponent <StoneCharge> ();
-			charge.damage = playerInfo.bulletDamage;
-			charge.setOwner (this.playerInfo);
-
-			// Setup physic body
-			Rigidbody2D body = bulletObj.GetComponent <Rigidbody2D> (); // physical body
-			body.rotation = angle;
-			body.AddForce (direction * Constant.FireBallSpeed);
+		public void charge (Vector2 position, Vector2 direction)
+		{
+			Rigidbody2D rb2d = GetComponent<Rigidbody2D> ();
+			Debug.Log ("Charge called: " + direction);
+			Vector2 moveToPos = rb2d.position + direction.normalized * 3f;
+//			rb2d.AddForce (direction * 3);
+			rb2d.velocity = direction * 10;
+			stopTime = Time.time + 0.5f;
 		}
 
 		public void useUltra (Vector2 position)
