@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class FireBall : Photon.PunBehaviour
+	public class IceCrystal : Photon.PunBehaviour
 	{
 
 		public AudioClip shootAudio;
@@ -17,7 +17,7 @@ namespace Com.EW.MyGame
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
 
-		// Special effect of fireball
+		// Special effect of ice crystal
 		private PlayerInfo playerBeHitted;
 
 		void Start ()
@@ -33,9 +33,9 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-			// Fireball hit an element, which is not the owner of the fireball
+			// IceCrystal hit an element, which is not the owner of the IceCrystal
 			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-				Debug.Log ("FireBall: " + owner.name + "'s fireball hits " + obj.name);
+				Debug.Log ("IceCrystal: " + owner.name + "'s iceCrystal hits " + obj.name);
 				playerBeHitted = obj.GetComponent<PlayerInfo> ();
 				playerBeHitted.health -= damage;
 				owner.GetComponent <PlayerInfo> ().score += 10;
@@ -76,7 +76,5 @@ namespace Com.EW.MyGame
 		{
 			this.owner = owner;
 		}
-
 	}
-
 }

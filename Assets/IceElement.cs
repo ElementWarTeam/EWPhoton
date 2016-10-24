@@ -1,27 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
 namespace Com.EW.MyGame
 {
-	public class FireElement : Photon.PunBehaviour
+	public class IceElement : Photon.PunBehaviour
 	{
 
 		private PlayerInfo playerInfo;
 
-		private static string bulletPrefabName = Constant.FireBallPrefabName;
+		private static string bulletPrefabName = Constant.IceCrystalPrefabName;
 
 		void Start ()
 		{
 			playerInfo = this.GetComponent<PlayerInfo> ();
 			playerInfo.setup (
-				Constant.FireElementInitialFireballDamage,
-				Constant.FireElementInitialSpeed, 
-				Constant.FireElementInitialHealth, 
-				Constant.FireElementInitialDefensePercentage, 
-				Constant.FireElementInitialFireRate, 
-				Constant.FireElementInitialEnergy, 
-				Constant.FireElementInitialEnergyRecoverRatePercentage);
+				Constant.IceElementInitialIceCystalDamage,
+				Constant.IceElementInitialSpeed, 
+				Constant.IceElementInitialHealth, 
+				Constant.IceElementInitialDefensePercentage, 
+				Constant.IceElementInitialFireRate, 
+				Constant.IceElementInitialEnergy, 
+				Constant.IceElementInitialEnergyRecoverRatePercentage);
 		}
 
 		private GameObject generateBullet (Vector2 position)
@@ -34,15 +33,15 @@ namespace Com.EW.MyGame
 		{
 			GameObject bulletObj = generateBullet (position);
 
-			// Setup fire ball damange/owner
-			FireBall fireball = bulletObj.GetComponent <FireBall> ();
-			fireball.damage = playerInfo.bulletDamage;
-			fireball.setOwner (this.playerInfo);
+			// Setup ice crystal damange/owner
+			IceCrystal cystal = bulletObj.GetComponent <IceCrystal> ();
+			cystal.damage = playerInfo.bulletDamage;
+			cystal.setOwner (this.playerInfo);
 
 			// Setup physic body
 			Rigidbody2D body = bulletObj.GetComponent <Rigidbody2D> (); // physical body
 			body.rotation = angle;
-			body.AddForce (direction * Constant.FireBallSpeed);
+			body.AddForce (direction * Constant.IceCystalSpeed);
 		}
 
 		public void useUltra (Vector2 position)

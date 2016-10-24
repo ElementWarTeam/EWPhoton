@@ -12,25 +12,47 @@ namespace Com.EW.MyGame
 		public const string RancherElementType = "RancherElement";
 
 		// Prefab names
-		public static string FireBallPrefabName = "FireBall";
-		public static string ElectricArcPrefabName = "ElectricArc";
-		public static string IceCrystalPrefabName = "IceCrystal";
-		public static string StoneChargePrefabName = "StoneCharge";
-		public static string RancherSwordPrefabName = "RancherSword";
-		public static string ElectricFieldPrefabName = "ElectricField";
+		public const string FireBallPrefabName = "FireBall";
+		public const string ElectricArcPrefabName = "ElectricArc";
+		public const string IceCrystalPrefabName = "IceCrystal";
+		public const string StoneChargePrefabName = "StoneCharge";
+		public const string RancherSwordPrefabName = "RancherSword";
+		public const string ElectricFieldPrefabName = "ElectricField";
 
 		// Fire element player information
-		public static float FireElememtInitialHealth = 100f;
-		public static float FireElememtInitialFireballDamage = 5f;
-		public static float FireElementInitialSpeed = 100f;
-		public static float FireElementInitialDefensePercentage = 0.1f;
-		public static float FireElementInitialFireRate = 1f;
-		public static float FireElementInitialEnergy = 100f;
-		public static float FireElementInitialEnergyRecoverRatePercentage = 0.05f;
+		public const float FireElementInitialHealth = 100f;
+		public const float FireElementInitialFireballDamage = 8f;
+		public const float FireElementInitialSpeed = 100f;
+		public const float FireElementInitialDefensePercentage = 0.1f;
+		public const float FireElementInitialFireRate = 1f;
+		public const float FireElementInitialEnergy = 100f;
+		public const float FireElementInitialEnergyRecoverRatePercentage = 0.05f;
 
-		public static float FireBallSpeed = 150f;
+		// Electric element player information
+		public const float ElectricElementInitialHealth = 80f;
+		public const float ElectricElementInitialElectricArcDamage = 5f;
+		public const float ElectricElementInitialSpeed = 120f;
+		public const float ElectricElementInitialDefensePercentage = 0.1f;
+		public const float ElectricElementInitialFireRate = 1f;
+		public const float ElectricElementInitialEnergy = 100f;
+		public const float ElectricElementInitialEnergyRecoverRatePercentage = 0.05f;
+
+		// Ice element player information
+		public const float IceElementInitialHealth = 80f;
+		public const float IceElementInitialIceCystalDamage = 5f;
+		public const float IceElementInitialSpeed = 120f;
+		public const float IceElementInitialDefensePercentage = 0.1f;
+		public const float IceElementInitialFireRate = 1f;
+		public const float IceElementInitialEnergy = 100f;
+		public const float IceElementInitialEnergyRecoverRatePercentage = 0.05f;
+
+		// Bullet
+		public const float FireBallSpeed = 150f;
+		public const float IceCystalSpeed = 150f;
+
+		public const float LiveTime = 5;
 
 		// Obstacle information
-		public static float ObstacleCollisionDamage = 10f;
+		public const float ObstacleCollisionDamage = 10f;
 	}
 }

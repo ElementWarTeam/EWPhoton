@@ -26,31 +26,14 @@ namespace Com.EW.MyGame
 		
 		#region Public Variables
 
-		[Tooltip ("The local player instance. Use this to know if the local player is represented in the Scene")]
 		public static GameObject LocalPlayerInstance;
 		public static string LocalPlayerType;
 
-		[Tooltip ("The Player's UI GameObject Prefab")]
 		public GameObject PlayerUiPrefab;
-
-		[Tooltip ("The Player's Score GameObject Prefab")]
 		public GameObject PlayerScorePrefab;
 
-		[Tooltip ("Total Damage the player dealt to others")]
-		public float DamageDealt;
-
-		[Tooltip ("Total Damage taken from other players")]
-		public float DamageTaken;
-
 		// OOP
-		PlayerInfo playerInfo;
-
-		// Audio
-		public AudioClip CollisionAudio;
-		private AudioSource audioSource;
-
-		public float BulletSpeed = 150f;
-
+		public PlayerInfo playerInfo;
 		public bool IsFiring;
 		public bool UsingUltra;
 
@@ -59,11 +42,7 @@ namespace Com.EW.MyGame
 		#region Private Variables
 
 		public float timeBetweenShots = 1f;
-
-		private float nextShotTime = 0.0f;
-		private float nextContinuesDamageTime = 0.0f;
-
-		private string myBulletKeyName = "MyBullet";
+		private float nextShootTime = 0.0f;
 
 		#endregion
 
@@ -81,30 +60,6 @@ namespace Com.EW.MyGame
 				playerInfo = this.GetComponent <PlayerInfo> ();
 				playerInfo.playerId = "player name";
 				playerInfo.type = PlayerManager.LocalPlayerType;
-				switch (playerInfo.type) {
-				case Constant.FireElementType:
-					playerInfo.setup (
-						Constant.FireElememtInitialFireballDamage,
-						Constant.FireElementInitialSpeed, 
-						Constant.FireElememtInitialHealth, 
-						Constant.FireElementInitialDefensePercentage, 
-						Constant.FireElementInitialFireRate, 
-						Constant.FireElementInitialEnergy, 
-						Constant.FireElementInitialEnergyRecoverRatePercentage);
-					break;
-				// TODO: add more elements
-				default:
-					playerInfo.setup (
-						Constant.FireElememtInitialFireballDamage,
-						Constant.FireElementInitialSpeed, 
-						Constant.FireElememtInitialHealth, 
-						Constant.FireElementInitialDefensePercentage, 
-						Constant.FireElementInitialFireRate, 
-						Constant.FireElementInitialEnergy, 
-						Constant.FireElementInitialEnergyRecoverRatePercentage);
-					break;
-				}
-
 			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
@@ -118,7 +73,6 @@ namespace Com.EW.MyGame
 		void Start ()
 		{	// camera work
 			CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork> ();
-			audioSource = GetComponent<AudioSource> ();
 
 			if (_cameraWork != null) {
 				if (photonView.isMine) {
@@ -166,22 +120,18 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-			// if health less than 0, leave game
 			if (playerInfo.health <= 0f) {
 				GameManager.Instance.LeaveRoom ();
 			}
 
-
 			ProcessInputs ();
 			if (IsFiring) {
-				if (nextShotTime <= Time.time) {
+				if (nextShootTime <= Time.time) {
 					CmdShoot ();
-					nextShotTime = Time.time + timeBetweenShots;
+					nextShootTime = Time.time + playerInfo.fireRate;
 				}
 			}
 			if (UsingUltra) {
-				// if energe is enough
-				// decrease energe bar
 				UseUltra ();
 			}
 			return;
@@ -288,11 +238,15 @@ namespace Com.EW.MyGame
 			Debug.Log ("CmdShoot is called");
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
 			float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
-			if (LocalPlayerType == Constant.FireElementType) {
-				this.GetComponent <FireElement> ().fire (this.transform.position, angle, shootVec.normalized);
-			}
-			// else if other elements
 
+			switch (LocalPlayerType) {
+			case Constant.FireElementType:
+				this.GetComponent <FireElement> ().fire (this.transform.position, angle, shootVec.normalized);
+				break;
+			case Constant.IceElementType:
+				this.GetComponent <IceElement> ().fire (this.transform.position, angle, shootVec.normalized);
+				break;
+			}
 		}
 
 		void UseUltra ()
@@ -321,7 +275,7 @@ namespace Com.EW.MyGame
 				// TODO
 				break;
 			case "IceElement":
-				// TODO
+				this.GetComponent <IceElement> ().useUltra (this.transform.position);
 				break;
 			case "StoneElement":
 				// TODO
