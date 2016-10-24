@@ -10,6 +10,7 @@ namespace Com.EW.MyGame
 		public const string IceElementType = "IceElement";
 		public const string ElectricElementType = "ElectricElement";
 		public const string DarkElementType = "DarkElement";
+		public const string StoneElementType = "StoneElement";
 
 		// Prefab names
 		public const string FireBallPrefabName = "FireBall";
@@ -55,6 +56,15 @@ namespace Com.EW.MyGame
 		public const float DarkElementInitialFireRate = 1f;
 		public const float DarkElementInitialEnergy = 100f;
 		public const float DarkElementInitialEnergyRecoverRatePercentage = 0.05f;
+
+		// Stone element player information
+		public const float StoneElementInitialHealth = 80f;
+		public const float StoneElementInitialNeedleDamage = 5f;
+		public const float StoneElementInitialSpeed = 120f;
+		public const float StoneElementInitialDefensePercentage = 0.1f;
+		public const float StoneElementInitialFireRate = 1f;
+		public const float StoneElementInitialEnergy = 100f;
+		public const float StoneElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Bullet
 		public const float FireBallSpeed = 150f;

@@ -239,6 +239,9 @@ namespace Com.EW.MyGame
 			case Constant.DarkElementType:
 				this.GetComponent <DarkElement> ().fire (this.transform.position, angle, shootVec.normalized);
 				break;
+			case Constant.StoneElementType:
+				this.GetComponent <StoneElement> ().charge (this.transform.position, angle, shootVec.normalized);
+				break;
 			}
 		}
 
@@ -257,7 +260,6 @@ namespace Com.EW.MyGame
 				break;
 			case Constant.DarkElementType:
 				this.GetComponent <DarkElement> ().useUltra (this.transform.position);
-				break;
 				break;
 			case "StoneElement":
 				// TODO

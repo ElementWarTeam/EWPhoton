@@ -34,7 +34,9 @@ namespace Com.EW.MyGame
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);
 			}
-			this.transform.position = parent.transform.position;
+			if (photonView.isMine) {
+				this.transform.position = parent.transform.position;
+			}
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)
@@ -85,10 +87,12 @@ namespace Com.EW.MyGame
 				// We own this player: send the others our data
 				stream.SendNext (continousDamage);
 				stream.SendNext (initiateTime);
+//				stream.SendNext (parent.transform.position);
 			} else {
 				// Network player, receive data
 				this.continousDamage = (float)stream.ReceiveNext ();
 				this.initiateTime = (float)stream.ReceiveNext ();
+//				this.parent.transform.position = (Vector3)stream.ReceiveNext ();
 			}
 		}
 
