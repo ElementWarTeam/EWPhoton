@@ -27,32 +27,6 @@ namespace Com.EW.MyGame
 			initiateTime = Time.time;
 		}
 
-		void OnTriggerEnter2D (Collider2D obj)
-		{
-			if (!photonView.isMine) {
-				return;
-			}
-
-			// Fireball hit an element, which is not the owner of the fireball
-			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-				Debug.Log ("StoneCharge: " + owner.name + "'s StoneCharge hits " + obj.name);
-				playerBeHitted = obj.GetComponent<PlayerInfo> ();
-				playerBeHitted.health -= damage;
-				owner.GetComponent <PlayerInfo> ().score += 10;
-				shouldBeDestroied = true;
-				audioSource.PlayOneShot (hitAudio);
-				GetComponent <Renderer> ().enabled = false;
-			}
-
-			if (obj.CompareTag ("Obstacle")) {
-				shouldBeDestroied = true;
-				audioSource.PlayOneShot (hitAudio);
-				GetComponent <Renderer> ().enabled = false;
-				GetComponent <Collider2D> ().enabled = false;
-			}
-
-		}
-
 		void Update ()
 		{
 

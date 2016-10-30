@@ -10,8 +10,14 @@ namespace Com.EW.MyGame
 
 		private static string chargePrefabName = Constant.StoneChargePrefabName;
 
-		private float nextDecreaseVelocityTime = 0.0f;
-		private float stopTime = 0.0f;
+		private bool isAccumulating = false;
+		private bool isCharging = false;
+		private float chargeInitiateTime = 0f;
+		private float chargingTime = 0f;
+		private float accumulatingInitiateTime = 0f;
+		private Vector2 releasePressDirection = new Vector2 (0f, 0f);
+		private const float ACCUMULATING_TIME_MAX = 3f;
+		private const float ACCUMULATING_TIME_MIN = 1f;
 
 		void Start ()
 		{
@@ -28,9 +34,13 @@ namespace Com.EW.MyGame
 
 		void Update ()
 		{
-			Rigidbody2D rb2d = GetComponent<Rigidbody2D> ();
-			if (stopTime < Time.time) {
-				rb2d.velocity = Vector2.zero;
+			if (isCharging) {
+				playerInfo.defense *= 3; // TODO
+				if (chargeInitiateTime + chargingTime < Time.time) {
+					GetComponent<Rigidbody2D> ().velocity = Vector2.zero;
+					isCharging = false;
+				}
+				playerInfo.defense /= 3; // TODO
 			}
 		}
 
@@ -40,20 +50,43 @@ namespace Com.EW.MyGame
 			return bulletObj;
 		}
 
-		public void showShadow (Vector2 position, float angle, Vector2 direction)
+		public void startCharge (Vector2 position, float angle, Vector2 direction)
 		{
-//			GameObject chargeShadow = generateBullet (position);
-//			chargeShadow.GetComponent<Rigidbody2D> ().rotation = angle;
+			if (isCharging)
+				return;
+			if (isAccumulating) {
+				if (direction.magnitude > 0) {
+					releasePressDirection [0] = direction [0];
+					releasePressDirection [1] = direction [1];
+				}
+
+			} else {
+				accumulatingInitiateTime = Time.time;
+				isAccumulating = true;
+			}
 		}
 
-		public void charge (Vector2 position, Vector2 direction)
+		public void charge (Vector2 position)
 		{
-			Rigidbody2D rb2d = GetComponent<Rigidbody2D> ();
-			Debug.Log ("Charge called: " + direction);
-			Vector2 moveToPos = rb2d.position + direction.normalized * 3f;
-//			rb2d.AddForce (direction * 3);
-			rb2d.velocity = direction * 10;
-			stopTime = Time.time + 0.5f;
+			if (isAccumulating) {
+				Rigidbody2D rb2d = GetComponent<Rigidbody2D> ();
+				Debug.Log ("Charge called: " + releasePressDirection);
+
+				float accumulatedTime = Time.time - accumulatingInitiateTime;
+				if (accumulatedTime > ACCUMULATING_TIME_MAX)
+					accumulatedTime = ACCUMULATING_TIME_MAX;
+				chargingTime = 0f;
+				if (accumulatedTime >= ACCUMULATING_TIME_MIN) {
+					// ACCUMULATING_TIME_MIN -> 0.2
+					// ACCUMULATING_TIME_MAX -> 0.8
+					// TODO: @Cairu: coordinate these data with Constant.cs
+					chargingTime = 0.2f + 0.6f * (accumulatedTime - ACCUMULATING_TIME_MIN) / (ACCUMULATING_TIME_MAX - ACCUMULATING_TIME_MIN);
+					rb2d.velocity = releasePressDirection * 15;
+					chargeInitiateTime = Time.time;
+					isCharging = true;
+				}
+				isAccumulating = false;
+			}
 		}
 
 		public void useUltra (Vector2 position)

@@ -43,8 +43,7 @@ namespace Com.EW.MyGame
 
 		public float timeBetweenShots = 1f;
 		private float nextShootTime = 0.0f;
-		private float startChargeTime = -1f;
-		private Vector2 chargeDirection = new Vector2 (0f, 0f);
+		private Vector2 releasePressDirection = new Vector2 (0f, 0f);
 
 		#endregion
 
@@ -103,8 +102,6 @@ namespace Com.EW.MyGame
 				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> PlayerScorePrefab reference on player Prefab.", this);
 			}
 
-
-
 			// 
 			#if UNITY_MIN_5_4
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
@@ -129,19 +126,12 @@ namespace Com.EW.MyGame
 
 			ProcessInputs ();
 			if (IsFiring) {
-				if (startChargeTime == -1)
-					startChargeTime = Time.time;
 				if (nextShootTime <= Time.time) {
 					CmdShoot ();
 					nextShootTime = Time.time + playerInfo.fireRate;
 				}
 			} else { 
-				if (startChargeTime != -1) {
-					if (startChargeTime + playerInfo.fireRate <= Time.time) {
-						CmdStopFire ();
-					}
-					startChargeTime = -1f;
-				}
+				CmdStopFire ();
 			}
 			if (UsingUltra) {
 				UseUltra ();
@@ -223,8 +213,8 @@ namespace Com.EW.MyGame
 			Vector2 shootVec = new Vector2 (CnInputManager.GetAxis ("Horizontal"), CnInputManager.GetAxis ("Vertical"));
 
 			if (shootVec.magnitude > 0) {
-				chargeDirection [0] = shootVec [0];
-				chargeDirection [1] = shootVec [1];
+				releasePressDirection [0] = shootVec [0];
+				releasePressDirection [1] = shootVec [1];
 				IsFiring = true;
 			} else {
 				IsFiring = false;
@@ -257,7 +247,7 @@ namespace Com.EW.MyGame
 				this.GetComponent <DarkElement> ().fire (this.transform.position, angle, shootVec.normalized);
 				break;
 			case Constant.StoneElementType:
-				this.GetComponent <StoneElement> ().showShadow (this.transform.position, angle, shootVec.normalized);
+				this.GetComponent <StoneElement> ().startCharge (this.transform.position, angle, shootVec.normalized);
 				break;
 			}
 		}
@@ -266,7 +256,7 @@ namespace Com.EW.MyGame
 		{
 			switch (LocalPlayerType) {
 			case Constant.StoneElementType:
-				this.GetComponent <StoneElement> ().charge (this.transform.position, chargeDirection.normalized);
+				this.GetComponent <StoneElement> ().charge (this.transform.position);
 				break;
 			}
 		}
