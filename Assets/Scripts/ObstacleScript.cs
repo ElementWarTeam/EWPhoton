@@ -6,7 +6,7 @@ namespace Com.EW.MyGame
 	public class ObstacleScript : Photon.PunBehaviour, IPunObservable
 	{
 
-		public static float LiveTime = 20f;
+		public static float LiveTime = 10f;
 
 		public int ResistanceCount = 2;
 
@@ -21,6 +21,9 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
 			if (ResistanceCount == 0) {
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);
@@ -33,13 +36,13 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			// if player collide with obstacle
-
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("Obstacle: an element hits me");
-//				obj.GetComponent<PlayerInfo> ().health -= Constant.ObstacleCollisionDamage;
 				ResistanceCount = 0;
-				obj.transform.GetComponent<PhotonView> ().RPC ("TakeDamage", PhotonTargets.All, Constant.ObstacleCollisionDamage);
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+					pv.RPC ("TakeDamage", PhotonTargets.All, Constant.ObstacleCollisionDamage);
+				}
 			}
 
 			if (obj.CompareTag ("Bullet")) {

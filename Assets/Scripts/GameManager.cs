@@ -65,7 +65,7 @@ namespace Com.EW.MyGame
 			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
 			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
 			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+//			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBloodPack ()
@@ -74,7 +74,7 @@ namespace Com.EW.MyGame
 			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
 			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
 			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+//			DontDestroyOnLoad (obj);
 		}
 
 		public void Start ()
@@ -98,11 +98,13 @@ namespace Com.EW.MyGame
 		}
 
 
-		public void LoadTutorialScene() {
+		public void LoadTutorialScene ()
+		{
 			SceneManager.LoadScene ("ElementsInfo");
 		}
 
-		public void BackToLauncherScene() {
+		public void BackToLauncherScene ()
+		{
 			SceneManager.LoadScene ("Launcher");
 		}
 

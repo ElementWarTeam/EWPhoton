@@ -10,13 +10,8 @@ namespace Com.EW.MyGame
 	public class MyScoreUI : MonoBehaviour
 	{
 
-
 		#region Public Properties
 
-		//		[Tooltip ("UI text to display Player's Score")]
-		//		public Text PlayerScore;
-
-	
 		[Tooltip ("Ult button to show percentage of ult energy")]
 		public Button UltButton;
 
@@ -36,39 +31,21 @@ namespace Com.EW.MyGame
 
 		#region MonoBehaviour Messages
 
-		void Awake ()
-		{
-			// A player UI must be represented in a Canvas
-//			this.transform.SetParent (GameObject.Find ("Canvas").GetComponent<Transform> ());
-//			this.transform.localPosition = new Vector2 (-150f, 400f);
-
-		}
-
-		void Start ()
-		{	
-			
-		}
-
 		void Update ()
 		{
 			if (playerInfo == null)
 				return;
 
-			// Update Score Earned
-//			if (PlayerScore != null) {
-//				PlayerScore.text = playerInfo.score.ToString ();
-//			}
-
 			// Update Ult Energy
 			if (playerInfo.energy >= 100f) {
-				playerInfo.energy = 100f; // TODO: add to constant
+				playerInfo.energy = 100f; // TODO: @Cairu add to constant
 				UltButton.GetComponentInChildren<Text> ().text = "Ult";
 				playerInfo.isUltReady = true;
 			}
 
 			if (playerInfo.energy != 100f) {
 				playerInfo.isUltReady = false;
-				playerInfo.energy += 0.18f; // TODO: add to constant
+				playerInfo.energy += 0.18f; // TODO: @Cairu add to constant
 				float energy = playerInfo.energy;
 				UltButton.GetComponentInChildren<Text> ().text = energy.ToString ("0") + "%";
 				if (energy < 50) {
@@ -76,7 +53,6 @@ namespace Com.EW.MyGame
 				} else {
 					UltButton.GetComponentInChildren<Text> ().color = Color.white;
 				}
-
 			}
 				
 			// Update Ult Percentage

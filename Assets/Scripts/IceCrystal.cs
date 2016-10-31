@@ -17,9 +17,6 @@ namespace Com.EW.MyGame
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
 
-		// Special effect of ice crystal
-		private PlayerInfo playerBeHitted;
-
 		void Start ()
 		{
 			audioSource = GetComponent<AudioSource> ();
@@ -29,28 +26,33 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-//			if (photonView.isMine == false && PhotonNetwork.connected == true) {
-//				return;
-//			}
+			// Hit obj 
+			Debug.Log ("IceCrystal: " + owner.name + "'s fireball hits " + obj.name);
 
-			// IceCrystal hit an element, which is not the owner of the IceCrystal
-			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-				Debug.Log ("IceCrystal: " + owner.name + "'s iceCrystal hits " + obj.name);
-				playerBeHitted = obj.GetComponent<PlayerInfo> ();
-				playerBeHitted.health -= damage;
-				owner.GetComponent <PlayerInfo> ().score += 10;
-				shouldBeDestroied = true;
-				audioSource.PlayOneShot (hitAudio);
-				GetComponent <Renderer> ().enabled = false;
+			if (obj.CompareTag ("Element")) {
+				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
+					HideSelf ();
+					if (photonView.isMine == true && PhotonNetwork.connected == true) {
+						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
+//						pv.RPC ("ChangeSpeed", PhotonTargets.All, ???); TODO: @Cairu
+						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
+					}
+				}
 			}
 
 			if (obj.CompareTag ("Obstacle")) {
+				HideSelf ();
 				shouldBeDestroied = true;
 				audioSource.PlayOneShot (hitAudio);
-				GetComponent <Renderer> ().enabled = false;
-				GetComponent <Collider2D> ().enabled = false;
 			}
 
+		}
+
+		void HideSelf ()
+		{
+			GetComponent <Renderer> ().enabled = false;
+			GetComponent <Collider2D> ().enabled = false;
 		}
 
 		void Update ()

@@ -179,6 +179,14 @@ namespace Com.EW.MyGame
 		{
 			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+
+			// player ultra button
+			UltraUI = GameObject.Find ("UltUI");
+			if (UltraUI != null) {
+				UltraUI.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+			} else {
+				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> UltraUI reference on player Prefab.", this);
+			}
 		}
 
 		// The player take damage here
@@ -220,7 +228,7 @@ namespace Com.EW.MyGame
 				IsFiring = false;
 			}
 
-			if (CrossPlatformInputManager.GetButtonUp ("Ultra") && playerInfo.isUltReady == true) {
+			if (CrossPlatformInputManager.GetButtonUp ("Ultra") && playerInfo.isUltReady) {
 				UsingUltra = true;
 			} else {
 				UsingUltra = false;
@@ -317,6 +325,36 @@ namespace Com.EW.MyGame
 		public void TakeDamage (float damage)
 		{
 			playerInfo.takeDamage (damage);
+		}
+
+		[PunRPC]
+		public void TakeContinousDamage (float damage)
+		{
+			playerInfo.takeContinousDamage (damage);
+		}
+
+		[PunRPC]
+		public void AddHealth (float health)
+		{
+			playerInfo.addHealth (health);
+		}
+
+		[PunRPC]
+		public void AddScore (float score)
+		{
+			playerInfo.addScore (score);
+		}
+
+		[PunRPC]
+		public void ChangeSpeed (float speedDelta)
+		{
+			playerInfo.changeSpeed (speedDelta);
+		}
+
+		[PunRPC]
+		public void ChangeDenfense (float defenseDeltaDelta)
+		{
+			playerInfo.changeDenfense (defenseDeltaDelta);
 		}
 	}
 }

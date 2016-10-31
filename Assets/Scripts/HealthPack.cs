@@ -19,6 +19,9 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
 			if (initiateTime + LiveTime <= Time.time) {
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);
@@ -30,14 +33,13 @@ namespace Com.EW.MyGame
 			// if player collide with obstacle
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("HealthPack: an element hits me");
-				PlayerInfo playerHitted = obj.GetComponent<PlayerInfo> ();
-				playerHitted.score += 10f;
-				playerHitted.health += Constant.HealthPackRecover;
-				if (playerHitted.health > playerHitted.initialHealth) {
-					playerHitted.health = playerHitted.initialHealth;
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+					pv.RPC ("AddHealth", PhotonTargets.All, Constant.HealthPackRecover);
+					pv.RPC ("AddScore", PhotonTargets.All, Constant.HealthPackRecover);
+					PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+					Destroy (gameObject);
 				}
-				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-				Destroy (gameObject);
 			}
 
 		}

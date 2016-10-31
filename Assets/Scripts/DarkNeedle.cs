@@ -29,28 +29,32 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			if (photonView.isMine == false && PhotonNetwork.connected == true) {
-				return;
-			}
+			// Hit obj 
+			Debug.Log ("DarkNeedle: " + owner.name + "'s DarkNeedle hits " + obj.name);
 
-			// Fireball hit an element, which is not the owner of the fireball
-			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-				Debug.Log ("DarkNeedle: " + owner.name + "'s DarkNeedle hits " + obj.name);
-				playerBeHitted = obj.GetComponent<PlayerInfo> ();
-				playerBeHitted.health -= damage;
-				owner.GetComponent <PlayerInfo> ().score += 10;
-				shouldBeDestroied = true;
-				audioSource.PlayOneShot (hitAudio);
-				GetComponent <Renderer> ().enabled = false;
+			if (obj.CompareTag ("Element")) {
+				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
+					HideSelf ();
+					if (photonView.isMine == true && PhotonNetwork.connected == true) {
+						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
+						owner.GetComponent <PhotonView> ().RPC ("AddHealth", PhotonTargets.All, damage); // TODO: @Cairu: should be partial of the damage and calcualetd in DarkElement
+						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
+					}
+				}
 			}
 
 			if (obj.CompareTag ("Obstacle")) {
+				HideSelf ();
 				shouldBeDestroied = true;
 				audioSource.PlayOneShot (hitAudio);
-				GetComponent <Renderer> ().enabled = false;
-				GetComponent <Collider2D> ().enabled = false;
 			}
+		}
 
+		void HideSelf ()
+		{
+			GetComponent <Renderer> ().enabled = false;
+			GetComponent <Collider2D> ().enabled = false;
 		}
 
 		void Update ()

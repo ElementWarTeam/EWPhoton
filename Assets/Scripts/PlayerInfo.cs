@@ -37,9 +37,35 @@ namespace Com.EW.MyGame
 
 		public void takeDamage (float damage)
 		{
-			if (photonView.isMine) {
-				this.health -= damage;
+			this.health -= damage * (1f - defense);
+		}
+
+		public void takeContinousDamage (float continousDamage)
+		{
+			// TODO
+		}
+
+		public void addHealth (float health)
+		{
+			this.health += health;
+			if (this.health > initialHealth) {
+				this.health = initialHealth;
 			}
+		}
+
+		public void addScore (float score)
+		{
+			this.score += score;
+		}
+
+		public void changeSpeed (float speedDelta)
+		{
+			this.speed += speedDelta;
+		}
+
+		public void changeDenfense (float defenseDelta)
+		{
+			this.defense += defenseDelta;
 		}
 
 		#region IPunObservable implementation

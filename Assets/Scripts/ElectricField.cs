@@ -14,6 +14,7 @@ namespace Com.EW.MyGame
 		private PlayerInfo owner;
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
+		private float nextContinousDamageTime = 0f;
 
 		public float existTime = Constant.ElectricFieldLiveTime;
 
@@ -25,6 +26,7 @@ namespace Com.EW.MyGame
 			audioSource = GetComponent<AudioSource> ();
 			audioSource.PlayOneShot (electricFieldOnAudio);
 			initiateTime = Time.time;
+			nextContinousDamageTime = initiateTime;
 		}
 	
 		// Update is called once per frame
@@ -45,26 +47,37 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			if (photonView.isMine == false && PhotonNetwork.connected == true) {
-				return;
-			}
-
-			// ElectricArc hit an element, which is not the owner of the ElectricArc
-			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-				Debug.Log ("ElectricArc: " + owner.name + "'s ElectricArc hits " + obj.name);
-				PlayerInfo playerBeHitted = obj.GetComponent<PlayerInfo> ();
-				playerBeHitted.health -= continousDamage;
-				owner.GetComponent <PlayerInfo> ().score += 10;
-				audioSource.PlayOneShot (electricFieldHittingAudio);
-				GetComponent <Renderer> ().enabled = false;
-			}
-
 			if (obj.CompareTag ("Obstacle")) {
-				audioSource.PlayOneShot (electricFieldHittingAudio);
 				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
 				Destroy (obj);
 			}
 		}
+
+		void OnTriggerStay2D (Collider2D obj)
+		{
+			// Hit obj 
+			Debug.Log ("OnTriggerStay2D: " + owner.name + "'s electric field hits " + obj.name);
+
+			if (obj.CompareTag ("Element")) {
+				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
+					if (photonView.isMine == true && PhotonNetwork.connected == true) {
+						if (nextContinousDamageTime < Time.time) {
+							PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+							nextContinousDamageTime = Time.time + 0.1f; // TODO: @Cairu
+							pv.RPC ("TakeDamage", PhotonTargets.All, continousDamage); // TODO: @Cairu
+							owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, 1f); // TODO: @Cairu
+						}
+
+					}
+				}
+			}
+
+			if (obj.CompareTag ("Obstacle")) {
+				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
+				Destroy (obj);
+			}
+		}
+
 
 		// Getters and Setters
 
