@@ -29,7 +29,7 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			if (!photonView.isMine) {
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
 
@@ -55,6 +55,10 @@ namespace Com.EW.MyGame
 
 		void Update ()
 		{
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
+
 			if (playerBeHitted != null) {
 				playerBeHitted.health -= continousDamage;
 			}

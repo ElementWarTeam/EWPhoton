@@ -30,6 +30,10 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
+
 			if (initiateTime + existTime <= Time.time) {
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);
@@ -41,7 +45,7 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			if (!photonView.isMine) {
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
 

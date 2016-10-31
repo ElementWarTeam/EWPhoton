@@ -1,37 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System.Text;
 
-public class DebugController : MonoBehaviour
+namespace Com.EW.MyGame
 {
-
-	public GameObject obstaclePrefabs;
-	public GameObject player;
-	public Camera myCamera;
-
-	// Use this for initialization
-	void Start ()
+	public class DebugController : MonoBehaviour
 	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		#if UNITY_IOS
-		if (Input.touchCount > 0 && Input.GetTouch (0).phase == TouchPhase.Ended) {
-			Vector2 position = Input.GetTouch (0).position;
-			Vector2 point = myCamera.ScreenToWorldPoint (position);
-			Instantiate (obstaclePrefabs, point, Quaternion.identity);
+		private Text text;
+		private static DebugController instance;
+
+		// Use this for initialization
+		void Start ()
+		{
+			instance = this;
+			text = GetComponent <Text> ();
+			text.text = "Debug Information\n";
 		}
-		#endif
-
-		#if UNITY_EDITOR
-		if (Input.GetMouseButtonUp (0)) {
-			Vector2 point = myCamera.ScreenToWorldPoint (Input.mousePosition);
-			Instantiate (obstaclePrefabs, point, Quaternion.identity);
+	
+		// Update is called once per frame
+		void Update ()
+		{
+		
 		}
-		#endif
 
-
+		public static void displayPlayerInfo (PlayerInfo playerInfo)
+		{
+			StringBuilder builder = new StringBuilder ();
+			builder.AppendLine ("Debug Information");
+			builder.AppendLine ("Position: " + playerInfo.transform.position);
+			builder.AppendLine ("Score: " + playerInfo.score);
+			builder.AppendLine ("Health: " + playerInfo.health + "/" + playerInfo.initialHealth);
+			builder.AppendLine ("Energy: " + playerInfo.energy + "/" + playerInfo.initialEnergy);
+			builder.AppendLine ("Speed: " + playerInfo.speed);
+			builder.AppendLine ("Defense: " + playerInfo.defense);
+			builder.AppendLine ("Fire Rate: " + playerInfo.fireRate);
+			instance.text.text = builder.ToString ();
+		}
 	}
 }

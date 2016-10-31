@@ -136,6 +136,8 @@ namespace Com.EW.MyGame
 			if (UsingUltra) {
 				UseUltra ();
 			}
+			// Debug
+			DebugController.displayPlayerInfo (playerInfo);
 			return;
 
 		}

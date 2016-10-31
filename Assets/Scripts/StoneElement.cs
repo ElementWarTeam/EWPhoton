@@ -34,6 +34,9 @@ namespace Com.EW.MyGame
 
 		void Update ()
 		{
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
 			if (isCharging) {
 				playerInfo.defense *= 3; // TODO
 				if (chargeInitiateTime + chargingTime < Time.time) {

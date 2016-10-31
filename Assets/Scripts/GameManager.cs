@@ -64,7 +64,8 @@ namespace Com.EW.MyGame
 			Vector2 point = new Vector2 (0.0f, 0.0f);
 			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
 			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
-			PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
+			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
+			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBloodPack ()
