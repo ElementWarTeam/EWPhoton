@@ -58,9 +58,9 @@ namespace Com.EW.MyGame
 		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
 		{
 			if (stream.isWriting) {
-				// Nothing to write
+				stream.SendNext (playerInfo.health);
 			} else {
-				// Nothing to receive
+				this.playerInfo.health = (float)stream.ReceiveNext ();
 			}
 		}
 

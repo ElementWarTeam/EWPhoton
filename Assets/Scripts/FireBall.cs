@@ -37,8 +37,11 @@ namespace Com.EW.MyGame
 			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
 				Debug.Log ("FireBall: " + owner.name + "'s fireball hits " + obj.name);
 				playerBeHitted = obj.GetComponent<PlayerInfo> ();
-				playerBeHitted.health -= damage;
-				owner.GetComponent <PlayerInfo> ().score += 10;
+//				playerBeHitted.health -= damage;
+//				owner.GetComponent <PlayerInfo> ().score += 10;
+
+				obj.transform.GetComponent<PhotonView> ().RPC ("TakeDamage", PhotonTargets.All, damage);
+
 				shouldBeDestroied = true;
 				audioSource.PlayOneShot (hitAudio);
 				GetComponent <Renderer> ().enabled = false;

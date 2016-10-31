@@ -33,7 +33,7 @@ namespace Com.EW.MyGame
 		public GameObject PlayerScorePrefab;
 
 		// OOP
-		public PlayerInfo playerInfo;
+		PlayerInfo playerInfo;
 		public bool IsFiring;
 		public bool UsingUltra;
 
@@ -56,13 +56,15 @@ namespace Com.EW.MyGame
 		{
 			// #Important
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
+//			if (photonView.isMine) {
+			// SETUP PLAYER INFO
+			playerInfo = this.GetComponent <PlayerInfo> ();
+			playerInfo.playerId = "player name";
+			playerInfo.type = PlayerManager.LocalPlayerType;
 			if (photonView.isMine) {
-				// SETUP PLAYER INFO
-				playerInfo = this.GetComponent <PlayerInfo> ();
-				playerInfo.playerId = "player name";
-				playerInfo.type = PlayerManager.LocalPlayerType;
 				PlayerManager.LocalPlayerInstance = this.gameObject;
 			}
+//			}
 			// #Critical
 			// we flag as don't destroy on load so that instance survives level synchronization, thus giving a seamless experience when levels load.
 			DontDestroyOnLoad (this.gameObject);
@@ -306,5 +308,11 @@ namespace Com.EW.MyGame
 		}
 
 		#endregion
+
+		[PunRPC]
+		public void TakeDamage (float damage)
+		{
+			playerInfo.takeDamage (damage);
+		}
 	}
 }
