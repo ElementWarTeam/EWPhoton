@@ -49,10 +49,10 @@ namespace Com.EW.MyGame
 		{
 			// Update Score Earned
 			if (PlayerScore != null) {
-				PlayerScore.text = "1000";
+				PlayerScore.text = playerInfo.score.ToString();
 			}
 
-			// update Ult Energy
+			// Update Ult Energy
 			if (playerInfo.energy >= 100f) {
 				playerInfo.energy = 100f;
 				UltButton.GetComponentInChildren<Text> ().text = "Ult Ready";
@@ -65,7 +65,7 @@ namespace Com.EW.MyGame
 				UltButton.GetComponentInChildren<Text> ().text = "Ult\n" + playerInfo.energy.ToString("0") + "%";
 			}
 				
-
+			// Update Ult Percentage
 			innerImage.fillAmount = playerInfo.energy / 100f;
 
 		
