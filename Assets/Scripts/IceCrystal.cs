@@ -32,9 +32,9 @@ namespace Com.EW.MyGame
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			if (photonView.isMine == false && PhotonNetwork.connected == true) {
-				return;
-			}
+//			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+//				return;
+//			}
 
 			// IceCrystal hit an element, which is not the owner of the IceCrystal
 			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {

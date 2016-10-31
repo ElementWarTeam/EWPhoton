@@ -13,8 +13,8 @@ namespace Com.EW.MyGame
 
 		#region Public Properties
 
-		[Tooltip ("UI text to display Player's Score")]
-		public Text PlayerScore;
+		//		[Tooltip ("UI text to display Player's Score")]
+		//		public Text PlayerScore;
 
 	
 		[Tooltip ("Ult button to show percentage of ult energy")]
@@ -39,30 +39,44 @@ namespace Com.EW.MyGame
 		void Awake ()
 		{
 			// A player UI must be represented in a Canvas
-			this.GetComponent<Transform> ().SetParent (GameObject.Find ("Canvas").GetComponent<Transform> ());
+//			this.transform.SetParent (GameObject.Find ("Canvas").GetComponent<Transform> ());
+//			this.transform.localPosition = new Vector2 (-150f, 400f);
 
 		}
+
+		void Start ()
+		{	
 			
-			
+		}
 
 		void Update ()
 		{
+			if (playerInfo == null)
+				return;
+
 			// Update Score Earned
-			if (PlayerScore != null) {
-				PlayerScore.text = playerInfo.score.ToString();
-			}
+//			if (PlayerScore != null) {
+//				PlayerScore.text = playerInfo.score.ToString ();
+//			}
 
 			// Update Ult Energy
 			if (playerInfo.energy >= 100f) {
-				playerInfo.energy = 100f;
-				UltButton.GetComponentInChildren<Text> ().text = "Ult Ready";
+				playerInfo.energy = 100f; // TODO: add to constant
+				UltButton.GetComponentInChildren<Text> ().text = "Ult";
 				playerInfo.isUltReady = true;
 			}
 
 			if (playerInfo.energy != 100f) {
 				playerInfo.isUltReady = false;
-				playerInfo.energy += 0.18f;
-				UltButton.GetComponentInChildren<Text> ().text = "Ult\n" + playerInfo.energy.ToString("0") + "%";
+				playerInfo.energy += 0.18f; // TODO: add to constant
+				float energy = playerInfo.energy;
+				UltButton.GetComponentInChildren<Text> ().text = energy.ToString ("0") + "%";
+				if (energy < 50) {
+					UltButton.GetComponentInChildren<Text> ().color = Color.black;
+				} else {
+					UltButton.GetComponentInChildren<Text> ().color = Color.white;
+				}
+
 			}
 				
 			// Update Ult Percentage

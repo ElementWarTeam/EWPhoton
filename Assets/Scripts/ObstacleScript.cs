@@ -34,10 +34,12 @@ namespace Com.EW.MyGame
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			// if player collide with obstacle
+
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("Obstacle: an element hits me");
-				obj.GetComponent<PlayerInfo> ().health -= Constant.ObstacleCollisionDamage;
+//				obj.GetComponent<PlayerInfo> ().health -= Constant.ObstacleCollisionDamage;
 				ResistanceCount = 0;
+				obj.transform.GetComponent<PhotonView> ().RPC ("TakeDamage", PhotonTargets.All, Constant.ObstacleCollisionDamage);
 			}
 
 			if (obj.CompareTag ("Bullet")) {

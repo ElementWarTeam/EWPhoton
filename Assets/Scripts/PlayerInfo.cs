@@ -35,6 +35,13 @@ namespace Com.EW.MyGame
 
 		}
 
+		public void takeDamage (float damage)
+		{
+			if (photonView.isMine) {
+				this.health -= damage;
+			}
+		}
+
 		#region IPunObservable implementation
 
 		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
