@@ -41,17 +41,11 @@ namespace Com.EW.MyGame
 				Debug.Log ("FireBall: " + owner.name + "'s fireball hits " + obj.name);
 				hitTime = Time.time;
 				playerBeHitted = obj.GetComponent<PlayerInfo> ();
-<<<<<<< HEAD
 				// damage formula
 				playerBeHitted.health -= (1 - playerBeHitted.defense) * damage;
 				owner.GetComponent <PlayerInfo> ().score += 10;
-=======
-//				playerBeHitted.health -= damage;
-//				owner.GetComponent <PlayerInfo> ().score += 10;
-
 				obj.transform.GetComponent<PhotonView> ().RPC ("TakeDamage", PhotonTargets.All, damage);
 
->>>>>>> 9de5bd5bcbdcffd974c3e400576f4a01e8d0af6c
 				shouldBeDestroied = true;
 				audioSource.PlayOneShot (hitAudio);
 				GetComponent <Renderer> ().enabled = false;
