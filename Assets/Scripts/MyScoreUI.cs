@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
-
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace Com.EW.MyGame
@@ -13,12 +13,14 @@ namespace Com.EW.MyGame
 
 		#region Public Properties
 
-		[Tooltip ("UI Slider to display Player's Score")]
-		public Slider PlayerScoreSlider;
+		[Tooltip ("UI text to display Player's Score")]
+		public Text PlayerScore;
 
 	
-		[Tooltip ("UI Slider to display Player's Energy")]
-		public Slider PlayerEnergySlider;
+		[Tooltip ("Ult button to show percentage of ult energy")]
+		public Button UltButton;
+
+		public Image innerImage;
 
 		#endregion
 
@@ -26,6 +28,7 @@ namespace Com.EW.MyGame
 		#region Private Properties
 
 		PlayerManager _target;
+		PlayerInfo playerInfo;
 
 
 		#endregion
@@ -39,31 +42,33 @@ namespace Com.EW.MyGame
 			this.GetComponent<Transform> ().SetParent (GameObject.Find ("Canvas").GetComponent<Transform> ());
 
 		}
+			
+			
 
 		void Update ()
 		{
-
-			// Reflect the Player Health
-//			if (PlayerHealthSlider != null) {
-//				PlayerHealthSlider.value = _target.Health;
-//			}
-
 			// Update Score Earned
-			if (PlayerScoreSlider != null) {
-				float damageDealt = 0f;
-
-				// first, based on survive time, increase 0.0002f each update
-				PlayerScoreSlider.value += 0.0002f;
-
-				// second, based on damage the player dealt to others
-				PlayerScoreSlider.value += (damageDealt / 10);
+			if (PlayerScore != null) {
+				PlayerScore.text = "1000";
 			}
 
 			// update Ult Energy
-			if (PlayerEnergySlider != null) {
-				PlayerEnergySlider.value += 0.0002f;
+			if (playerInfo.energy >= 100f) {
+				playerInfo.energy = 100f;
+				UltButton.GetComponentInChildren<Text> ().text = "Ult Ready";
+				playerInfo.isUltReady = true;
 			}
 
+			if (playerInfo.energy != 100f) {
+				playerInfo.isUltReady = false;
+				playerInfo.energy += 0.18f;
+				UltButton.GetComponentInChildren<Text> ().text = "Ult\n" + playerInfo.energy.ToString("0") + "%";
+			}
+				
+
+			innerImage.fillAmount = playerInfo.energy / 100f;
+
+		
 			// Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
 			if (_target == null) {
 				Destroy (this.gameObject);
@@ -88,6 +93,9 @@ namespace Com.EW.MyGame
 			}
 			// Cache references for efficiency
 			_target = target;
+			playerInfo = _target.GetComponent<PlayerInfo> ();
+			Debug.Log ("init energy: " + playerInfo.energy);
+			Debug.Log ("init health: " + playerInfo.health);
 
 //			Debug.Log ("At this time, _target has been set");
 		}
