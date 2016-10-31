@@ -23,7 +23,7 @@ namespace Com.EW.MyGame
 	/// </summary>
 	public class PlayerManager : Photon.PunBehaviour, IPunObservable
 	{
-		
+
 		#region Public Variables
 
 		public static GameObject LocalPlayerInstance;
@@ -224,7 +224,7 @@ namespace Com.EW.MyGame
 				IsFiring = false;
 			}
 
-			if (CrossPlatformInputManager.GetButtonUp ("Ultra")) {
+			if (CrossPlatformInputManager.GetButtonUp ("Ultra") && playerInfo.isUltReady == true) {
 				UsingUltra = true;
 			} else {
 				UsingUltra = false;
@@ -271,15 +271,23 @@ namespace Com.EW.MyGame
 			switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
 			case Constant.FireElementType:
 				this.GetComponent <FireElement> ().useUltra (this.transform.position);
+				playerInfo.isUltReady = false;
+				playerInfo.energy = 0f;
 				break;
 			case Constant.ElectricElementType:
 				this.GetComponent <ElectricElement> ().useUltra (this.transform.position);
+				playerInfo.isUltReady = false;
+				playerInfo.energy = 0f;
 				break;
 			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().useUltra (this.transform.position);
+				playerInfo.isUltReady = false;
+				playerInfo.energy = 0f;
 				break;
 			case Constant.DarkElementType:
 				this.GetComponent <DarkElement> ().useUltra (this.transform.position);
+				playerInfo.isUltReady = false;
+				playerInfo.energy = 0f;
 				break;
 			case "StoneElement":
 				// TODO

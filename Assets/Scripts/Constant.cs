@@ -26,7 +26,7 @@ namespace Com.EW.MyGame
 		public const float FireElementInitialSpeed = 100f;
 		public const float FireElementInitialDefensePercentage = 0.1f;
 		public const float FireElementInitialFireRate = 1f;
-		public const float FireElementInitialEnergy = 100f;
+		public const float FireElementInitialEnergy = 0f;
 		public const float FireElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Electric element player information
@@ -35,7 +35,7 @@ namespace Com.EW.MyGame
 		public const float ElectricElementInitialSpeed = 120f;
 		public const float ElectricElementInitialDefensePercentage = 0.1f;
 		public const float ElectricElementInitialFireRate = 1f;
-		public const float ElectricElementInitialEnergy = 100f;
+		public const float ElectricElementInitialEnergy = 0f;
 		public const float ElectricElementInitialEnergyRecoverRatePercentage = 0.05f;
 		public const float ElectricFieldContinousDamage = 10f;
 
@@ -45,7 +45,7 @@ namespace Com.EW.MyGame
 		public const float IceElementInitialSpeed = 120f;
 		public const float IceElementInitialDefensePercentage = 0.1f;
 		public const float IceElementInitialFireRate = 1f;
-		public const float IceElementInitialEnergy = 100f;
+		public const float IceElementInitialEnergy = 0f;
 		public const float IceElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Dark element player information
@@ -54,7 +54,7 @@ namespace Com.EW.MyGame
 		public const float DarkElementInitialSpeed = 120f;
 		public const float DarkElementInitialDefensePercentage = 0.1f;
 		public const float DarkElementInitialFireRate = 1f;
-		public const float DarkElementInitialEnergy = 100f;
+		public const float DarkElementInitialEnergy = 0f;
 		public const float DarkElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Stone element player information
@@ -63,7 +63,7 @@ namespace Com.EW.MyGame
 		public const float StoneElementInitialSpeed = 120f;
 		public const float StoneElementInitialDefensePercentage = 0.1f;
 		public const float StoneElementInitialFireRate = 0.5f;
-		public const float StoneElementInitialEnergy = 100f;
+		public const float StoneElementInitialEnergy = 0f;
 		public const float StoneElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Bullet

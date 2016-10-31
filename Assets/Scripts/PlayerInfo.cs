@@ -19,6 +19,7 @@ namespace Com.EW.MyGame
 		public float energyRecoverRate;
 		public float initialHealth;
 		public float initialEnergy;
+		public bool isUltReady;
 
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
@@ -31,6 +32,7 @@ namespace Com.EW.MyGame
 			this.energy = initialEnergy;
 			this.initialEnergy = initialEnergy;
 			this.energyRecoverRate = energyRecoverRate;
+
 		}
 
 		public void takeDamage (float damage)
@@ -55,6 +57,7 @@ namespace Com.EW.MyGame
 				stream.SendNext (fireRate);
 				stream.SendNext (initialEnergy);
 				stream.SendNext (energyRecoverRate);
+				stream.SendNext (isUltReady);
 			} else {
 				// Network player, receive data
 				this.score = (float)stream.ReceiveNext ();
@@ -66,6 +69,7 @@ namespace Com.EW.MyGame
 				this.fireRate = (float)stream.ReceiveNext ();
 				this.initialEnergy = (float)stream.ReceiveNext ();
 				this.energyRecoverRate = (float)stream.ReceiveNext ();
+				this.isUltReady = (bool)stream.ReceiveNext ();
 			}
 		}
 

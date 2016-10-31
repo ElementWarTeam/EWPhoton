@@ -31,6 +31,7 @@ namespace Com.EW.MyGame
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("HealthPack: an element hits me");
 				PlayerInfo playerHitted = obj.GetComponent<PlayerInfo> ();
+				playerHitted.score += 10f;
 				playerHitted.health += Constant.HealthPackRecover;
 				if (playerHitted.health > playerHitted.initialHealth) {
 					playerHitted.health = playerHitted.initialHealth;
