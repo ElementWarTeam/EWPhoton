@@ -97,6 +97,15 @@ namespace Com.EW.MyGame
 			PhotonNetwork.LeaveRoom ();
 		}
 
+
+		public void LoadTutorialScene() {
+			SceneManager.LoadScene ("ElementsInfo");
+		}
+
+		public void BackToLauncherScene() {
+			SceneManager.LoadScene ("Launcher");
+		}
+
 		#endregion
 
 		#region Private Methods
