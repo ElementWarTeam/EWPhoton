@@ -10,12 +10,15 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
-		public float continousDamage;
+		public float continousFireBallHealthDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
+
+		//the time hit other element
+		private float hitTime = 0f;
 
 		// Special effect of fireball
 		private PlayerInfo playerBeHitted;
@@ -36,8 +39,10 @@ namespace Com.EW.MyGame
 			// Fireball hit an element, which is not the owner of the fireball
 			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
 				Debug.Log ("FireBall: " + owner.name + "'s fireball hits " + obj.name);
+				hitTime = Time.time;
 				playerBeHitted = obj.GetComponent<PlayerInfo> ();
-				playerBeHitted.health -= damage;
+				// damage formula
+				playerBeHitted.health -= (1 - playerBeHitted.defense) * damage;
 				owner.GetComponent <PlayerInfo> ().score += 10;
 				shouldBeDestroied = true;
 				audioSource.PlayOneShot (hitAudio);
@@ -59,8 +64,8 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-			if (playerBeHitted != null) {
-				playerBeHitted.health -= continousDamage;
+			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
+				playerBeHitted.health -= (1 - playerBeHitted.defense) * continousFireBallHealthDamage;
 			}
 
 			if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + Constant.LiveTime <= Time.time)) {
@@ -88,13 +93,13 @@ namespace Com.EW.MyGame
 			if (stream.isWriting) {
 				// We own this player: send the others our data
 				stream.SendNext (damage);
-				stream.SendNext (continousDamage);
+				stream.SendNext (continousFireBallHealthDamage);
 				stream.SendNext (initiateTime);
 				stream.SendNext (shouldBeDestroied);
 			} else {
 				// Network player, receive data
 				this.damage = (float)stream.ReceiveNext ();
-				this.continousDamage = (float)stream.ReceiveNext ();
+				this.continousFireBallHealthDamage = (float)stream.ReceiveNext ();
 				this.initiateTime = (float)stream.ReceiveNext ();
 				this.shouldBeDestroied = (bool)stream.ReceiveNext ();
 			}

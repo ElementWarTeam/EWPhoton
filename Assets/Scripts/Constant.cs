@@ -31,44 +31,47 @@ namespace Com.EW.MyGame
 
 		// Electric element player information
 		public const float ElectricElementInitialHealth = 80f;
-		public const float ElectricElementInitialElectricArcDamage = 5f;
+		public const float ElectricElementInitialElectricArcDamage = 6f;
 		public const float ElectricElementInitialSpeed = 120f;
-		public const float ElectricElementInitialDefensePercentage = 0.1f;
-		public const float ElectricElementInitialFireRate = 1f;
-		public const float ElectricElementInitialEnergy = 0f;
+		public const float ElectricElementInitialDefensePercentage = 0.5f;
+		public const float ElectricElementInitialFireRate = 3f;
+		public const float ElectricElementInitialEnergy = 100f;
 		public const float ElectricElementInitialEnergyRecoverRatePercentage = 0.05f;
 		public const float ElectricFieldContinousDamage = 10f;
 
 		// Ice element player information
-		public const float IceElementInitialHealth = 80f;
+		public const float IceElementInitialHealth = 100f;
 		public const float IceElementInitialIceCystalDamage = 5f;
-		public const float IceElementInitialSpeed = 120f;
-		public const float IceElementInitialDefensePercentage = 0.1f;
+		public const float IceElementInitialSpeed = 110f;
+		public const float IceElementInitialDefensePercentage = 0.15f;
 		public const float IceElementInitialFireRate = 1f;
-		public const float IceElementInitialEnergy = 0f;
+		public const float IceElementInitialEnergy = 100f;
 		public const float IceElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Dark element player information
-		public const float DarkElementInitialHealth = 80f;
+		public const float DarkElementInitialHealth = 90f;
 		public const float DarkElementInitialNeedleDamage = 5f;
-		public const float DarkElementInitialSpeed = 120f;
+		public const float DarkElementInitialSpeed = 100f;
 		public const float DarkElementInitialDefensePercentage = 0.1f;
-		public const float DarkElementInitialFireRate = 1f;
-		public const float DarkElementInitialEnergy = 0f;
+		public const float DarkElementInitialFireRate = 2f;
+		public const float DarkElementInitialEnergy = 100f;
 		public const float DarkElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Stone element player information
-		public const float StoneElementInitialHealth = 80f;
-		public const float StoneElementInitialNeedleDamage = 5f;
-		public const float StoneElementInitialSpeed = 120f;
-		public const float StoneElementInitialDefensePercentage = 0.1f;
+		public const float StoneElementInitialHealth = 200f;
+		public const float StoneElementInitialNeedleDamage = 20f;
+		public const float StoneElementInitialSpeed = 70f;
+		public const float StoneElementInitialDefensePercentage = 0.2f;
 		public const float StoneElementInitialFireRate = 0.5f;
-		public const float StoneElementInitialEnergy = 0f;
+		public const float StoneElementInitialEnergy = 100f;
 		public const float StoneElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Bullet
-		public const float FireBallSpeed = 150f;
-		public const float IceCystalSpeed = 150f;
+		public const float FireBallSpeed = 200f;
+		public const float IceCystalSpeed = 180f;
+		public const float ElectricArcSpeed = 240f;
+		public const float DarkNeedleSpeed = 200f;
+		public const float BasicEffectTime = 3;
 		public const float LiveTime = 5;
 		public const float ElectricFieldLiveTime = 10;
 

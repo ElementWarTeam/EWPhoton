@@ -10,6 +10,7 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
+		public float electricArcPenetrationDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
@@ -36,7 +37,9 @@ namespace Com.EW.MyGame
 			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
 				Debug.Log ("ElectricArc: " + owner.name + "'s ElectricArc hits " + obj.name);
 				playerBeHitted = obj.GetComponent<PlayerInfo> ();
+				// damage formula: first damage, then penetrate
 				playerBeHitted.health -= damage;
+				playerBeHitted.defense *= (1 - electricArcPenetrationDamage);
 				owner.GetComponent <PlayerInfo> ().score += 10;
 				shouldBeDestroied = true;
 				audioSource.PlayOneShot (hitAudio);

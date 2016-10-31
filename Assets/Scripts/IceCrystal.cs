@@ -10,12 +10,15 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
-		public float continousDamage;
+		public float continousIceCrystalSpeedDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
+
+		//the time hit other element
+		private float hitTime = 0f;
 
 		// Special effect of ice crystal
 		private PlayerInfo playerBeHitted;
@@ -37,6 +40,9 @@ namespace Com.EW.MyGame
 			if (obj.CompareTag ("Element") && !obj.GetComponent<PlayerInfo> ().Equals (owner)) {
 				Debug.Log ("IceCrystal: " + owner.name + "'s iceCrystal hits " + obj.name);
 				playerBeHitted = obj.GetComponent<PlayerInfo> ();
+				hitTime = Time.time;
+				// damage formula
+				playerBeHitted.health -= (1 - playerBeHitted.defense) * damage;
 				playerBeHitted.health -= damage;
 				owner.GetComponent <PlayerInfo> ().score += 10;
 				shouldBeDestroied = true;
@@ -57,6 +63,10 @@ namespace Com.EW.MyGame
 		{
 			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
+			}
+
+			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
+				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 			}
 			
 			if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + Constant.LiveTime <= Time.time)) {
@@ -84,13 +94,13 @@ namespace Com.EW.MyGame
 			if (stream.isWriting) {
 				// We own this player: send the others our data
 				stream.SendNext (damage);
-				stream.SendNext (continousDamage);
+				stream.SendNext (continousIceCrystalSpeedDamage);
 				stream.SendNext (initiateTime);
 				stream.SendNext (shouldBeDestroied);
 			} else {
 				// Network player, receive data
 				this.damage = (float)stream.ReceiveNext ();
-				this.continousDamage = (float)stream.ReceiveNext ();
+				this.continousIceCrystalSpeedDamage = (float)stream.ReceiveNext ();
 				this.initiateTime = (float)stream.ReceiveNext ();
 				this.shouldBeDestroied = (bool)stream.ReceiveNext ();
 			}
