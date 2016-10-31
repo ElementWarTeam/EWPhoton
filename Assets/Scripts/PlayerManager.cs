@@ -30,7 +30,7 @@ namespace Com.EW.MyGame
 		public static string LocalPlayerType;
 
 		public GameObject PlayerUiPrefab;
-		public GameObject PlayerScorePrefab;
+		public GameObject UltraUI;
 
 		// OOP
 		PlayerInfo playerInfo;
@@ -96,12 +96,12 @@ namespace Com.EW.MyGame
 			}
 
 
-			// player Score
-			if (PlayerScorePrefab != null) {
-				GameObject _uiGo = Instantiate (PlayerScorePrefab) as GameObject;
-				_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
+			// player ultra button
+			UltraUI = GameObject.Find ("UltUI");
+			if (UltraUI != null) {
+				UltraUI.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
 			} else {
-				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> PlayerScorePrefab reference on player Prefab.", this);
+				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> UltraUI reference on player Prefab.", this);
 			}
 
 			// 
@@ -179,10 +179,6 @@ namespace Com.EW.MyGame
 		{
 			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
-
-			// player Score
-			GameObject _uiGo1 = Instantiate (this.PlayerScorePrefab) as GameObject;
-			_uiGo1.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
 		}
 
 		// The player take damage here
