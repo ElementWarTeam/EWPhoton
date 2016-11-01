@@ -21,6 +21,11 @@ namespace Com.EW.MyGame
 		public float initialEnergy;
 		public bool isUltReady;
 
+		private float continousNextDamageTime;
+		private float continousDamageEndTime;
+		private float continousNextSpeedDamageEndTime;
+		private float continousSpeedDamageTime;
+
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
 			this.bulletDamage = bulletDamage;
@@ -32,7 +37,14 @@ namespace Com.EW.MyGame
 			this.energy = initialEnergy;
 			this.initialEnergy = initialEnergy;
 			this.energyRecoverRate = energyRecoverRate;
+		}
 
+		void Update ()
+		{
+			// TODO: @Cairu
+//			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
+//				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
+//			}
 		}
 
 		public void takeDamage (float damage)
@@ -58,9 +70,11 @@ namespace Com.EW.MyGame
 			this.score += score;
 		}
 
-		public void changeSpeed (float speedDelta)
+		public void takeContiousSpeedDamage (float speedDelta, float time)
 		{
 			this.speed += speedDelta;
+			continousNextSpeedDamageEndTime = Time.time + 1f; // TODO: @Cairu: every 1 second
+			continousNextSpeedDamageEndTime = Time.time + time; // TODO
 		}
 
 		public void changeDenfense (float defenseDelta)

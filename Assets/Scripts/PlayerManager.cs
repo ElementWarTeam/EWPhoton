@@ -346,9 +346,9 @@ namespace Com.EW.MyGame
 		}
 
 		[PunRPC]
-		public void ChangeSpeed (float speedDelta)
+		public void TakeContiousSpeedDamage (float speedDelta, float time)
 		{
-			playerInfo.changeSpeed (speedDelta);
+			playerInfo.takeContiousSpeedDamage (speedDelta, time);
 		}
 
 		[PunRPC]

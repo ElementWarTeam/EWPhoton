@@ -10,7 +10,7 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
-		public float continousDamage;
+		public float continousFireBallHealthDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
@@ -35,7 +35,7 @@ namespace Com.EW.MyGame
 					if (photonView.isMine == true && PhotonNetwork.connected == true) {
 						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-						pv.RPC ("TakeContinousDamage", PhotonTargets.All, continousDamage);
+						pv.RPC ("TakeContinousDamage", PhotonTargets.All, continousFireBallHealthDamage);
 						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 					}
 				}
@@ -84,13 +84,13 @@ namespace Com.EW.MyGame
 			if (stream.isWriting) {
 				// We own this player: send the others our data
 				stream.SendNext (damage);
-				stream.SendNext (continousDamage);
+				stream.SendNext (continousFireBallHealthDamage);
 				stream.SendNext (initiateTime);
 				stream.SendNext (shouldBeDestroied);
 			} else {
 				// Network player, receive data
 				this.damage = (float)stream.ReceiveNext ();
-				this.continousDamage = (float)stream.ReceiveNext ();
+				this.continousFireBallHealthDamage = (float)stream.ReceiveNext ();
 				this.initiateTime = (float)stream.ReceiveNext ();
 				this.shouldBeDestroied = (bool)stream.ReceiveNext ();
 			}

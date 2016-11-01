@@ -10,6 +10,7 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
+		public float electricArcPenetrationDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;

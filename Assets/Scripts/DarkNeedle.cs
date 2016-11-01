@@ -10,12 +10,15 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
-		public float continousDamage;
+		public float continousDarkNeedleExtractDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
+
+		//the time hit other element
+		private float hitTime = 0f;
 
 		// Special effect of fireball
 		private PlayerInfo playerBeHitted;
@@ -63,8 +66,9 @@ namespace Com.EW.MyGame
 				return;
 			}
 
-			if (playerBeHitted != null) {
-				playerBeHitted.health -= continousDamage;
+			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
+				playerBeHitted.health -= continousDarkNeedleExtractDamage;
+				owner.health += continousDarkNeedleExtractDamage;
 			}
 
 			if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + Constant.LiveTime <= Time.time)) {
@@ -92,13 +96,13 @@ namespace Com.EW.MyGame
 			if (stream.isWriting) {
 				// We own this player: send the others our data
 				stream.SendNext (damage);
-				stream.SendNext (continousDamage);
+				stream.SendNext (continousDarkNeedleExtractDamage);
 				stream.SendNext (initiateTime);
 				stream.SendNext (shouldBeDestroied);
 			} else {
 				// Network player, receive data
 				this.damage = (float)stream.ReceiveNext ();
-				this.continousDamage = (float)stream.ReceiveNext ();
+				this.continousDarkNeedleExtractDamage = (float)stream.ReceiveNext ();
 				this.initiateTime = (float)stream.ReceiveNext ();
 				this.shouldBeDestroied = (bool)stream.ReceiveNext ();
 			}

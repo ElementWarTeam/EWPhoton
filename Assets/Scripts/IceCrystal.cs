@@ -10,12 +10,18 @@ namespace Com.EW.MyGame
 		public AudioClip hitAudio;
 
 		public float damage;
-		public float continousDamage;
+		public float continousIceCrystalSpeedDamage;
 
 		private PlayerInfo owner;
 		private bool shouldBeDestroied = false;
 		private AudioSource audioSource;
 		private float initiateTime = 0f;
+
+		//the time hit other element
+		private float hitTime = 0f;
+
+		// Special effect of ice crystal
+		private PlayerInfo playerBeHitted;
 
 		void Start ()
 		{
@@ -35,9 +41,10 @@ namespace Com.EW.MyGame
 					if (photonView.isMine == true && PhotonNetwork.connected == true) {
 						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-//						pv.RPC ("ChangeSpeed", PhotonTargets.All, ???); TODO: @Cairu
+						pv.RPC ("TakeContiousSpeedDamage", PhotonTargets.All, continousIceCrystalSpeedDamage, 3f); // TODO: @Cairu: contious 3 seconds
 						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 					}
+					audioSource.PlayOneShot (hitAudio);
 				}
 			}
 
@@ -86,13 +93,13 @@ namespace Com.EW.MyGame
 			if (stream.isWriting) {
 				// We own this player: send the others our data
 				stream.SendNext (damage);
-				stream.SendNext (continousDamage);
+				stream.SendNext (continousIceCrystalSpeedDamage);
 				stream.SendNext (initiateTime);
 				stream.SendNext (shouldBeDestroied);
 			} else {
 				// Network player, receive data
 				this.damage = (float)stream.ReceiveNext ();
-				this.continousDamage = (float)stream.ReceiveNext ();
+				this.continousIceCrystalSpeedDamage = (float)stream.ReceiveNext ();
 				this.initiateTime = (float)stream.ReceiveNext ();
 				this.shouldBeDestroied = (bool)stream.ReceiveNext ();
 			}
