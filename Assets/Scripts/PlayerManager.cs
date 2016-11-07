@@ -103,10 +103,6 @@ namespace Com.EW.MyGame
 			};
 			#endif
 
-
-			// Physical setup
-			this.GetComponent <Rigidbody2D> ().drag = 20;
-			this.GetComponent <Rigidbody2D> ().angularDrag = 5;
 		}
 
 		/// <summary>
@@ -125,6 +121,11 @@ namespace Com.EW.MyGame
 
 			ProcessInputs ();
 			if (IsFiring) {
+				// TODO: temp
+				if (LocalPlayerType.Equals (Constant.StoneElementType)) {
+					CmdShoot ();
+				}
+
 				if (nextShootTime <= Time.time) {
 					CmdShoot ();
 					nextShootTime = Time.time + playerInfo.fireRate;
@@ -141,7 +142,7 @@ namespace Com.EW.MyGame
 			return;
 
 		}
-			
+
 
 		void FixedUpdate ()
 		{
@@ -154,12 +155,20 @@ namespace Com.EW.MyGame
 			if (shootVec.magnitude > 0) {
 				float angle = Mathf.Atan2 (shootVec.y, shootVec.x) * Mathf.Rad2Deg - 90f;
 				rb2d.rotation = angle;
+				this.GetComponent <Rigidbody2D> ().angularDrag = 5;
+			} else {
+				this.GetComponent <Rigidbody2D> ().angularDrag = 0;
 			}
 			if (IsFiring && LocalPlayerInstance.Equals (Constant.StoneElementType)) {
 				return; // Stone in charging state will not move
 			}
 			// Moving
 			Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("LeftHorizontal"), CrossPlatformInputManager.GetAxis ("LeftVertical")); 
+			if (moveVec.magnitude > 0) {
+				this.GetComponent <Rigidbody2D> ().drag = 20;
+			} else {
+				this.GetComponent <Rigidbody2D> ().drag = 0;
+			}		
 			rb2d.position += moveVec.normalized * 0.05f;
 
 		}

@@ -39,14 +39,14 @@ namespace Com.EW.MyGame
 			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("Obstacle: an element hits me");
-				pv.RPC ("TakeHit", PhotonTargets.All);
+				this.photonView.RPC ("TakeHit", PhotonTargets.All);
 				if (photonView.isMine == true && PhotonNetwork.connected == true) {
 					pv.RPC ("TakeDamage", PhotonTargets.All, Constant.ObstacleCollisionDamage);
 				}
 			}
 
 			if (obj.CompareTag ("Bullet")) {
-				pv.RPC ("TakeHit", PhotonTargets.All);
+				this.photonView.RPC ("TakeHit", PhotonTargets.All);
 			}
 
 		}

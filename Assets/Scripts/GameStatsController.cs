@@ -49,20 +49,14 @@ namespace Com.EW.MyGame
 
 		public void BackToMenu ()
 		{
-			PhotonNetwork.LeaveRoom ();
-//			SceneManager.LoadScene ("Launcher");
+//			PhotonNetwork.LeaveRoom ();
+			SceneManager.LoadScene ("Launcher");
 		}
 
 		public void ExitGame ()
 		{
 //			Application.Quit ();
-			PhotonNetwork.LeaveRoom ();
-		}
-
-		public override void OnLeftRoom ()
-		{
-			// return to loggin page
-			SceneManager.LoadScene (0);
+			SceneManager.LoadScene ("Launcher");
 		}
 	}
 }

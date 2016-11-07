@@ -26,8 +26,7 @@ namespace Com.EW.MyGame
 		/// </summary>
 		public override void OnLeftRoom ()
 		{
-			// return to loggin page
-			SceneManager.LoadScene (0);
+			SceneManager.LoadScene ("StatScene");
 		}
 
 		public override void OnPhotonPlayerConnected (PhotonPlayer other)
@@ -98,19 +97,18 @@ namespace Com.EW.MyGame
 			float curTime = Time.realtimeSinceStartup;
 			PlayerInfo playerInfo = PlayerManager.LocalPlayerInstance.GetComponent<PlayerInfo> ();
 			// 1. record player stats
-			GameStatsController.recordPlayerName 	= PhotonNetwork.playerName;
-			GameStatsController.recordScore 		= playerInfo.score.ToString();
-			GameStatsController.recordSurvivalTime 	= curTime.ToString("0") + " s";
-			GameStatsController.recordEliminations 	= playerInfo.eliminations.ToString();
-			GameStatsController.recordDamageTaken  	= playerInfo.damageTaken.ToString();
-			GameStatsController.recordHealingDone   = playerInfo.healingDone.ToString();
+			GameStatsController.recordPlayerName = PhotonNetwork.playerName;
+			GameStatsController.recordScore = playerInfo.score.ToString ();
+			GameStatsController.recordSurvivalTime = curTime.ToString ("0") + " s";
+			GameStatsController.recordEliminations = playerInfo.eliminations.ToString ();
+			GameStatsController.recordDamageTaken = playerInfo.damageTaken.ToString ();
+			GameStatsController.recordHealingDone = playerInfo.healingDone.ToString ();
 
 			// 2. destory
-			Destroy(PlayerManager.LocalPlayerInstance);
+			Destroy (PlayerManager.LocalPlayerInstance);
+			PhotonNetwork.LeaveRoom ();
 
-			// 3. go to stats scene
-			SceneManager.LoadScene("StatScene");
-//			PhotonNetwork.LeaveRoom ();
+
 		}
 
 
