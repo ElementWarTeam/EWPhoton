@@ -4,8 +4,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-namespace Com.EW.MyGame {
-	public class GameStatsController : MonoBehaviour {
+namespace Com.EW.MyGame
+{
+	public class GameStatsController : MonoBehaviour
+	{
 
 		public Text PlayerName;
 		public Text SurvivalTime;
@@ -16,22 +18,26 @@ namespace Com.EW.MyGame {
 
 
 		// Use this for initialization
-		void Start () {
+		void Start ()
+		{
 		
 		}
 		
 		// Update is called once per frame
-		void Update () {
-			PlayerName = PlayerManager.
+		void Update ()
+		{
+//			PlayerName = PlayerManager.
 		}
-			
 
-		public void BackToMenu() {
+
+		public void BackToMenu ()
+		{
 			SceneManager.LoadScene ("Launcher");
 		}
 
-		public void ExitGame() {
-			Application.Quit();
+		public void ExitGame ()
+		{
+			Application.Quit ();
 		}
 	}
 }
