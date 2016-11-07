@@ -27,18 +27,20 @@ namespace Com.EW.MyGame
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			// Hit obj 
-			Debug.Log ("FireBall: " + owner.name + "'s fireball hits " + obj.name);
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+			Debug.Log ("FireBall: " + photonView.owner.name + "'s fireball hits " + pv.name);
 
 			if (obj.CompareTag ("Element")) {
-				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-					HideSelf ();
-					if (photonView.isMine == true && PhotonNetwork.connected == true) {
-						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
-						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-						pv.RPC ("TakeContinousDamage", PhotonTargets.All, continousFireBallHealthDamage);
-						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
-					}
+				if (pv.owner.name.Equals (photonView.owner.name)) {
+					return;
+				} 
+				HideSelf ();
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					pv.RPC ("TakeDamage", PhotonTargets.All, damage);
+					pv.RPC ("TakeContinousDamage", PhotonTargets.All, continousFireBallHealthDamage);
+					owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 				}
+				audioSource.PlayOneShot (hitAudio);
 			}
 
 			if (obj.CompareTag ("Obstacle")) {
@@ -56,12 +58,15 @@ namespace Com.EW.MyGame
 
 		void Update ()
 		{
-			if (photonView.isMine == false && PhotonNetwork.connected == true) {
-				return;
-			}
+
 			if ((!audioSource.isPlaying && shouldBeDestroied) || (initiateTime + Constant.LiveTime <= Time.time)) {
-				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-				Destroy (gameObject);
+				if (photonView.isMine == false && PhotonNetwork.connected == true) {
+					HideSelf ();
+				} else {
+					PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+					Destroy (gameObject);
+				}
+
 			}
 		}
 

@@ -73,6 +73,12 @@ namespace Com.EW.MyGame
 
 		#endregion
 
+		[PunRPC]
+		public void TakeHit ()
+		{
+			beHitted ();
+		}
+
 	}
 
 }

@@ -56,25 +56,26 @@ namespace Com.EW.MyGame
 		void OnTriggerStay2D (Collider2D obj)
 		{
 			// Hit obj 
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 			Debug.Log ("OnTriggerStay2D: " + owner.name + "'s electric field hits " + obj.name);
 
 			if (obj.CompareTag ("Element")) {
-				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-					if (photonView.isMine == true && PhotonNetwork.connected == true) {
-						if (nextContinousDamageTime < Time.time) {
-							PhotonView pv = obj.transform.GetComponent<PhotonView> ();
-							nextContinousDamageTime = Time.time + 0.1f; // TODO: @Cairu
-							pv.RPC ("TakeDamage", PhotonTargets.All, continousDamage); // TODO: @Cairu
-							owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, 1f); // TODO: @Cairu
-						}
-
+				if (pv.owner.name.Equals (photonView.owner.name)) {
+					return;
+				} 
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					if (nextContinousDamageTime < Time.time) {
+						nextContinousDamageTime = Time.time + 0.1f; // TODO: @Cairu
+						pv.RPC ("TakeDamage", PhotonTargets.All, continousDamage); // TODO: @Cairu
+						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, 1f); // TODO: @Cairu
 					}
+
 				}
+//				audioSource.PlayOneShot (hitAudio); // TODO: @cairu: electric sound
 			}
 
 			if (obj.CompareTag ("Obstacle")) {
-				PhotonNetwork.Destroy (obj.GetComponent <PhotonView> ());
-				Destroy (obj);
+				pv.RPC ("TakeHit", PhotonTargets.All);
 			}
 		}
 

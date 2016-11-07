@@ -33,19 +33,21 @@ namespace Com.EW.MyGame
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			// Hit obj 
-			Debug.Log ("IceCrystal: " + owner.name + "'s fireball hits " + obj.name);
+
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+			Debug.Log ("Bullet: " + photonView.owner.name + "'s bullet hits " + pv.name);
 
 			if (obj.CompareTag ("Element")) {
-				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-					HideSelf ();
-					if (photonView.isMine == true && PhotonNetwork.connected == true) {
-						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
-						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-						pv.RPC ("TakeContiousSpeedDamage", PhotonTargets.All, continousIceCrystalSpeedDamage, 3f); // TODO: @Cairu: contious 3 seconds
-						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
-					}
-					audioSource.PlayOneShot (hitAudio);
+				if (pv.owner.name.Equals (photonView.owner.name)) {
+					return;
+				} 
+				HideSelf ();
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					pv.RPC ("TakeDamage", PhotonTargets.All, damage);
+					pv.RPC ("TakeContiousSpeedDamage", PhotonTargets.All, continousIceCrystalSpeedDamage, 3f); // TODO: @Cairu: contious 3 seconds
+					owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 				}
+				audioSource.PlayOneShot (hitAudio);
 			}
 
 			if (obj.CompareTag ("Obstacle")) {

@@ -27,18 +27,19 @@ namespace Com.EW.MyGame
 		void OnTriggerEnter2D (Collider2D obj)
 		{
 			// Hit obj 
-			Debug.Log ("ElectricArc: " + owner.name + "'s ElectricArc hits " + obj.name);
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+			Debug.Log ("Bullet: " + photonView.owner.name + "'s bullet hits " + pv.name);
 
 			if (obj.CompareTag ("Element")) {
-				if (!obj.GetComponent<PlayerInfo> ().Equals (owner)) {
-					HideSelf ();
-					if (photonView.isMine == true && PhotonNetwork.connected == true) {
-						PhotonView pv = obj.transform.GetComponent<PhotonView> ();
-						pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-//						pv.RPC ("ChangeDenfense", PhotonTargets.All, ???); TODO: @cairu
-						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
-					}
+				if (pv.owner.name.Equals (photonView.owner.name)) {
+					return;
+				} 
+				HideSelf ();
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					pv.RPC ("TakeDamage", PhotonTargets.All, damage);
+					owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 				}
+				audioSource.PlayOneShot (hitAudio);
 			}
 
 			if (obj.CompareTag ("Obstacle")) {

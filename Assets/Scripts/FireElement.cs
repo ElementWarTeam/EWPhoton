@@ -52,6 +52,7 @@ namespace Com.EW.MyGame
 				Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
 				fire (position, angle, direction);
 			}
+			playerInfo.energy = 0f;
 		}
 
 		#region IPunObservable implementation

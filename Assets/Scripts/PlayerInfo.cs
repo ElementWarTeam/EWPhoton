@@ -19,12 +19,13 @@ namespace Com.EW.MyGame
 		public float energyRecoverRate;
 		public float initialHealth;
 		public float initialEnergy;
-		public bool isUltReady;
 
 		private float continousNextDamageTime;
 		private float continousDamageEndTime;
 		private float continousNextSpeedDamageEndTime;
 		private float continousSpeedDamageTime;
+
+		private float nextTimeIncreaseEnergy;
 
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
@@ -45,6 +46,23 @@ namespace Com.EW.MyGame
 //			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
 //				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 //			}
+
+
+			// Update Ult Energy
+			if (nextTimeIncreaseEnergy < Time.time) {
+				if (energy >= 100f) {
+					energy = 100f; // TODO: @Cairu add to constant
+				} else {
+					energy += 1f; // TODO: @Cairu add to constant
+
+				}
+				nextTimeIncreaseEnergy = Time.time + 0.1f; // TODO: @Cairu add to constant
+			}
+		}
+
+		public bool ultraIsReady ()
+		{
+			return energy == 100f;
 		}
 
 		public void takeDamage (float damage)
@@ -97,7 +115,6 @@ namespace Com.EW.MyGame
 				stream.SendNext (fireRate);
 				stream.SendNext (initialEnergy);
 				stream.SendNext (energyRecoverRate);
-				stream.SendNext (isUltReady);
 			} else {
 				// Network player, receive data
 				this.score = (float)stream.ReceiveNext ();
@@ -109,7 +126,6 @@ namespace Com.EW.MyGame
 				this.fireRate = (float)stream.ReceiveNext ();
 				this.initialEnergy = (float)stream.ReceiveNext ();
 				this.energyRecoverRate = (float)stream.ReceiveNext ();
-				this.isUltReady = (bool)stream.ReceiveNext ();
 			}
 		}
 

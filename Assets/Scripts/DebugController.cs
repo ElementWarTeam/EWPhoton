@@ -28,6 +28,7 @@ namespace Com.EW.MyGame
 		{
 			StringBuilder builder = new StringBuilder ();
 			builder.AppendLine ("Debug Information");
+			builder.AppendLine ("Player name: " + playerInfo.playerId);
 			builder.AppendLine ("Position: " + playerInfo.transform.position);
 			builder.AppendLine ("Score: " + playerInfo.score);
 			builder.AppendLine ("Health: " + playerInfo.health + "/" + playerInfo.initialHealth);

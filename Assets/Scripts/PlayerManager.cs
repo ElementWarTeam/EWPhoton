@@ -30,7 +30,6 @@ namespace Com.EW.MyGame
 		public static string LocalPlayerType;
 
 		public GameObject PlayerUiPrefab;
-		public GameObject UltraUI;
 
 		// OOP
 		PlayerInfo playerInfo;
@@ -58,8 +57,9 @@ namespace Com.EW.MyGame
 			// used in GameManager.cs: we keep track of the localPlayer instance to prevent instantiation when levels are synchronized
 //			if (photonView.isMine) {
 			// SETUP PLAYER INFO
+			Debug.Log ("PlayerManager Awake()");
 			playerInfo = this.GetComponent <PlayerInfo> ();
-			playerInfo.playerId = "player name";
+			playerInfo.playerId = PhotonNetwork.playerName;
 			playerInfo.type = PlayerManager.LocalPlayerType;
 			if (photonView.isMine) {
 				PlayerManager.LocalPlayerInstance = this.gameObject;
@@ -95,15 +95,6 @@ namespace Com.EW.MyGame
 				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> PlayerUiPrefab reference on player Prefab.", this);
 			}
 
-
-			// player ultra button
-			UltraUI = GameObject.Find ("UltUI");
-			if (UltraUI != null) {
-				UltraUI.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
-			} else {
-				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> UltraUI reference on player Prefab.", this);
-			}
-
 			// 
 			#if UNITY_MIN_5_4
 			// Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
@@ -111,6 +102,11 @@ namespace Com.EW.MyGame
 				this.CalledOnLevelWasLoaded (scene.buildIndex);
 			};
 			#endif
+
+
+			// Physical setup
+			this.GetComponent <Rigidbody2D> ().drag = 20;
+			this.GetComponent <Rigidbody2D> ().angularDrag = 5;
 		}
 
 		/// <summary>
@@ -140,6 +136,7 @@ namespace Com.EW.MyGame
 			}
 			// Debug
 			DebugController.displayPlayerInfo (playerInfo);
+			UltraUI.updateEnergyStatus (playerInfo);
 			return;
 
 		}
@@ -179,14 +176,6 @@ namespace Com.EW.MyGame
 		{
 			GameObject _uiGo = Instantiate (this.PlayerUiPrefab) as GameObject;
 			_uiGo.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
-
-			// player ultra button
-			UltraUI = GameObject.Find ("UltUI");
-			if (UltraUI != null) {
-				UltraUI.SendMessage ("SetTarget", this, SendMessageOptions.RequireReceiver);
-			} else {
-				Debug.LogWarning ("<Color=Red><a>Missing</a></Color> UltraUI reference on player Prefab.", this);
-			}
 		}
 
 		// The player take damage here
@@ -228,7 +217,7 @@ namespace Com.EW.MyGame
 				IsFiring = false;
 			}
 
-			if (CrossPlatformInputManager.GetButtonUp ("Ultra") && playerInfo.isUltReady) {
+			if (CrossPlatformInputManager.GetButtonUp ("Ultra") && playerInfo.ultraIsReady ()) {
 				UsingUltra = true;
 			} else {
 				UsingUltra = false;
@@ -275,23 +264,15 @@ namespace Com.EW.MyGame
 			switch (PlayerManager.LocalPlayerType) { // set at GameManager.cs: Start()
 			case Constant.FireElementType:
 				this.GetComponent <FireElement> ().useUltra (this.transform.position);
-				playerInfo.isUltReady = false;
-				playerInfo.energy = 0f;
 				break;
 			case Constant.ElectricElementType:
 				this.GetComponent <ElectricElement> ().useUltra (this.transform.position);
-				playerInfo.isUltReady = false;
-				playerInfo.energy = 0f;
 				break;
 			case Constant.IceElementType:
 				this.GetComponent <IceElement> ().useUltra (this.transform.position);
-				playerInfo.isUltReady = false;
-				playerInfo.energy = 0f;
 				break;
 			case Constant.DarkElementType:
 				this.GetComponent <DarkElement> ().useUltra (this.transform.position);
-				playerInfo.isUltReady = false;
-				playerInfo.energy = 0f;
 				break;
 			case "StoneElement":
 				// TODO

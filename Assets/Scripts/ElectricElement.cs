@@ -56,6 +56,7 @@ namespace Com.EW.MyGame
 		public void useUltra (Vector2 position)
 		{
 			generateElectricField (position);
+			playerInfo.energy = 0f;
 		}
 
 		#region IPunObservable implementation
