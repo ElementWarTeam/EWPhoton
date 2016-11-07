@@ -123,6 +123,7 @@ namespace Com.EW.MyGame
 			}
 
 			if (playerInfo.health <= 0f) {
+				// after recording, we leave the room
 				GameManager.Instance.LeaveRoom ();
 			}
 
@@ -143,6 +144,7 @@ namespace Com.EW.MyGame
 			return;
 
 		}
+			
 
 		void FixedUpdate ()
 		{

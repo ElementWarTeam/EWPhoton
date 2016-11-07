@@ -26,6 +26,14 @@ namespace Com.EW.MyGame
 		private float continousNextSpeedDamageEndTime;
 		private float continousSpeedDamageTime;
 
+		// about player stats
+		public float SpawnTime = 0f;
+		public float DeadTime = 0f;
+		public float survivalTime = 0f;
+		public float eliminations = 0f;
+		public float damageTaken = 0f;
+		public float healingDone =0f;
+
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
 			this.bulletDamage = bulletDamage;
@@ -49,6 +57,7 @@ namespace Com.EW.MyGame
 
 		public void takeDamage (float damage)
 		{
+			this.damageTaken += damage;
 			this.health -= damage * (1f - defense);
 		}
 
@@ -56,9 +65,12 @@ namespace Com.EW.MyGame
 		{
 			// TODO
 		}
+			
 
 		public void addHealth (float health)
 		{
+			this.healingDone += health;
+
 			this.health += health;
 			if (this.health > initialHealth) {
 				this.health = initialHealth;
