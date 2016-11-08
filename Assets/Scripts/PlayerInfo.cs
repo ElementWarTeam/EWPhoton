@@ -20,12 +20,16 @@ namespace Com.EW.MyGame
 		public float initialHealth;
 		public float initialEnergy;
 
-		private float continousNextDamageTime;
+		// continous damage
 		private float continousDamageEndTime;
-		private float continousNextSpeedDamageEndTime;
-		private float continousSpeedDamageTime;
+		private float damageDelta;
+		private float continousSpeedLosingEndTime;
+		private float speedDelta;
+		private float continousBloodExtractedEndTime;
+		private float healthDelta;
 
 		private float nextTimeIncreaseEnergy;
+
 		// about player stats
 		public float SpawnTime = 0f;
 		public float DeadTime = 0f;
@@ -54,44 +58,70 @@ namespace Com.EW.MyGame
 //				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 //			}
 
+			//continous damge
+			if (continousDamageEndTime < Time.time ) {
+				this.damageTaken += damageDelta;	//for stat
+				this.health -= damageDelta * (1f - defense);
+				continousDamageEndTime = Time.time + Constant.DamageRate;
+			}
 
+			//continous speed losing
+			if (continousSpeedLosingEndTime < Time.time ) {
+				this.speed -= this.speed * speedDelta;
+				continousSpeedLosingEndTime = Time.time + Constant.DamageRate;
+			}
+
+			//continous blood extracting
+			if (continousBloodExtractedEndTime < Time.time ) {
+				this.healingDone += healthDelta;	//for stat
+				this.health += healthDelta;
+				if (this.health > initialHealth) {
+					this.health = initialHealth;
+				}
+				continousBloodExtractedEndTime = Time.time + Constant.DamageRate;
+			}
+				
 			// Update Ult Energy
 			if (nextTimeIncreaseEnergy < Time.time) {
-				if (energy >= 100f) {
-					energy = 100f; // TODO: @Cairu add to constant
+				if (energy >= Constant.FullEnergy) {
+					energy = Constant.FullEnergy; // TODO: @Cairu add to constant, done
 				} else {
-					energy += 1f; // TODO: @Cairu add to constant
+					energy += Constant.UpdatedEnergyPerSec; // TODO: @Cairu add to constant, done
 
 				}
-				nextTimeIncreaseEnergy = Time.time + 0.1f; // TODO: @Cairu add to constant
+				nextTimeIncreaseEnergy = Time.time + Constant.UpdatedEnergyRate; // TODO: @Cairu add to constant, done
 			}
 		}
 
 		public bool ultraIsReady ()
 		{
-			return energy == 100f;
+			return energy == Constant.FullEnergy;
 		}
 
 		public void takeDamage (float damage)
 		{
-			this.damageTaken += damage;
+			this.damageTaken += damage;	//for stat
 			this.health -= damage * (1f - defense);
 		}
 
-		public void takeContinousDamage (float continousDamage)
+		public void takeContinousDamage (float damageDelta)
 		{
 			// TODO
+			this.damageDelta = damageDelta;
+
 		}
 			
 
-		public void addHealth (float health)
+		public void addContinousHealth (float healthDelta)
 		{
-			this.healingDone += health;
+			//this.healingDone += healthDelta;	//for stat
+			//this.health += healthDelta;
+			//if (this.health > initialHealth) {
+			//	this.health = initialHealth;
+			//}
 
-			this.health += health;
-			if (this.health > initialHealth) {
-				this.health = initialHealth;
-			}
+			this.healthDelta = healthDelta;
+
 		}
 
 		public void addScore (float score)
@@ -99,11 +129,13 @@ namespace Com.EW.MyGame
 			this.score += score;
 		}
 
-		public void takeContiousSpeedDamage (float speedDelta, float time)
+		public void takeContiousSpeedDamage (float speedDelta)
 		{
-			this.speed += speedDelta;
-			continousNextSpeedDamageEndTime = Time.time + 1f; // TODO: @Cairu: every 1 second
-			continousNextSpeedDamageEndTime = Time.time + time; // TODO
+			//this.speed -= speedDelta;
+			//continousNextSpeedDamageEndTime = Time.time + 1f; // TODO: @Cairu: every 1 second
+			//continousNextSpeedDamageEndTime = Time.time + time; // TODO
+
+			this.speedDelta = speedDelta;
 		}
 
 		public void changeDenfense (float defenseDelta)

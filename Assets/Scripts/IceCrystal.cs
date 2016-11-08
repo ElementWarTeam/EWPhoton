@@ -44,7 +44,7 @@ namespace Com.EW.MyGame
 				HideSelf ();
 				if (photonView.isMine == true && PhotonNetwork.connected == true) {
 					pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-					pv.RPC ("TakeContiousSpeedDamage", PhotonTargets.All, continousIceCrystalSpeedDamage, 3f); // TODO: @Cairu: contious 3 seconds
+					pv.RPC ("TakeContiousSpeedDamage", PhotonTargets.All, continousIceCrystalSpeedDamage); // TODO: @Cairu: contious 3 seconds, done
 					owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 				}
 				audioSource.PlayOneShot (hitAudio);

@@ -44,7 +44,7 @@ namespace Com.EW.MyGame
 				if (photonView.isMine == true && PhotonNetwork.connected == true) {
 					Debug.Log ("DarkNeedle: " + owner.name + "'s DarkNeedle hits " + obj.name);
 					pv.RPC ("TakeDamage", PhotonTargets.All, damage);
-					owner.GetComponent <PhotonView> ().RPC ("AddHealth", PhotonTargets.All, damage); // TODO: @Cairu: should be partial of the damage and calcualetd in DarkElement
+					owner.GetComponent <PhotonView> ().RPC ("AddHealth", PhotonTargets.All, continousDarkNeedleExtractDamage); // TODO: @Cairu: should be partial of the damage and calcualetd in DarkElement, done
 					owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, damage);
 				}
 			}

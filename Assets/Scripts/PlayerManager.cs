@@ -319,7 +319,7 @@ namespace Com.EW.MyGame
 		[PunRPC]
 		public void AddHealth (float health)
 		{
-			playerInfo.addHealth (health);
+			playerInfo.addContinousHealth (health);
 		}
 
 		[PunRPC]
@@ -329,9 +329,9 @@ namespace Com.EW.MyGame
 		}
 
 		[PunRPC]
-		public void TakeContiousSpeedDamage (float speedDelta, float time)
+		public void TakeContiousSpeedDamage (float speedDelta)
 		{
-			playerInfo.takeContiousSpeedDamage (speedDelta, time);
+			playerInfo.takeContiousSpeedDamage (speedDelta);
 		}
 
 		[PunRPC]

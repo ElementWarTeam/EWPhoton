@@ -75,6 +75,11 @@ namespace Com.EW.MyGame
 		public const float LiveTime = 5;
 		public const float ElectricFieldLiveTime = 10;
 
+		// Continous damage
+		public const float IceCystalContinousTime = 3f;
+		public const float DarkNeedleContinousTime = 3f;
+		public const float DamageRate = 1f;
+
 		// Obstacle information
 		public const float ObstacleCollisionDamage = 10f;
 		public const float ObstacleGenerateInterval = 2f;
@@ -85,5 +90,10 @@ namespace Com.EW.MyGame
 		public const float HealthPackBoundary_x = 10.0f;
 		public const float HealthPackBoundary_y = 5.0f;
 		public const float PickUpInitTime = 1.0f;
+
+		// Energy
+		public const float FullEnergy = 100f;
+		public const float UpdatedEnergyPerSec = 1f;
+		public  const float UpdatedEnergyRate = 0.1f;
 	}
 }
