@@ -14,76 +14,17 @@ namespace Com.EW.MyGame
 
 		static public GameManager Instance;
 
-		// [Tooltip ("The prefab to use for representing the player")]
-		// public GameObject playerPrefab;
-
 		#endregion
 
-		#region Photon Messages
-
-		/// <summary>
-		/// Called when the local player left the room. We need to load the launcher scene.
-		/// </summary>
-		public override void OnLeftRoom ()
-		{
-			SceneManager.LoadScene ("StatScene");
-		}
-
-		public override void OnPhotonPlayerConnected (PhotonPlayer other)
-		{
-			Debug.Log ("OnPhotonPlayerConnected() " + other.name); // not seen if you're the player connecting
-
-
-			if (PhotonNetwork.isMasterClient) {
-				Debug.Log ("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // called before OnPhotonPlayerDisconnected
-
-				// When player number changes, we load different Arena
-				LoadArena ();
-			}
-		}
-
-		public override void OnPhotonPlayerDisconnected (PhotonPlayer other)
-		{
-			Debug.Log ("OnPhotonPlayerDisconnected() " + other.name); // seen when other disconnects
-
-
-			if (PhotonNetwork.isMasterClient) {
-				Debug.Log ("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // called before OnPhotonPlayerDisconnected
-
-				// When player number changes, we load different Arena
-				LoadArena ();
-			}
-		}
+		#region Private Variables
 
 		#endregion
 
 		#region Public Methods
 
-		void GenerateRandomObstacle ()
-		{
-			Vector2 point = new Vector2 (0.0f, 0.0f);
-			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
-			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
-			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
-		}
-
-		void GenerateRandomBloodPack ()
-		{
-			Vector2 point = new Vector2 (0.0f, 0.0f);
-			point [0] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_x, Constant.HealthPackBoundary_x);
-			point [1] = UnityEngine.Random.Range (-Constant.HealthPackBoundary_y, Constant.HealthPackBoundary_y);
-			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
-		}
-
 		public void Start ()
 		{
 			Instance = this;
-			if (PhotonNetwork.isMasterClient) {
-				InvokeRepeating ("GenerateRandomObstacle", Constant.PickUpInitTime, Constant.ObstacleGenerateInterval);
-				InvokeRepeating ("GenerateRandomBloodPack", Constant.PickUpInitTime, Constant.HealthPackGenerateInterval);
-			}
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevel);
 				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, new Vector3 (0f, 0f, 0f), Quaternion.identity, 0);
@@ -134,6 +75,44 @@ namespace Com.EW.MyGame
 			}
 			Debug.Log ("PhotonNetwork : Loading Level : " + PhotonNetwork.room.playerCount);
 			PhotonNetwork.LoadLevel ("Room for " + PhotonNetwork.room.playerCount);
+		}
+
+		#endregion
+
+		#region Photon Messages
+
+		/// <summary>
+		/// Called when the local player left the room. We need to load the launcher scene.
+		/// </summary>
+		public override void OnLeftRoom ()
+		{
+			SceneManager.LoadScene ("StatScene");
+		}
+
+		public override void OnPhotonPlayerConnected (PhotonPlayer other)
+		{
+			Debug.Log ("OnPhotonPlayerConnected() " + other.name); // not seen if you're the player connecting
+
+
+			if (PhotonNetwork.isMasterClient) {
+				Debug.Log ("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // called before OnPhotonPlayerDisconnected
+
+				// When player number changes, we load different Arena
+				LoadArena ();
+			}
+		}
+
+		public override void OnPhotonPlayerDisconnected (PhotonPlayer other)
+		{
+			Debug.Log ("OnPhotonPlayerDisconnected() " + other.name); // seen when other disconnects
+
+
+			if (PhotonNetwork.isMasterClient) {
+				Debug.Log ("OnPhotonPlayerConnected isMasterClient " + PhotonNetwork.isMasterClient); // called before OnPhotonPlayerDisconnected
+
+				// When player number changes, we load different Arena
+				LoadArena ();
+			}
 		}
 
 		#endregion

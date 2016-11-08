@@ -75,6 +75,10 @@ namespace Com.EW.MyGame
 		public const float LiveTime = 5;
 		public const float ElectricFieldLiveTime = 10;
 
+		// Pickup Manager
+		public const float RANGE_X = 20;
+		public const float RANGE_Y = 20;
+
 		// Obstacle information
 		public const float ObstacleCollisionDamage = 10f;
 		public const float ObstacleGenerateInterval = 2f;
@@ -82,8 +86,5 @@ namespace Com.EW.MyGame
 		// PICKUPS
 		public const float HealthPackRecover = 20f;
 		public const float HealthPackGenerateInterval = 5f;
-		public const float HealthPackBoundary_x = 10.0f;
-		public const float HealthPackBoundary_y = 5.0f;
-		public const float PickUpInitTime = 1.0f;
 	}
 }
