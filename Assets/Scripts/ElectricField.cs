@@ -57,7 +57,7 @@ namespace Com.EW.MyGame
 		{
 			// Hit obj 
 			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
-			Debug.Log ("OnTriggerStay2D: " + owner.name + "'s electric field hits " + obj.name);
+			Debug.Log ("Electric Field: " + photonView.owner.name + "'s ElectricField hits " + pv.name);
 
 			if (obj.CompareTag ("Element")) {
 				if (pv.owner.name.Equals (photonView.owner.name)) {

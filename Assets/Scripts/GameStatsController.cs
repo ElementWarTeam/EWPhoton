@@ -4,8 +4,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
-namespace Com.EW.MyGame {
-	public class GameStatsController : MonoBehaviour {
+namespace Com.EW.MyGame
+{
+	public class GameStatsController : Photon.PunBehaviour
+	{
 
 		// presentation on board
 		public Text PlayerName;
@@ -23,16 +25,19 @@ namespace Com.EW.MyGame {
 		public static string recordDamageTaken;
 		public static string recordHealingDone;
 
-		void Awake() {
+		void Awake ()
+		{
 		}
 
 		// Use this for initialization
-		void Start () {
+		void Start ()
+		{
 
 		}
 
 		// Update is called once per frame
-		void Update () {
+		void Update ()
+		{
 			PlayerName.text = recordPlayerName;
 			SurvivalTime.text = recordSurvivalTime;
 			Eliminations.text = recordEliminations;
@@ -42,12 +47,16 @@ namespace Com.EW.MyGame {
 		}
 
 
-		public void BackToMenu() {
+		public void BackToMenu ()
+		{
+//			PhotonNetwork.LeaveRoom ();
 			SceneManager.LoadScene ("Launcher");
 		}
 
-		public void ExitGame() {
-			Application.Quit();
+		public void ExitGame ()
+		{
+//			Application.Quit ();
+			SceneManager.LoadScene ("Launcher");
 		}
 	}
 }

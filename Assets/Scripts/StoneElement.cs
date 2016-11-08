@@ -47,6 +47,27 @@ namespace Com.EW.MyGame
 			}
 		}
 
+		void OnTriggerEnter2D (Collider2D obj)
+		{
+			Debug.Log ("PlayerManager: OnTriggerEnter2D");
+			if (!photonView.isMine) {
+				return;
+			}
+
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
+			Debug.Log ("Stone: " + photonView.owner.name + "'s fireball hits " + pv.name);
+
+			if (obj.CompareTag ("Element")) {
+				if (pv.owner.name.Equals (photonView.owner.name)) {
+					return;
+				} 
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					pv.RPC ("TakeDamage", PhotonTargets.All, playerInfo.bulletDamage);
+					this.photonView.RPC ("AddScore", PhotonTargets.All, playerInfo.bulletDamage);
+				}
+			}
+		}
+
 		private GameObject generateBullet (Vector2 position)
 		{
 			GameObject bulletObj = PhotonNetwork.Instantiate (chargePrefabName, position, Quaternion.identity, 0);

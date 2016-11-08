@@ -24,29 +24,29 @@ namespace Com.EW.MyGame
 			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
-			if (ResistanceCount == 0) {
-				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-				Destroy (gameObject);
-			}
-			if (initiateTime + LiveTime <= Time.time) {
-				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-				Destroy (gameObject);
+			if (ResistanceCount == 0 || initiateTime + LiveTime <= Time.time) {
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+					Destroy (gameObject);
+				} else {
+					HideSelf ();
+				}
 			}
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 			if (obj.CompareTag ("Element")) {
 				Debug.Log ("Obstacle: an element hits me");
-				ResistanceCount = 0;
+				this.photonView.RPC ("TakeHit", PhotonTargets.All);
 				if (photonView.isMine == true && PhotonNetwork.connected == true) {
-					PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 					pv.RPC ("TakeDamage", PhotonTargets.All, Constant.ObstacleCollisionDamage);
 				}
 			}
 
 			if (obj.CompareTag ("Bullet")) {
-				beHitted ();
+				this.photonView.RPC ("TakeHit", PhotonTargets.All);
 			}
 
 		}
@@ -54,6 +54,12 @@ namespace Com.EW.MyGame
 		void beHitted ()
 		{
 			ResistanceCount -= 1;
+		}
+
+		void HideSelf ()
+		{
+			GetComponent <Renderer> ().enabled = false;
+			GetComponent <Collider2D> ().enabled = false;
 		}
 
 		#region IPunObservable implementation
