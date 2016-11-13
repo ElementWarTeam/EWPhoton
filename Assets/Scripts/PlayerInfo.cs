@@ -37,6 +37,7 @@ namespace Com.EW.MyGame
 		public float eliminations = 0f;
 		public float damageTaken = 0f;
 		public float healingDone =0f;
+		public bool immune =true;
 
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
@@ -57,7 +58,9 @@ namespace Com.EW.MyGame
 //			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
 //				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 //			}
-
+			if ( Time.time >30.0f ) {
+				immune = false;
+			}
 			//continous damge
 			if (continousDamageEndTime < Time.time ) {
 				this.damageTaken += damageDelta;	//for stat
@@ -100,8 +103,10 @@ namespace Com.EW.MyGame
 
 		public void takeDamage (float damage)
 		{
-			this.damageTaken += damage;	//for stat
-			this.health -= damage * (1f - defense);
+			if(!immune){
+				this.damageTaken += damage;	//for stat
+				this.health -= damage * (1f - defense);
+			}
 		}
 
 		public void takeContinousDamage (float damageDelta)
