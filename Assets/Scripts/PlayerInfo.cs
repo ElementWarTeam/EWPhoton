@@ -61,28 +61,28 @@ namespace Com.EW.MyGame
 			if ( Time.time >30.0f ) {
 				immune = false;
 			}
-			//continous damge
-			if (continousDamageEndTime < Time.time ) {
-				this.damageTaken += damageDelta;	//for stat
-				this.health -= damageDelta * (1f - defense);
-				continousDamageEndTime = Time.time + Constant.DamageRate;
-			}
-
-			//continous speed losing
-			if (continousSpeedLosingEndTime < Time.time ) {
-				this.speed -= this.speed * speedDelta;
-				continousSpeedLosingEndTime = Time.time + Constant.DamageRate;
-			}
-
-			//continous blood extracting
-			if (continousBloodExtractedEndTime < Time.time ) {
-				this.healingDone += healthDelta;	//for stat
-				this.health += healthDelta;
-				if (this.health > initialHealth) {
-					this.health = initialHealth;
-				}
-				continousBloodExtractedEndTime = Time.time + Constant.DamageRate;
-			}
+//			//continous damge
+//			if (continousDamageEndTime < Time.time ) {
+//				this.damageTaken += damageDelta;	//for stat
+//				this.health -= damageDelta * (1f - defense);
+//				continousDamageEndTime = Time.time + Constant.DamageRate;
+//			}
+//
+//			//continous speed losing
+//			if (continousSpeedLosingEndTime < Time.time ) {
+//				this.speed -= this.speed * speedDelta;
+//				continousSpeedLosingEndTime = Time.time + Constant.DamageRate;
+//			}
+//
+//			//continous blood extracting
+//			if (continousBloodExtractedEndTime < Time.time ) {
+//				this.healingDone += healthDelta;	//for stat
+//				this.health += healthDelta;
+//				if (this.health > initialHealth) {
+//					this.health = initialHealth;
+//				}
+//				continousBloodExtractedEndTime = Time.time + Constant.DamageRate;
+//			}
 				
 			// Update Ult Energy
 			if (nextTimeIncreaseEnergy < Time.time) {
@@ -107,6 +107,7 @@ namespace Com.EW.MyGame
 				this.damageTaken += damage;	//for stat
 				this.health -= damage * (1f - defense);
 			}
+
 		}
 
 		public void takeContinousDamage (float damageDelta)
@@ -119,11 +120,11 @@ namespace Com.EW.MyGame
 
 		public void addContinousHealth (float healthDelta)
 		{
-			//this.healingDone += healthDelta;	//for stat
-			//this.health += healthDelta;
-			//if (this.health > initialHealth) {
-			//	this.health = initialHealth;
-			//}
+			this.healingDone += healthDelta;	//for stat
+			this.health += healthDelta;
+			if (this.health > initialHealth) {
+				this.health = initialHealth;
+			}
 
 			this.healthDelta = healthDelta;
 
@@ -136,9 +137,9 @@ namespace Com.EW.MyGame
 
 		public void takeContiousSpeedDamage (float speedDelta)
 		{
-			//this.speed -= speedDelta;
-			//continousNextSpeedDamageEndTime = Time.time + 1f; // TODO: @Cairu: every 1 second
-			//continousNextSpeedDamageEndTime = Time.time + time; // TODO
+			this.speed -= speedDelta;
+//			continousNextSpeedDamageEndTime = Time.time + 1f; // TODO: @Cairu: every 1 second
+//			continousNextSpeedDamageEndTime = Time.time + time; // TODO
 
 			this.speedDelta = speedDelta;
 		}
