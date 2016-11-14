@@ -28,7 +28,7 @@ namespace Com.EW.MyGame
 		public const float FireElementInitialFireballDamage = 15f;
 		public const float FireElementInitialSpeed = 100f;
 		public const float FireElementInitialDefensePercentage = 0.1f;
-		public const float FireElementInitialFireRate = 1f;
+		public const float FireElementInitialFireRate = 0.5f;
 		public const float FireElementInitialEnergy = 0f;
 		public const float FireElementInitialEnergyRecoverRatePercentage = 0.05f;
 
@@ -37,7 +37,7 @@ namespace Com.EW.MyGame
 		public const float ElectricElementInitialElectricArcDamage = 12f;
 		public const float ElectricElementInitialSpeed = 120f;
 		public const float ElectricElementInitialDefensePercentage = 0.5f;
-		public const float ElectricElementInitialFireRate = 1f;
+		public const float ElectricElementInitialFireRate = 0.6f;
 		public const float ElectricElementInitialEnergy = 100f;
 		public const float ElectricElementInitialEnergyRecoverRatePercentage = 0.05f;
 		public const float ElectricFieldContinousDamage = 2f;
@@ -47,7 +47,7 @@ namespace Com.EW.MyGame
 		public const float IceElementInitialIceCystalDamage = 10f;
 		public const float IceElementInitialSpeed = 110f;
 		public const float IceElementInitialDefensePercentage = 0.15f;
-		public const float IceElementInitialFireRate = 1f;
+		public const float IceElementInitialFireRate = 0.6f;
 		public const float IceElementInitialEnergy = 100f;
 		public const float IceElementInitialEnergyRecoverRatePercentage = 0.05f;
 
@@ -56,7 +56,7 @@ namespace Com.EW.MyGame
 		public const float DarkElementInitialNeedleDamage = 12f;
 		public const float DarkElementInitialSpeed = 100f;
 		public const float DarkElementInitialDefensePercentage = 0.1f;
-		public const float DarkElementInitialFireRate = 2f;
+		public const float DarkElementInitialFireRate = 0.5f;
 		public const float DarkElementInitialEnergy = 100f;
 		public const float DarkElementInitialEnergyRecoverRatePercentage = 0.05f;
 

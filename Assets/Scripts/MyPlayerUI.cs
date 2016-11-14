@@ -23,7 +23,7 @@ namespace Com.EW.MyGame
 		public Slider PlayerScoreSlider;
 
 		[Tooltip ("Pixel offset from the player target")]
-		public Vector3 ScreenOffset = new Vector3 (0f, 30f, 0f);
+		public Vector3 ScreenOffset = new Vector3 (0f, 100f, 0f);
 
 		#endregion
 
