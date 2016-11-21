@@ -101,6 +101,7 @@ namespace Com.EW.MyGame
 		public const float SpeedUpGenerateInterval = 3f;
 		public const float SpeedUpEffectTime = 5f;
 		public const float PowerUpGenerateInterval = 5f;
+		public const float BlackHoleInterval = 10f;
 
 		// Energy
 		public const float FullEnergy = 100f;

@@ -27,7 +27,7 @@ namespace Com.EW.MyGame
 			Instance = this;
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevel);
-				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, randomPosition (), Quaternion.identity, 0);
+				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, Vector2Extension.RandomPosition (), Quaternion.identity, 0);
 			} else {
 				Debug.Log ("Ignoring scene load for " + Application.loadedLevel);
 			}
@@ -66,14 +66,6 @@ namespace Com.EW.MyGame
 		#endregion
 
 		#region Private Methods
-
-		private Vector3 randomPosition ()
-		{
-			Vector3 position = new Vector2 (0.0f, 0.0f);
-			position [0] = UnityEngine.Random.Range (-Constant.RANGE_X, Constant.RANGE_X);
-			position [1] = UnityEngine.Random.Range (-Constant.RANGE_Y, Constant.RANGE_Y);
-			return position;
-		}
 
 		void LoadArena ()
 		{

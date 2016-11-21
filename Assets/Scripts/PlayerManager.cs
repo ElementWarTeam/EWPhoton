@@ -35,6 +35,7 @@ namespace Com.EW.MyGame
 		PlayerInfo playerInfo;
 		public bool IsFiring;
 		public bool UsingUltra;
+		public bool Shrinking = false;
 
 		#endregion
 
@@ -43,6 +44,7 @@ namespace Com.EW.MyGame
 		public float timeBetweenShots = 1f;
 		private float nextShootTime = 0.0f;
 		private Vector2 releasePressDirection = new Vector2 (0f, 0f);
+		private float ShringEndTime;
 
 		#endregion
 
@@ -162,14 +164,27 @@ namespace Com.EW.MyGame
 			if (IsFiring && LocalPlayerInstance.Equals (Constant.StoneElementType)) {
 				return; // Stone in charging state will not move
 			}
+
 			// Moving
 			Vector2 moveVec = new Vector2 (CrossPlatformInputManager.GetAxis ("LeftHorizontal"), CrossPlatformInputManager.GetAxis ("LeftVertical")); 
 			if (moveVec.magnitude > 0) {
 				this.GetComponent <Rigidbody2D> ().drag = 20;
 			} else {
 				this.GetComponent <Rigidbody2D> ().drag = 0;
-			}		
-			rb2d.position += moveVec.normalized * 0.05f * playerInfo.speed * 0.01f;
+			}	
+			if (!Shrinking) {
+				rb2d.position += moveVec.normalized * 0.05f * playerInfo.speed * 0.01f;
+			}
+
+			// Shrinking
+			if (Shrinking) {
+				GetComponent <Renderer> ().enabled = false;
+				if (ShringEndTime < Time.time) {
+					Shrinking = false;
+					rb2d.position = Vector2Extension.RandomPosition ();
+					GetComponent <Renderer> ().enabled = true;
+				}
+			}
 
 		}
 
@@ -371,6 +386,13 @@ namespace Com.EW.MyGame
 		public void PowerUpWithTime (float time)
 		{
 			playerInfo.powerUpWithTime (time);
+		}
+
+		[PunRPC]
+		public void ChangeLocation (Vector2 position) // This is only for black hole
+		{
+			ShringEndTime = Time.time + 1f; // TODO: add to Constant
+			Shrinking = true;
 		}
 
 	}

@@ -17,5 +17,13 @@ namespace Com.EW.MyGame
 
 			return new Vector2 (cos * tx - sin * ty, sin * tx + cos * ty);
 		}
+
+		public static Vector2 RandomPosition ()
+		{
+			Vector2 position = new Vector2 (0.0f, 0.0f);
+			position [0] = UnityEngine.Random.Range (-Constant.RANGE_X, Constant.RANGE_X);
+			position [1] = UnityEngine.Random.Range (-Constant.RANGE_Y, Constant.RANGE_Y);
+			return position;
+		}
 	}
 }

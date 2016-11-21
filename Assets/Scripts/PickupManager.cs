@@ -16,6 +16,7 @@ namespace Com.EW.MyGame
 				InvokeRepeating ("GenerateRandomBloodPack", 0f, Constant.HealthPackGenerateInterval);
 				InvokeRepeating ("GenerateRandomSpeedUp", 0f, Constant.SpeedUpGenerateInterval);
 				InvokeRepeating ("GenerateRandomPowerUp", 0f, Constant.PowerUpGenerateInterval);
+				InvokeRepeating ("GenerateRandomBlackHole", 0f, Constant.BlackHoleInterval);
 			}
 		}
 
@@ -26,38 +27,37 @@ namespace Com.EW.MyGame
 
 		void GenerateRandomObstacle ()
 		{
-			Vector2 point = randomPosition ();
+			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
 			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBloodPack ()
 		{
-			Vector2 point = randomPosition ();
+			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
 			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomSpeedUp ()
 		{
-			Vector2 point = randomPosition ();
+			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("SpeedUpPickUp", point, Quaternion.identity, 0);
 			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomPowerUp ()
 		{
-			Vector2 point = randomPosition ();
+			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("PowerUpPickUp", point, Quaternion.identity, 0);
 			DontDestroyOnLoad (obj);
 		}
 
-		private Vector2 randomPosition ()
+		void GenerateRandomBlackHole ()
 		{
-			Vector2 position = new Vector2 (0.0f, 0.0f);
-			position [0] = UnityEngine.Random.Range (-Constant.RANGE_X, Constant.RANGE_X);
-			position [1] = UnityEngine.Random.Range (-Constant.RANGE_Y, Constant.RANGE_Y);
-			return position;
+			Vector2 point = Vector2Extension.RandomPosition ();
+			GameObject obj = PhotonNetwork.Instantiate ("BlackHole", point, Quaternion.identity, 0);
+			DontDestroyOnLoad (obj);
 		}
 
 		[PunRPC]
