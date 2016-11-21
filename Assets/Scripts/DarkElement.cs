@@ -7,6 +7,9 @@ namespace Com.EW.MyGame
 	{
 
 		private PlayerInfo playerInfo;
+		public static float amplify = 1f;
+
+		private float timeRemaining = 0f;
 
 		private static string bulletPrefabName = Constant.DarkNeedlePrefabName;
 
@@ -21,6 +24,13 @@ namespace Com.EW.MyGame
 				Constant.DarkElementInitialFireRate, 
 				Constant.DarkElementInitialEnergy, 
 				Constant.DarkElementInitialEnergyRecoverRatePercentage);
+		}
+
+		public void Update() {
+			timeRemaining -= Time.deltaTime;
+			if (timeRemaining < 0) {
+				this.GetComponent<SpriteRenderer>().color = new Color32(152, 66, 217, 255);
+			}
 		}
 
 		private GameObject generateBullet (Vector2 position)
@@ -51,6 +61,18 @@ namespace Com.EW.MyGame
 				Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
 				fire (position, angle, direction);
 			}
+				
+			// each evolution, the evil vampire's size grows by 25%
+			this.GetComponent<Transform>().localScale *= 1.35f;
+			amplify *= 1.35f;
+
+			// right after evolution, color change to blood red and the damage he dealt to others can heal himself
+			this.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 240);
+
+			// set vampire time is 4s
+			timeRemaining = 4.0f;
+
+			// reset energy to zero
 			playerInfo.energy = 0f;
 		}
 

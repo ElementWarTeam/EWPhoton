@@ -62,7 +62,7 @@ namespace Com.EW.MyGame {
 			"The fire element ejects fireballs to all directions around it",
 			"The ice element creates a zero temperature zone, frozen enemies within this area",
 			"The electric element creates a electromagnetic field, dealing damage each second",
-			"The dark element transform to vampire",
+			"The dark element transform to vampire, invisible for 4 seconds",
 			"The stone element becomes invulnerable and charge damage increased"
 		};
 
