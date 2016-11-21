@@ -6,7 +6,7 @@ namespace Com.EW.MyGame
 	public class Constant : MonoBehaviour
 	{
 		//immune
-		public const float ImmuneInitTime = 3.0f;
+		public const float ImmuneTime = 3.0f;
 
 		// Types
 		public const string FireElementType = "FireElement";

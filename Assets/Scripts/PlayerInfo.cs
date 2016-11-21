@@ -66,7 +66,7 @@ namespace Com.EW.MyGame
 //			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
 //				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 //			}
-			if (Time.time > 30.0f) {
+			if (Time.time > Constant.ImmuneTime) {
 				immune = false;
 			}
 //			//continous damge
