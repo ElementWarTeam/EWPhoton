@@ -3,10 +3,9 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class HealthPack : Photon.PunBehaviour, IPunObservable
+	public class SpeedUpPickUp : Photon.PunBehaviour, IPunObservable
 	{
-
-		public static float LiveTime = 20f;
+		public static float LiveTime = 10f;
 
 		private float initiateTime = 0f;
 
@@ -19,29 +18,36 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
-			if (PhotonNetwork.isMasterClient == false && PhotonNetwork.connected == true) {
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
 			if (initiateTime + LiveTime <= Time.time) {
-				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-				Destroy (gameObject);
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
+					PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+					Destroy (gameObject);
+				} else {
+					HideSelf ();
+				}
 			}
+		}
+
+		void HideSelf ()
+		{
+			GetComponent <Renderer> ().enabled = false;
+			GetComponent <Collider2D> ().enabled = false;
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)
 		{
-			// if player collide with obstacle
+			PhotonView pv = obj.transform.GetComponent<PhotonView> ();
 			if (obj.CompareTag ("Element")) {
-				Debug.Log ("HealthPack: an element hits me");
+				Debug.Log ("SpeedUp: an element hits me");
 				if (photonView.isMine == true && PhotonNetwork.connected == true) {
-					PhotonView pv = obj.transform.GetComponent<PhotonView> ();
-					pv.RPC ("AddHealth", PhotonTargets.All, Constant.HealthPackRecover);
-					pv.RPC ("AddScore", PhotonTargets.All, Constant.HealthPackRecover);
+					pv.RPC ("AddSpeedWithTime", PhotonTargets.All, Constant.SpeedUpPickUpSpeedUpDelta, Constant.SpeedUpEffectTime);
 					PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 					Destroy (gameObject);
 				}
 			}
-
 		}
 
 		#region IPunObservable implementation

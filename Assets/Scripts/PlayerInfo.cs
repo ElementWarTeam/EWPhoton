@@ -30,6 +30,11 @@ namespace Com.EW.MyGame
 
 		private float nextTimeIncreaseEnergy;
 
+		// pick up effect with time manner
+		private float speedUpDelta;
+		private float speedUpStopTime;
+		private bool isUsingSpeedUp = false;
+
 		// about player stats
 		public float SpawnTime = 0f;
 		public float DeadTime = 0f;
@@ -94,6 +99,12 @@ namespace Com.EW.MyGame
 				}
 				nextTimeIncreaseEnergy = Time.time + Constant.UpdatedEnergyRate; // TODO: @Cairu add to constant, done
 			}
+
+			// Pickup effect
+			if (speedUpStopTime < Time.time && isUsingSpeedUp) {
+				this.speed -= speedUpDelta;
+				isUsingSpeedUp = false;
+			}
 		}
 
 		public bool ultraIsReady ()
@@ -157,6 +168,14 @@ namespace Com.EW.MyGame
 		public void reduceSpeed (float delta)
 		{
 			this.speed -= delta;
+		}
+
+		public void addSpeedWithTime (float delta, float time)
+		{
+			this.speed += delta;
+			this.speedUpDelta = delta;
+			speedUpStopTime = Time.time + time;
+			isUsingSpeedUp = true;
 		}
 
 		#region IPunObservable implementation

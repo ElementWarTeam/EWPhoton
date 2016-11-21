@@ -8,15 +8,13 @@ namespace Com.EW.MyGame
 
 		static public PickupManager Instance;
 
-		private Queue<GameObject> obstacleQueue;
-		private Queue<GameObject> healthPackQueue;
-
 		void Start ()
 		{
 			Instance = this;
 			if (PhotonNetwork.isMasterClient) {
 				InvokeRepeating ("GenerateRandomObstacle", 0f, Constant.ObstacleGenerateInterval);
 				InvokeRepeating ("GenerateRandomBloodPack", 0f, Constant.HealthPackGenerateInterval);
+				InvokeRepeating ("GenerateRandomSpeedUp", 0f, Constant.SpeedUpGenerateInterval);
 			}
 		}
 
@@ -29,7 +27,6 @@ namespace Com.EW.MyGame
 		{
 			Vector2 point = randomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
-//			obstacleQueue.Enqueue (obj);
 			DontDestroyOnLoad (obj);
 		}
 
@@ -37,7 +34,13 @@ namespace Com.EW.MyGame
 		{
 			Vector2 point = randomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
-//			healthPackQueue.Enqueue (obj);
+			DontDestroyOnLoad (obj);
+		}
+
+		void GenerateRandomSpeedUp ()
+		{
+			Vector2 point = randomPosition ();
+			GameObject obj = PhotonNetwork.Instantiate ("SpeedUpPickUp", point, Quaternion.identity, 0);
 			DontDestroyOnLoad (obj);
 		}
 

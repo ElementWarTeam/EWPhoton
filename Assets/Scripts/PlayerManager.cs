@@ -360,5 +360,12 @@ namespace Com.EW.MyGame
 		{
 			playerInfo.addSpeed (delta);
 		}
+
+		[PunRPC]
+		public void AddSpeedWithTime (float delta, float time)
+		{
+			playerInfo.addSpeedWithTime (delta, time);
+		}
+
 	}
 }

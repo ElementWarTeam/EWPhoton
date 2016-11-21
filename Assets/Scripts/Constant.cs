@@ -97,6 +97,9 @@ namespace Com.EW.MyGame
 		public const float HealthPackBoundary_x = 10.0f;
 		public const float HealthPackBoundary_y = 5.0f;
 		public const float PickUpInitTime = 1.0f;
+		public const float SpeedUpPickUpSpeedUpDelta = 50f;
+		public const float SpeedUpGenerateInterval = 3f;
+		public const float SpeedUpEffectTime = 5f;
 
 		// Energy
 		public const float FullEnergy = 100f;
