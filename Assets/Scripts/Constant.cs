@@ -89,11 +89,11 @@ namespace Com.EW.MyGame
 
 		// Obstacle information
 		public const float ObstacleCollisionDamage = 10f;
-		public const float ObstacleGenerateInterval = 2f;
+		public const float ObstacleGenerateInterval = 1f;
 
 		// PICKUPS
 		public const float HealthPackRecover = 20f;
-		public const float HealthPackGenerateInterval = 5f;
+		public const float HealthPackGenerateInterval = 3f;
 		public const float HealthPackBoundary_x = 10.0f;
 		public const float HealthPackBoundary_y = 5.0f;
 		public const float PickUpInitTime = 1.0f;
