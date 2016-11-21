@@ -23,7 +23,7 @@ namespace Com.EW.MyGame
 		public Slider PlayerScoreSlider;
 
 		[Tooltip ("Pixel offset from the player target")]
-		public Vector3 ScreenOffset = new Vector3 (0f, 100f, 0f);
+		public Vector3 ScreenOffset = new Vector3 (0f, 0f, 0f);
 
 		#endregion
 
@@ -99,6 +99,7 @@ namespace Com.EW.MyGame
 			// Follow the Target GameObject on screen.
 			if (_targetTransform != null) {
 				_targetPosition = _targetTransform.position;
+//				this.transform.position = Camera.main.WorldToScreenPoint (_targetPosition);
 				this.transform.position = Camera.main.WorldToScreenPoint (_targetPosition) + ScreenOffset;
 			}
 		}
