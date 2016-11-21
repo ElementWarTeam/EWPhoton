@@ -36,8 +36,8 @@ namespace Com.EW.MyGame
 		public float survivalTime = 0f;
 		public float eliminations = 0f;
 		public float damageTaken = 0f;
-		public float healingDone =0f;
-		public bool immune =true;
+		public float healingDone = 0f;
+		public bool immune = true;
 
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
@@ -58,7 +58,7 @@ namespace Com.EW.MyGame
 //			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
 //				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 //			}
-			if ( Time.time >30.0f ) {
+			if (Time.time > 30.0f) {
 				immune = false;
 			}
 //			//continous damge
@@ -103,7 +103,7 @@ namespace Com.EW.MyGame
 
 		public void takeDamage (float damage)
 		{
-			if(!immune){
+			if (!immune) {
 				this.damageTaken += damage;	//for stat
 				this.health -= damage * (1f - defense);
 			}
@@ -116,7 +116,7 @@ namespace Com.EW.MyGame
 			this.damageDelta = damageDelta;
 
 		}
-			
+
 
 		public void addContinousHealth (float healthDelta)
 		{
@@ -147,6 +147,16 @@ namespace Com.EW.MyGame
 		public void changeDenfense (float defenseDelta)
 		{
 			this.defense += defenseDelta;
+		}
+
+		public void addSpeed (float delta)
+		{
+			this.speed += delta;	
+		}
+
+		public void reduceSpeed (float delta)
+		{
+			this.speed -= delta;
 		}
 
 		#region IPunObservable implementation

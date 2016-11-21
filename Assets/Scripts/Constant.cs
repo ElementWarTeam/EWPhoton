@@ -70,10 +70,10 @@ namespace Com.EW.MyGame
 		public const float StoneElementInitialEnergyRecoverRatePercentage = 0.05f;
 
 		// Bullet
-		public const float FireBallSpeed = 200f;
-		public const float IceCystalSpeed = 180f;
-		public const float ElectricArcSpeed = 240f;
-		public const float DarkNeedleSpeed = 200f;
+		public const float FireBallSpeed = 250f;
+		public const float IceCystalSpeed = 230f;
+		public const float ElectricArcSpeed = 290f;
+		public const float DarkNeedleSpeed = 250f;
 		public const float BasicEffectTime = 3;
 		public const float LiveTime = 5;
 		public const float ElectricFieldLiveTime = 10;

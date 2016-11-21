@@ -37,6 +37,7 @@ namespace Com.EW.MyGame
 			}
 
 			if (initiateTime + existTime <= Time.time) {
+				owner.GetComponent <PhotonView> ().RPC ("AddSpeed", PhotonTargets.All, 50f); // TODO: @Cairu
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);
 			}
@@ -69,7 +70,6 @@ namespace Com.EW.MyGame
 						pv.RPC ("TakeDamage", PhotonTargets.All, continousDamage); // TODO: @Cairu
 						owner.GetComponent <PhotonView> ().RPC ("AddScore", PhotonTargets.All, 1f); // TODO: @Cairu
 					}
-
 				}
 //				audioSource.PlayOneShot (hitAudio); // TODO: @cairu: electric sound
 			}
@@ -90,6 +90,7 @@ namespace Com.EW.MyGame
 		public void setOwner (PlayerInfo owner)
 		{
 			this.owner = owner;
+			owner.GetComponent <PhotonView> ().RPC ("ReduceSpeed", PhotonTargets.All, 50f); // TODO: @Cairu
 		}
 
 		public void setParent (GameObject parent)

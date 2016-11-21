@@ -169,7 +169,7 @@ namespace Com.EW.MyGame
 			} else {
 				this.GetComponent <Rigidbody2D> ().drag = 0;
 			}		
-			rb2d.position += moveVec.normalized * 0.05f;
+			rb2d.position += moveVec.normalized * 0.05f * playerInfo.speed * 0.01f;
 
 		}
 
@@ -347,6 +347,18 @@ namespace Com.EW.MyGame
 		public void ChangeDenfense (float defenseDeltaDelta)
 		{
 			playerInfo.changeDenfense (defenseDeltaDelta);
+		}
+
+		[PunRPC]
+		public void ReduceSpeed (float delta)
+		{
+			playerInfo.reduceSpeed (delta);
+		}
+
+		[PunRPC]
+		public void AddSpeed (float delta)
+		{
+			playerInfo.addSpeed (delta);
 		}
 	}
 }
