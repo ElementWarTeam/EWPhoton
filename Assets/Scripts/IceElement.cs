@@ -31,6 +31,17 @@ namespace Com.EW.MyGame
 
 		public void fire (Vector2 position, float angle, Vector2 direction)
 		{
+			if (playerInfo.isUsingPowerUp) {
+				fireOneBullet (position, angle, direction);
+				fireOneBullet (position, angle + 120f, Vector2Extension.Rotate (direction, 120));
+				fireOneBullet (position, angle - 120f, Vector2Extension.Rotate (direction, -20));
+			} else {
+				fireOneBullet (position, angle, direction);
+			}
+		}
+
+		private void fireOneBullet (Vector2 position, float angle, Vector2 direction)
+		{
 			GameObject bulletObj = generateBullet (position);
 
 			// Setup ice crystal damange/owner

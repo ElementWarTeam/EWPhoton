@@ -100,6 +100,7 @@ namespace Com.EW.MyGame
 		public const float SpeedUpPickUpSpeedUpDelta = 50f;
 		public const float SpeedUpGenerateInterval = 3f;
 		public const float SpeedUpEffectTime = 5f;
+		public const float PowerUpGenerateInterval = 5f;
 
 		// Energy
 		public const float FullEnergy = 100f;

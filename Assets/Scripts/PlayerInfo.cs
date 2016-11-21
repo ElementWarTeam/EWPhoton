@@ -30,10 +30,13 @@ namespace Com.EW.MyGame
 
 		private float nextTimeIncreaseEnergy;
 
-		// pick up effect with time manner
+		// Pick up effect with time manner
 		private float speedUpDelta;
 		private float speedUpStopTime;
 		private bool isUsingSpeedUp = false;
+
+		private float powerUpStopTime;
+		public bool isUsingPowerUp = false;
 
 		// about player stats
 		public float SpawnTime = 0f;
@@ -104,6 +107,10 @@ namespace Com.EW.MyGame
 			if (speedUpStopTime < Time.time && isUsingSpeedUp) {
 				this.speed -= speedUpDelta;
 				isUsingSpeedUp = false;
+			}
+
+			if (powerUpStopTime < Time.time && isUsingPowerUp) {
+				isUsingPowerUp = false;
 			}
 		}
 
@@ -176,6 +183,12 @@ namespace Com.EW.MyGame
 			this.speedUpDelta = delta;
 			speedUpStopTime = Time.time + time;
 			isUsingSpeedUp = true;
+		}
+
+		public void powerUpWithTime (float time)
+		{
+			powerUpStopTime = Time.time + time;
+			isUsingPowerUp = true;
 		}
 
 		#region IPunObservable implementation

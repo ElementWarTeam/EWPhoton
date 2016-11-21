@@ -32,6 +32,17 @@ namespace Com.EW.MyGame
 
 		public void fire (Vector2 position, float angle, Vector2 direction)
 		{
+			if (playerInfo.isUsingPowerUp) {
+				fireOneBullet (position, angle, direction);
+				fireOneBullet (position, angle + 30f, Vector2Extension.Rotate (direction, 30));
+				fireOneBullet (position, angle - 30f, Vector2Extension.Rotate (direction, -30));
+			} else {
+				fireOneBullet (position, angle, direction);
+			}
+		}
+
+		private void fireOneBullet (Vector2 position, float angle, Vector2 direction)
+		{
 			GameObject bulletObj = generateBullet (position);
 
 			// Setup fire ball damange/owner

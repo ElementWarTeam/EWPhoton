@@ -45,6 +45,18 @@ namespace Com.EW.MyGame
 
 		public void fire (Vector2 position, float angle, Vector2 direction)
 		{
+			if (playerInfo.isUsingPowerUp) {
+				fireOneBullet (position, angle, direction);
+				fireOneBullet (position, angle + 90f, Vector2Extension.Rotate (direction, 90));
+				fireOneBullet (position, angle - 90f, Vector2Extension.Rotate (direction, -90));
+				fireOneBullet (position, angle + 180f, Vector2Extension.Rotate (direction, 180));
+			} else {
+				fireOneBullet (position, angle, direction);
+			}
+		}
+
+		private void fireOneBullet (Vector2 position, float angle, Vector2 direction)
+		{
 			GameObject bulletObj = generateBullet (position);
 
 			// Setup physic body

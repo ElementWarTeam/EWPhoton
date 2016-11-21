@@ -15,6 +15,7 @@ namespace Com.EW.MyGame
 				InvokeRepeating ("GenerateRandomObstacle", 0f, Constant.ObstacleGenerateInterval);
 				InvokeRepeating ("GenerateRandomBloodPack", 0f, Constant.HealthPackGenerateInterval);
 				InvokeRepeating ("GenerateRandomSpeedUp", 0f, Constant.SpeedUpGenerateInterval);
+				InvokeRepeating ("GenerateRandomPowerUp", 0f, Constant.PowerUpGenerateInterval);
 			}
 		}
 
@@ -41,6 +42,13 @@ namespace Com.EW.MyGame
 		{
 			Vector2 point = randomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("SpeedUpPickUp", point, Quaternion.identity, 0);
+			DontDestroyOnLoad (obj);
+		}
+
+		void GenerateRandomPowerUp ()
+		{
+			Vector2 point = randomPosition ();
+			GameObject obj = PhotonNetwork.Instantiate ("PowerUpPickUp", point, Quaternion.identity, 0);
 			DontDestroyOnLoad (obj);
 		}
 
