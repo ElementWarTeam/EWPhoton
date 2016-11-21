@@ -70,9 +70,9 @@ namespace Com.EW.MyGame
 		void IPunObservable.OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info)
 		{
 			if (stream.isWriting) {
-				stream.SendNext (playerInfo.health);
+//				stream.SendNext (playerInfo.health);
 			} else {
-				this.playerInfo.health = (float)stream.ReceiveNext ();
+//				this.playerInfo.health = (float)stream.ReceiveNext ();
 			}
 		}
 

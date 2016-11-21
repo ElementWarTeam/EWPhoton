@@ -178,11 +178,11 @@ namespace Com.EW.MyGame
 
 			// Shrinking
 			if (Shrinking) {
-				GetComponent <Renderer> ().enabled = false;
+//				transform.localScale *= 0.9f;
 				if (ShringEndTime < Time.time) {
-					Shrinking = false;
 					rb2d.position = Vector2Extension.RandomPosition ();
-					GetComponent <Renderer> ().enabled = true;
+					Shrinking = false;
+//					transform.localScale = Vector3.one;
 				}
 			}
 

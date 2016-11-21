@@ -19,7 +19,7 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
-			if (PhotonNetwork.isMasterClient == false && PhotonNetwork.connected == true) {
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
 			if (initiateTime + LiveTime <= Time.time) {
