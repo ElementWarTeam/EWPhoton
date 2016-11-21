@@ -28,6 +28,8 @@ namespace Com.EW.MyGame
 			audioSource = GetComponent<AudioSource> ();
 			audioSource.PlayOneShot (shootAudio);
 			initiateTime = Time.time;
+
+			this.GetComponent<Transform> ().localScale *= DarkElement.amplify;
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)
@@ -78,6 +80,7 @@ namespace Com.EW.MyGame
 				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 				Destroy (gameObject);
 			}
+					
 		}
 
 		// Getters and Setters
