@@ -13,10 +13,10 @@ namespace Com.EW.MyGame
 			Instance = this;
 			if (PhotonNetwork.isMasterClient) {
 				InvokeRepeating ("GenerateRandomObstacle", 0f, Constant.ObstacleGenerateInterval);
-				InvokeRepeating ("GenerateRandomBloodPack", 0f, Constant.HealthPackGenerateInterval);
-				InvokeRepeating ("GenerateRandomSpeedUp", 0f, Constant.SpeedUpGenerateInterval);
-				InvokeRepeating ("GenerateRandomPowerUp", 0f, Constant.PowerUpGenerateInterval);
-				InvokeRepeating ("GenerateRandomBlackHole", 0f, Constant.BlackHoleInterval);
+//				InvokeRepeating ("GenerateRandomBloodPack", 0f, Constant.HealthPackGenerateInterval);
+//				InvokeRepeating ("GenerateRandomSpeedUp", 0f, Constant.SpeedUpGenerateInterval);
+//				InvokeRepeating ("GenerateRandomPowerUp", 0f, Constant.PowerUpGenerateInterval);
+//				InvokeRepeating ("GenerateRandomBlackHole", 0f, Constant.BlackHoleInterval);
 			}
 		}
 
