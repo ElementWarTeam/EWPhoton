@@ -66,9 +66,9 @@ namespace Com.EW.MyGame
 //			if (playerBeHitted != null && (hitTime + Constant.BasicEffectTime <= Time.time)) {
 //				playerBeHitted.speed -= continousIceCrystalSpeedDamage;
 //			}
-			if (Time.time > Constant.ImmuneTime) {
-				immune = false;
-			}
+//			if (Time.time > Constant.ImmuneTime) {
+//				immune = false;
+//			}
 //			//continous damge
 //			if (continousDamageEndTime < Time.time ) {
 //				this.damageTaken += damageDelta;	//for stat
@@ -121,10 +121,10 @@ namespace Com.EW.MyGame
 
 		public void takeDamage (float damage)
 		{
-			if (!immune) {
-				this.damageTaken += damage;	//for stat
-				this.health -= damage * (1f - defense);
-			}
+//			if (!immune) {
+			this.damageTaken += damage;	//for stat
+			this.health -= damage * (1f - defense);
+//			}
 
 		}
 

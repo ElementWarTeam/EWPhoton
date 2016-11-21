@@ -60,16 +60,16 @@ namespace Com.EW.MyGame
 			DontDestroyOnLoad (obj);
 		}
 
-		[PunRPC]
-		public void DestroyPickUp (GameObject obj)
-		{
-			if (PhotonNetwork.isMasterClient) {
-				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-				Destroy (gameObject);
-			} else {
-				obj.GetComponent <Renderer> ().enabled = false;
-				obj.GetComponent <Collider2D> ().enabled = false;
-			}
-		}
+		//		[PunRPC]
+		//		public void DestroyPickUp (GameObject obj)
+		//		{
+		//			if (PhotonNetwork.isMasterClient) {
+		//				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
+		//				Destroy (gameObject);
+		//			} else {
+		//				obj.GetComponent <Renderer> ().enabled = false;
+		//				obj.GetComponent <Collider2D> ().enabled = false;
+		//			}
+		//		}
 	}
 }
