@@ -21,8 +21,11 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
+			if (photonView.isMine == false && PhotonNetwork.connected == true) {
+				return;
+			}
 			if (ResistanceCount == 0 || initiateTime + LiveTime <= Time.time) {
-				if (PhotonNetwork.isMasterClient == true) {
+				if (photonView.isMine == true && PhotonNetwork.connected == true) {
 					PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
 					Destroy (gameObject);
 				} else {
