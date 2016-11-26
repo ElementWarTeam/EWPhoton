@@ -44,7 +44,7 @@ namespace Com.EW.MyGame
 		public float timeBetweenShots = 1f;
 		private float nextShootTime = 0.0f;
 		private Vector2 releasePressDirection = new Vector2 (0f, 0f);
-		private float ShringEndTime;
+		private float NextBlackHoleTime;
 
 		#endregion
 
@@ -178,11 +178,12 @@ namespace Com.EW.MyGame
 
 			// Shrinking
 			if (Shrinking) {
-//				transform.localScale *= 0.9f;
-				if (ShringEndTime < Time.time) {
-					rb2d.position = Vector2Extension.RandomPosition ();
+				transform.localScale *= 0.9f;
+				if (transform.localScale.magnitude < 0.01f) {
 					Shrinking = false;
-//					transform.localScale = Vector3.one;
+					transform.localScale = Vector3.one;
+					NextBlackHoleTime = Time.time + 1f;
+					rb2d.position = Vector2Extension.RandomPosition ();
 				}
 			}
 
@@ -391,8 +392,10 @@ namespace Com.EW.MyGame
 		[PunRPC]
 		public void ChangeLocation (Vector2 position) // This is only for black hole
 		{
-			ShringEndTime = Time.time + 1f; // TODO: add to Constant
-			Shrinking = true;
+			if (NextBlackHoleTime < Time.time) {
+				Shrinking = true;
+			}
+
 		}
 
 	}

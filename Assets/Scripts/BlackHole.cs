@@ -19,6 +19,7 @@ namespace Com.EW.MyGame
 		// Update is called once per frame
 		void Update ()
 		{
+			transform.Rotate (Vector3.forward, 10f * Time.deltaTime);
 			if (photonView.isMine == false && PhotonNetwork.connected == true) {
 				return;
 			}
