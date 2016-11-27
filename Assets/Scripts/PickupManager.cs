@@ -27,49 +27,50 @@ namespace Com.EW.MyGame
 
 		void GenerateRandomObstacle ()
 		{
-			Vector2 point = Vector2Extension.RandomPosition ();
-			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+			GetComponent <PhotonView> ().RPC ("PunGeneratePickUp", PhotonTargets.All, "Obstacle");
+//			Vector2 point = Vector2Extension.RandomPosition ();
+//			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
+//			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBloodPack ()
 		{
-			Vector2 point = Vector2Extension.RandomPosition ();
-			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+			GetComponent <PhotonView> ().RPC ("PunGeneratePickUp", PhotonTargets.All, "HealthPack");
+//			Vector2 point = Vector2Extension.RandomPosition ();
+//			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
+//			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomSpeedUp ()
 		{
-			Vector2 point = Vector2Extension.RandomPosition ();
-			GameObject obj = PhotonNetwork.Instantiate ("SpeedUpPickUp", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+			GetComponent <PhotonView> ().RPC ("PunGeneratePickUp", PhotonTargets.All, "SpeedUpPickUp");
+//			Vector2 point = Vector2Extension.RandomPosition ();
+//			GameObject obj = PhotonNetwork.Instantiate ("SpeedUpPickUp", point, Quaternion.identity, 0);
+//			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomPowerUp ()
 		{
-			Vector2 point = Vector2Extension.RandomPosition ();
-			GameObject obj = PhotonNetwork.Instantiate ("PowerUpPickUp", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+			GetComponent <PhotonView> ().RPC ("PunGeneratePickUp", PhotonTargets.All, "PowerUpPickUp");
+//			Vector2 point = Vector2Extension.RandomPosition ();
+//			GameObject obj = PhotonNetwork.Instantiate ("PowerUpPickUp", point, Quaternion.identity, 0);
+//			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBlackHole ()
 		{
-			Vector2 point = Vector2Extension.RandomPosition ();
-			GameObject obj = PhotonNetwork.Instantiate ("BlackHole", point, Quaternion.identity, 0);
-			DontDestroyOnLoad (obj);
+			GetComponent <PhotonView> ().RPC ("PunGeneratePickUp", PhotonTargets.All, "BlackHole");
+//			Vector2 point = Vector2Extension.RandomPosition ();
+//			GameObject obj = PhotonNetwork.Instantiate ("BlackHole", point, Quaternion.identity, 0);
+//			DontDestroyOnLoad (obj);
 		}
 
-		//		[PunRPC]
-		//		public void DestroyPickUp (GameObject obj)
-		//		{
-		//			if (PhotonNetwork.isMasterClient) {
-		//				PhotonNetwork.Destroy (gameObject.GetComponent <PhotonView> ());
-		//				Destroy (gameObject);
-		//			} else {
-		//				obj.GetComponent <Renderer> ().enabled = false;
-		//				obj.GetComponent <Collider2D> ().enabled = false;
-		//			}
-		//		}
+		[PunRPC]
+		public void PunGeneratePickUp (string prefebName)
+		{
+			Vector2 point = Vector2Extension.RandomPosition ();
+			GameObject obj = PhotonNetwork.Instantiate (prefebName, point, Quaternion.identity, 0);
+			DontDestroyOnLoad (obj);
+		}
 	}
 }
