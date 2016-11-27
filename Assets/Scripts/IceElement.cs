@@ -34,7 +34,7 @@ namespace Com.EW.MyGame
 			if (playerInfo.isUsingPowerUp) {
 				fireOneBullet (position, angle, direction);
 				fireOneBullet (position, angle + 120f, Vector2Extension.Rotate (direction, 120));
-				fireOneBullet (position, angle - 120f, Vector2Extension.Rotate (direction, -20));
+				fireOneBullet (position, angle - 120f, Vector2Extension.Rotate (direction, -120));
 			} else {
 				fireOneBullet (position, angle, direction);
 			}

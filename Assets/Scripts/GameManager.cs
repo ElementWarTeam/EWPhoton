@@ -27,8 +27,8 @@ namespace Com.EW.MyGame
 			Instance = this;
 			if (PlayerManager.LocalPlayerInstance == null) {
 				Debug.Log ("We are Instantiating LocalPlayer from " + Application.loadedLevel);
-//				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, Vector2Extension.RandomPosition (), Quaternion.identity, 0);
-				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, Vector3.zero, Quaternion.identity, 0);
+				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, Vector2Extension.RandomPosition () * 0.5f, Quaternion.identity, 0);
+//				PhotonNetwork.Instantiate (PlayerManager.LocalPlayerType, Vector3.zero, Quaternion.identity, 0);
 			} else {
 				Debug.Log ("Ignoring scene load for " + Application.loadedLevel);
 			}
