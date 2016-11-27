@@ -301,8 +301,8 @@ namespace Com.EW.MyGame
 			case Constant.DarkElementType:
 				this.GetComponent <DarkElement> ().useUltra (this.transform.position);
 				break;
-			case "StoneElement":
-				// TODO
+			case Constant.StoneElementType:
+				this.GetComponent <StoneElement> ().useUltra (this.transform.position);
 				break;
 			default:
 				// TODO

@@ -89,7 +89,7 @@ namespace Com.EW.MyGame
 
 		// Obstacle information
 		public const float ObstacleCollisionDamage = 10f;
-		public const float ObstacleGenerateInterval = 1f;
+		public const float ObstacleGenerateInterval = 3f;
 
 		// PICKUPS
 		public const float HealthPackRecover = 20f;
@@ -99,9 +99,9 @@ namespace Com.EW.MyGame
 		public const float PickUpInitTime = 1.0f;
 		public const float SpeedUpPickUpSpeedUpDelta = 50f;
 		public const float SpeedUpGenerateInterval = 3f;
-		public const float SpeedUpEffectTime = 5f;
-		public const float PowerUpGenerateInterval = 5f;
-		public const float BlackHoleInterval = 10f;
+		public const float SpeedUpEffectTime = 3f;
+		public const float PowerUpGenerateInterval = 3f;
+		public const float BlackHoleInterval = 8f;
 
 		// Energy
 		public const float FullEnergy = 100f;

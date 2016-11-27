@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class ElectricElement : Photon.PunBehaviour, IPunObservable
+	public class ElectricElement : IElement, IPunObservable
 	{
 
 		private PlayerInfo playerInfo;
@@ -43,7 +43,7 @@ namespace Com.EW.MyGame
 			return fieldObj;
 		}
 
-		public void fire (Vector2 position, float angle, Vector2 direction)
+		public override void fire (Vector2 position, float angle, Vector2 direction)
 		{
 			if (playerInfo.isUsingPowerUp) {
 				fireOneBullet (position, angle, direction);
@@ -65,7 +65,7 @@ namespace Com.EW.MyGame
 			body.AddForce (direction * Constant.IceCystalSpeed);
 		}
 
-		public void useUltra (Vector2 position)
+		public override void useUltra (Vector2 position)
 		{
 			generateElectricField (position);
 			playerInfo.energy = 0f;

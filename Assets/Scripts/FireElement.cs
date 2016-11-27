@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class FireElement : Photon.PunBehaviour, IPunObservable
+	public class FireElement : IElement, IPunObservable
 	{
 
 		private PlayerInfo playerInfo;
@@ -30,7 +30,7 @@ namespace Com.EW.MyGame
 			return bulletObj;
 		}
 
-		public void fire (Vector2 position, float angle, Vector2 direction)
+		public override void fire (Vector2 position, float angle, Vector2 direction)
 		{
 			if (playerInfo.isUsingPowerUp) {
 				fireOneBullet (position, angle, direction);
@@ -56,7 +56,7 @@ namespace Com.EW.MyGame
 			body.AddForce (direction * Constant.FireBallSpeed);
 		}
 
-		public void useUltra (Vector2 position)
+		public override void useUltra (Vector2 position)
 		{
 			for (float angle = 0; angle < 360; angle += 30) {
 				float radians = angle * Mathf.Deg2Rad;

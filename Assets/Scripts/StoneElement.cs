@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Com.EW.MyGame
 {
-	public class StoneElement :  Photon.PunBehaviour, IPunObservable
+	public class StoneElement : IElement, IPunObservable
 	{
 
 		private PlayerInfo playerInfo;
@@ -12,6 +12,8 @@ namespace Com.EW.MyGame
 
 		private bool isAccumulating = false;
 		private bool isCharging = false;
+		private bool isUsingUltra = false;
+		private float ultraEndTime = 0f;
 		private float chargeInitiateTime = 0f;
 		private float chargingTime = 0f;
 		private float accumulatingInitiateTime = 0f;
@@ -44,6 +46,11 @@ namespace Com.EW.MyGame
 					isCharging = false;
 				}
 				playerInfo.defense /= 3; // TODO
+			}
+			if (isUsingUltra && ultraEndTime < Time.time) {
+				isUsingUltra = false;
+				playerInfo.immune = false;
+				transform.localScale /= 2;
 			}
 		}
 
@@ -113,13 +120,17 @@ namespace Com.EW.MyGame
 			}
 		}
 
-		public void useUltra (Vector2 position)
+		public override void fire (Vector2 position, float angle, Vector2 direction)
 		{
-//			for (float angle = 0; angle < 360; angle += 30) {
-//				float radians = angle * Mathf.Deg2Rad;
-//				Vector2 direction = new Vector2 (Mathf.Sin (radians), Mathf.Cos (radians));
-//				fire (position, angle, direction);
-//			}
+			
+		}
+
+		public override void useUltra (Vector2 position)
+		{
+			isUsingUltra = true;
+			ultraEndTime = Time.time + 10f; // TODO
+			playerInfo.immune = true;
+			transform.localScale *= 2;
 		}
 
 		#region IPunObservable implementation

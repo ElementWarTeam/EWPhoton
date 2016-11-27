@@ -29,35 +29,35 @@ namespace Com.EW.MyGame
 		{
 			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("Obstacle", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
+			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBloodPack ()
 		{
 			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("HealthPack", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
+			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomSpeedUp ()
 		{
 			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("SpeedUpPickUp", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
+			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomPowerUp ()
 		{
 			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("PowerUpPickUp", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
+			DontDestroyOnLoad (obj);
 		}
 
 		void GenerateRandomBlackHole ()
 		{
 			Vector2 point = Vector2Extension.RandomPosition ();
 			GameObject obj = PhotonNetwork.Instantiate ("BlackHole", point, Quaternion.identity, 0);
-//			DontDestroyOnLoad (obj);
+			DontDestroyOnLoad (obj);
 		}
 
 	}

@@ -45,7 +45,7 @@ namespace Com.EW.MyGame
 		public float eliminations = 0f;
 		public float damageTaken = 0f;
 		public float healingDone = 0f;
-		public bool immune = true;
+		public bool immune = false;
 
 		public void setup (float bulletDamage, float speed, float initialHealth, float defense, float fireRate, float initialEnergy, float energyRecoverRate)
 		{
