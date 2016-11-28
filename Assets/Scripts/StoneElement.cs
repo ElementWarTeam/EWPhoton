@@ -131,6 +131,7 @@ namespace Com.EW.MyGame
 			ultraEndTime = Time.time + 10f; // TODO
 			playerInfo.defense += 0.5f;
 			transform.localScale *= 2;
+			playerInfo.energy = 0f;
 		}
 
 		#region IPunObservable implementation
