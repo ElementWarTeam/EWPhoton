@@ -29,7 +29,7 @@ namespace Com.EW.MyGame
 			audioSource.PlayOneShot (shootAudio);
 			initiateTime = Time.time;
 
-			this.GetComponent<Transform> ().localScale *= DarkElement.amplify;
+//			this.GetComponent<Transform> ().localScale *= DarkElement.amplify;
 		}
 
 		void OnTriggerEnter2D (Collider2D obj)

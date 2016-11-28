@@ -63,9 +63,9 @@ namespace Com.EW.MyGame
 				fire (position, angle, direction);
 			}
 				
-			// each evolution, the evil vampire's size grows by 25%
-			this.GetComponent<Transform> ().localScale *= 1.35f;
-			amplify *= 1.35f;
+			// each evolution, the evil vampire's size grows by 20%
+			this.GetComponent<Transform> ().localScale *= 1.2f;
+			amplify *= 1.2f;
 
 			// right after evolution, color change to blood red and the damage he dealt to others can heal himself
 			this.GetComponent<SpriteRenderer> ().color = new Color32 (255, 0, 0, 240);
