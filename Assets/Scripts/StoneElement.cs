@@ -49,7 +49,7 @@ namespace Com.EW.MyGame
 			}
 			if (isUsingUltra && ultraEndTime < Time.time) {
 				isUsingUltra = false;
-				playerInfo.immune = false;
+				playerInfo.defense -= 0.5f;
 				transform.localScale /= 2;
 			}
 		}
@@ -129,7 +129,7 @@ namespace Com.EW.MyGame
 		{
 			isUsingUltra = true;
 			ultraEndTime = Time.time + 10f; // TODO
-			playerInfo.immune = true;
+			playerInfo.defense += 0.5f;
 			transform.localScale *= 2;
 		}
 

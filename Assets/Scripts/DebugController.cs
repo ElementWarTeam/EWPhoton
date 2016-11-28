@@ -15,7 +15,7 @@ namespace Com.EW.MyGame
 		{
 			instance = this;
 			text = GetComponent <Text> ();
-			text.text = "Debug Information\n";
+			text.text = "Element Data\n";
 		}
 	
 		// Update is called once per frame
